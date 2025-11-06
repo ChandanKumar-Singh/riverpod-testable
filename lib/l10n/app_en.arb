@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Testable App",
+  "appDescription": "This is a testable application for localization.",
+  "hello": "Hello",
+  "welcome": "Welcome to Testable App"
+}
