@@ -10,7 +10,7 @@ part '../../shared/widgets/app_breadcrumb.dart';
 /// ------------------------------------------------------
 /// AUTO ROUTE SETUP
 /// ------------------------------------------------------
-@AutoRouterConfig(replaceInRouteName: 'Screen,Route')
+@AutoRouterConfig(replaceInRouteName: 'Page,Screen,Route')
 class AppRouter extends RootStackRouter {
   AppRouter({required this.ref});
 

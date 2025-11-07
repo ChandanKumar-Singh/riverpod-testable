@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'http_client.dart';
-import 'models/api_response.dart';
+import '../network/dio/http_client.dart';
+import '../network/dio/models/api_response.dart';
 
 /// Lightweight API service interface used by repositories.
 /// Keeps the data layer testable and independent of implementation details.

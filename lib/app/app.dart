@@ -20,9 +20,7 @@ class MyApp extends ConsumerWidget {
       child: MaterialApp.router(
         title: 'Testable App',
         routerConfig: router.config(
-          navigatorObservers: () => router.observers,
-          //
-        ),
+          navigatorObservers: () => router.observers        ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         locale: locale,

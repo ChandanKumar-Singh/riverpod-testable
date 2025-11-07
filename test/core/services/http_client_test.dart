@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:testable/core/services/dio/api_service.dart';
-import 'package:testable/core/services/dio/api_service_impl.dart';
+import 'package:testable/core/services/api_service.dart';
+import 'package:testable/core/services/api/api_service_impl.dart';
 
 import 'http_client_test.mocks.dart';
 
