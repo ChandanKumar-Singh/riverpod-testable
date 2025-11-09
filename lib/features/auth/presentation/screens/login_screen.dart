@@ -49,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: authState.status == AuthStatus.loading
                   ? null
                   : () {
+                    // throw Exception('sdfsdfdsfdsfsdf');
                       AppToastification.show(
                         type: ToastificationType.error,
                         style: ToastificationStyle.flat,
