@@ -43,50 +43,19 @@ class HomeScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MyHomePage]
-class MyHomePageRoute extends PageRouteInfo<MyHomePageRouteArgs> {
-  MyHomePageRoute({
-    Key? key,
-    required String pageTitle,
-    List<PageRouteInfo>? children,
-  }) : super(
-         MyHomePageRoute.name,
-         args: MyHomePageRouteArgs(key: key, pageTitle: pageTitle),
-         initialChildren: children,
-       );
+/// [LoginScreen]
+class LoginScreenRoute extends PageRouteInfo<void> {
+  const LoginScreenRoute({List<PageRouteInfo>? children})
+    : super(LoginScreenRoute.name, initialChildren: children);
 
-  static const String name = 'MyHomePageRoute';
+  static const String name = 'LoginScreenRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<MyHomePageRouteArgs>();
-      return MyHomePage(key: args.key, pageTitle: args.pageTitle);
+      return const LoginScreen();
     },
   );
-}
-
-class MyHomePageRouteArgs {
-  const MyHomePageRouteArgs({this.key, required this.pageTitle});
-
-  final Key? key;
-
-  final String pageTitle;
-
-  @override
-  String toString() {
-    return 'MyHomePageRouteArgs{key: $key, pageTitle: $pageTitle}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! MyHomePageRouteArgs) return false;
-    return key == other.key && pageTitle == other.pageTitle;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ pageTitle.hashCode;
 }
 
 /// generated route for
@@ -117,6 +86,22 @@ class SettingsScreenRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SettingsScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SplashScreen]
+class SplashScreenRoute extends PageRouteInfo<void> {
+  const SplashScreenRoute({List<PageRouteInfo>? children})
+    : super(SplashScreenRoute.name, initialChildren: children);
+
+  static const String name = 'SplashScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SplashScreen();
     },
   );
 }

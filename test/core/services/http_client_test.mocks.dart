@@ -3,13 +3,17 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i6;
 
-import 'package:dio/dio.dart' as _i5;
+import 'package:dio/dio.dart' as _i9;
+import 'package:flutter_riverpod/flutter_riverpod.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:testable/core/network/dio/models/api_response.dart' as _i2;
-import 'package:testable/core/services/api/api_service_impl.dart' as _i3;
-import 'package:testable/core/services/api_service.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i10;
+import 'package:testable/core/config/env.dart' as _i4;
+import 'package:testable/core/network/dio/models/api_response.dart' as _i7;
+import 'package:testable/core/services/api/api_service_impl.dart' as _i5;
+import 'package:testable/core/services/api_service.dart' as _i8;
+import 'package:testable/core/utils/logger.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,39 +30,77 @@ import 'package:testable/core/services/api_service.dart' as _i6;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeApiResponse_0<T1> extends _i1.SmartFake
-    implements _i2.ApiResponse<T1> {
-  _FakeApiResponse_0(Object parent, Invocation parentInvocation)
+class _FakeRef_0<State extends Object?> extends _i1.SmartFake
+    implements _i2.Ref<State> {
+  _FakeRef_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAppLogger_1 extends _i1.SmartFake implements _i3.AppLogger {
+  _FakeAppLogger_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeEnv_2 extends _i1.SmartFake implements _i4.Env {
+  _FakeEnv_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 /// A class which mocks [AuthRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
+class MockAuthRepository extends _i1.Mock implements _i5.AuthRepository {
   MockAuthRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<bool> login(String? username, String? password) =>
+  _i2.Ref<Object?> get ref =>
       (super.noSuchMethod(
-            Invocation.method(#login, [username, password]),
-            returnValue: _i4.Future<bool>.value(false),
+            Invocation.getter(#ref),
+            returnValue: _FakeRef_0<Object?>(this, Invocation.getter(#ref)),
           )
-          as _i4.Future<bool>);
+          as _i2.Ref<Object?>);
 
   @override
-  _i4.Future<_i2.ApiResponse<T>> request<T>(
+  _i3.AppLogger get logger =>
+      (super.noSuchMethod(
+            Invocation.getter(#logger),
+            returnValue: _FakeAppLogger_1(this, Invocation.getter(#logger)),
+          )
+          as _i3.AppLogger);
+
+  @override
+  _i4.Env get env =>
+      (super.noSuchMethod(
+            Invocation.getter(#env),
+            returnValue: _FakeEnv_2(this, Invocation.getter(#env)),
+          )
+          as _i4.Env);
+
+  @override
+  _i6.Future<bool> login(String? username, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#login, [username, password]),
+            returnValue: _i6.Future<bool>.value(false),
+          )
+          as _i6.Future<bool>);
+
+  @override
+  _i6.Future<_i7.ApiResponse<R>> request<R>(
     String? path, {
-    _i2.ApiMothod? method = _i2.ApiMothod.post,
+    _i8.ApiMethod? method = _i8.ApiMethod.post,
     Map<String, dynamic>? queryParameters,
-    Object? data,
-    _i5.CancelToken? cancelToken,
+    Object? body,
+    Map<String, dynamic>? headers,
+    bool? requiresAuth = true,
+    _i9.CancelToken? cancelToken,
     Duration? timeout,
-    _i2.ApiResponse<dynamic> Function(Map<String, dynamic>)? fromJson,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onSuccess,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onError,
+    R Function(Map<String, dynamic>)? fromJson,
+    List<R> Function(List<dynamic>)? fromJsonList,
+    int? maxRetries = 0,
+    Duration? retryDelay = const Duration(milliseconds: 300),
+    Map<String, dynamic>? extra,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -67,16 +109,20 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
               {
                 #method: method,
                 #queryParameters: queryParameters,
-                #data: data,
+                #body: body,
+                #headers: headers,
+                #requiresAuth: requiresAuth,
                 #cancelToken: cancelToken,
                 #timeout: timeout,
                 #fromJson: fromJson,
-                #onSuccess: onSuccess,
-                #onError: onError,
+                #fromJsonList: fromJsonList,
+                #maxRetries: maxRetries,
+                #retryDelay: retryDelay,
+                #extra: extra,
               },
             ),
-            returnValue: _i4.Future<_i2.ApiResponse<T>>.value(
-              _FakeApiResponse_0<T>(
+            returnValue: _i6.Future<_i7.ApiResponse<R>>.value(
+              _i10.dummyValue<_i7.ApiResponse<R>>(
                 this,
                 Invocation.method(
                   #request,
@@ -84,64 +130,63 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
                   {
                     #method: method,
                     #queryParameters: queryParameters,
-                    #data: data,
+                    #body: body,
+                    #headers: headers,
+                    #requiresAuth: requiresAuth,
                     #cancelToken: cancelToken,
                     #timeout: timeout,
                     #fromJson: fromJson,
-                    #onSuccess: onSuccess,
-                    #onError: onError,
+                    #fromJsonList: fromJsonList,
+                    #maxRetries: maxRetries,
+                    #retryDelay: retryDelay,
+                    #extra: extra,
                   },
                 ),
               ),
             ),
           )
-          as _i4.Future<_i2.ApiResponse<T>>);
-
-  @override
-  _i4.Future<_i2.ApiResponse<T>> safeCall<T>(
-    _i4.Future<_i2.ApiResponse<dynamic>> Function()? request, {
-    required _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onSuccess,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onError,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #safeCall,
-              [request],
-              {#onSuccess: onSuccess, #onError: onError},
-            ),
-            returnValue: _i4.Future<_i2.ApiResponse<T>>.value(
-              _FakeApiResponse_0<T>(
-                this,
-                Invocation.method(
-                  #safeCall,
-                  [request],
-                  {#onSuccess: onSuccess, #onError: onError},
-                ),
-              ),
-            ),
-          )
-          as _i4.Future<_i2.ApiResponse<T>>);
+          as _i6.Future<_i7.ApiResponse<R>>);
 }
 
 /// A class which mocks [ApiService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiService extends _i1.Mock implements _i6.ApiService {
+class MockApiService extends _i1.Mock implements _i8.ApiService {
   MockApiService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.ApiResponse<T>> request<T>(
+  _i3.AppLogger get logger =>
+      (super.noSuchMethod(
+            Invocation.getter(#logger),
+            returnValue: _FakeAppLogger_1(this, Invocation.getter(#logger)),
+          )
+          as _i3.AppLogger);
+
+  @override
+  _i4.Env get env =>
+      (super.noSuchMethod(
+            Invocation.getter(#env),
+            returnValue: _FakeEnv_2(this, Invocation.getter(#env)),
+          )
+          as _i4.Env);
+
+  @override
+  _i6.Future<_i7.ApiResponse<R>> request<R>(
     String? path, {
-    _i2.ApiMothod? method = _i2.ApiMothod.post,
+    _i8.ApiMethod? method = _i8.ApiMethod.post,
     Map<String, dynamic>? queryParameters,
-    Object? data,
-    _i5.CancelToken? cancelToken,
+    Object? body,
+    Map<String, dynamic>? headers,
+    bool? requiresAuth = true,
+    _i9.CancelToken? cancelToken,
     Duration? timeout,
-    _i2.ApiResponse<dynamic> Function(Map<String, dynamic>)? fromJson,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onSuccess,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onError,
+    R Function(Map<String, dynamic>)? fromJson,
+    List<R> Function(List<dynamic>)? fromJsonList,
+    int? maxRetries = 0,
+    Duration? retryDelay = const Duration(milliseconds: 300),
+    Map<String, dynamic>? extra,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -150,16 +195,20 @@ class MockApiService extends _i1.Mock implements _i6.ApiService {
               {
                 #method: method,
                 #queryParameters: queryParameters,
-                #data: data,
+                #body: body,
+                #headers: headers,
+                #requiresAuth: requiresAuth,
                 #cancelToken: cancelToken,
                 #timeout: timeout,
                 #fromJson: fromJson,
-                #onSuccess: onSuccess,
-                #onError: onError,
+                #fromJsonList: fromJsonList,
+                #maxRetries: maxRetries,
+                #retryDelay: retryDelay,
+                #extra: extra,
               },
             ),
-            returnValue: _i4.Future<_i2.ApiResponse<T>>.value(
-              _FakeApiResponse_0<T>(
+            returnValue: _i6.Future<_i7.ApiResponse<R>>.value(
+              _i10.dummyValue<_i7.ApiResponse<R>>(
                 this,
                 Invocation.method(
                   #request,
@@ -167,41 +216,20 @@ class MockApiService extends _i1.Mock implements _i6.ApiService {
                   {
                     #method: method,
                     #queryParameters: queryParameters,
-                    #data: data,
+                    #body: body,
+                    #headers: headers,
+                    #requiresAuth: requiresAuth,
                     #cancelToken: cancelToken,
                     #timeout: timeout,
                     #fromJson: fromJson,
-                    #onSuccess: onSuccess,
-                    #onError: onError,
+                    #fromJsonList: fromJsonList,
+                    #maxRetries: maxRetries,
+                    #retryDelay: retryDelay,
+                    #extra: extra,
                   },
                 ),
               ),
             ),
           )
-          as _i4.Future<_i2.ApiResponse<T>>);
-
-  @override
-  _i4.Future<_i2.ApiResponse<T>> safeCall<T>(
-    _i4.Future<_i2.ApiResponse<dynamic>> Function()? request, {
-    required _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onSuccess,
-    _i2.ApiResponse<T> Function(_i2.ApiResponse<T>)? onError,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #safeCall,
-              [request],
-              {#onSuccess: onSuccess, #onError: onError},
-            ),
-            returnValue: _i4.Future<_i2.ApiResponse<T>>.value(
-              _FakeApiResponse_0<T>(
-                this,
-                Invocation.method(
-                  #safeCall,
-                  [request],
-                  {#onSuccess: onSuccess, #onError: onError},
-                ),
-              ),
-            ),
-          )
-          as _i4.Future<_i2.ApiResponse<T>>);
+          as _i6.Future<_i7.ApiResponse<R>>);
 }

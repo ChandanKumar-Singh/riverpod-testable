@@ -9,7 +9,12 @@ import '../domain/models/app_settings_model.dart';
 
 class AppSettingsRepository extends ApiService {
   final Ref ref;
-  AppSettingsRepository(this.ref) : super(ref.read(httpClientProvider));
+  AppSettingsRepository(this.ref)
+    : super(
+        env: ref.read(envProvider),
+        client: ref.read(httpClientProvider),
+        logger: ref.read(loggerProvider),
+      );
 
   /// Example of a global health check endpoint
   Future<bool> pingServer() async {
@@ -18,11 +23,11 @@ class AppSettingsRepository extends ApiService {
   }
 
   Future<AppSettingsData?> loadSettings() async {
-    final res =   await request<AppSettingsData>(
+    final res = await request<AppSettingsData>(
       '/settings',
-      onSuccess: (d) => ApiResponse.success(data: AppSettingsData()),
+      fromJson: (d) => AppSettingsData(),
     );
-    if(res.isSuccess) return res.data;
+    if (res.isSuccess) return res.data;
     return null;
   }
 }

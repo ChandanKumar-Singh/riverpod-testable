@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/main.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../shared/widgets/sample_screen.dart';
 
 part 'app_router.gr.dart';
@@ -21,16 +23,12 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-    NamedRouteDef(
-      builder: (context, data) =>
-          MyHomePage(pageTitle: 'Flutter Demo Home Page'),
-      name: 'MyHomePageRoute',
-      initial: true,
-    ),
+    AutoRoute(page: SplashScreenRoute.page, initial: true),
     AutoRoute(page: HomeScreenRoute.page),
     AutoRoute(page: ProfileScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: AboutScreenRoute.page),
+    AutoRoute(page: LoginScreenRoute.page),
   ];
 
   /// Attach a custom observer for logging or breadcrumb
@@ -95,13 +93,12 @@ class AppRouteObserver extends AutoRouterObserver {
     Future.microtask(() {
       final history = ref.read(routeHistoryProvider);
       final notifier = ref.read(routeHistoryProvider.notifier);
-      if(action == 'replace' && history.isNotEmpty) {
+      if (action == 'replace' && history.isNotEmpty) {
         final oldEntry = history.last;
         notifier.replaceEntry(oldEntry, entry);
       } else if (action == 'pop' && history.isNotEmpty) {
         notifier.removeLast();
-      }
-       else {
+      } else {
         notifier.addEntry(entry);
       }
 
@@ -142,7 +139,7 @@ final routeHistoryProvider =
     );
 
 // TODO: [RouteHistoryNotifier] Enhance RouteLogEntry with more precise data
-/// 
+///
 /// `[RouteHistoryNotifier]` manages the list of route navigation logs.
 class RouteHistoryNotifier extends StateNotifier<List<RouteLogEntry>> {
   RouteHistoryNotifier() : super([]);

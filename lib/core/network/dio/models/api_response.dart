@@ -1,223 +1,147 @@
-enum ApiMothod {
-  get,
-  post,
-  put,
-  delete,
-  patch,
-  head,
-  options,
-}
+// lib/core/network/models/api_response.dart
+import 'dart:convert';
 
-abstract class ApiResponse<T> {
+/// Unified API response container.
+///
+/// Supports:
+///  - success responses with typed `data`
+///  - error responses with message, error object and stacktrace
+///  - loading state (useful for UI state models)
+sealed class ApiResponse<T> {
   const ApiResponse();
 
-  // Factory constructors
   const factory ApiResponse.success({
     required T data,
     String? message,
-    int statusCode,
+    int? statusCode,
     Map<String, dynamic>? meta,
   }) = ApiResponseSuccess<T>;
 
   const factory ApiResponse.error({
     required String message,
     Object? error,
-    int statusCode,
+    int? statusCode,
     StackTrace? stackTrace,
     T? data,
   }) = ApiResponseError<T>;
 
   const factory ApiResponse.loading() = ApiResponseLoading<T>;
 
-  // Helper getters
   bool get isSuccess => this is ApiResponseSuccess<T>;
   bool get isError => this is ApiResponseError<T>;
   bool get isLoading => this is ApiResponseLoading<T>;
 
+  /// Returns typed data if present (null otherwise)
   T? get data {
     return switch (this) {
-      ApiResponseSuccess<T>(:final data) => data,
-      ApiResponseError<T>(:final data) => data,
+      ApiResponseSuccess(:final data) => data,
+      ApiResponseError(:final data) => data,
       _ => null,
     };
   }
 
-  String? get errorMessage {
+  String? get message {
     return switch (this) {
-      ApiResponseError<T>(:final message) => message,
+      ApiResponseSuccess(:final message) => message,
+      ApiResponseError(:final message) => message,
       _ => null,
     };
   }
-  StackTrace? get stackTrace {
+
+  int? get statusCode {
     return switch (this) {
-      ApiResponseError<T>(:final stackTrace) => stackTrace,
+      ApiResponseSuccess(:final statusCode) => statusCode,
+      ApiResponseError(:final statusCode) => statusCode,
       _ => null,
     };
-  }
-
-  factory ApiResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Map<String, dynamic>) fromJsonT,
-  ) {
-    final success = json['success'] as bool? ?? false;
-    final loading = json['loading'] as bool? ?? false;
-
-    if (loading) {
-      return const ApiResponse.loading();
-    }
-
-    if (success) {
-      final dataJson = json['data'];
-      T data;
-
-      if (dataJson is Map<String, dynamic>) {
-        data = fromJsonT(dataJson);
-      } else {
-        throw FormatException(
-          'Expected Map<String, dynamic> for data but got ${dataJson.runtimeType}',
-        );
-      }
-
-      return ApiResponse.success(
-        data: data,
-        message: json['message'] as String?,
-        statusCode: json['statusCode'] as int? ?? 200,
-        meta: json['meta'] as Map<String, dynamic>?,
-      );
-    } else {
-      T? errorData;
-      final dataJson = json['data'];
-
-      if (dataJson != null && dataJson is Map<String, dynamic>) {
-        errorData = fromJsonT(dataJson);
-      }
-
-      return ApiResponse.error(
-        message: json['message'] as String? ?? 'Unknown error occurred',
-        error: json['error'],
-        statusCode: json['statusCode'] as int? ?? 500,
-        stackTrace: json['stackTrace'] != null
-            ? StackTrace.fromString(json['stackTrace'] as String)
-            : null,
-        data: errorData,
-      );
-    }
-  }
-
-
-  @override
-  bool operator ==(Object other) {
-    return other is ApiResponse<T> &&
-        other.runtimeType == runtimeType &&
-        other.toString() == toString();
   }
 
   @override
-  int get hashCode => toString().hashCode;
+  String toString() {
+    return switch (this) {
+      ApiResponseSuccess(:final data, :final message, :final statusCode) =>
+        'ApiResponse.success(statusCode=$statusCode, message=$message, data=$data)',
+      ApiResponseError(:final message, :final statusCode, :final error) =>
+        'ApiResponse.error(statusCode=$statusCode, message=$message, error=$error)',
+      ApiResponseLoading() => 'ApiResponse.loading()',
+    };
+  }
 }
 
-class ApiResponseSuccess<T> extends ApiResponse<T> {
+final class ApiResponseSuccess<T> extends ApiResponse<T> {
   final T data;
   final String? message;
-  final int statusCode;
+  final int? statusCode;
   final Map<String, dynamic>? meta;
 
   const ApiResponseSuccess({
     required this.data,
     this.message,
-    this.statusCode = 200,
+    this.statusCode,
     this.meta,
   });
-
-  @override
-  String toString() =>
-      'ApiResponseSuccess(data: $data, message: $message, statusCode: $statusCode)';
-
-  ApiResponseSuccess<T> copyWith({
-    T? data,
-    String? message,
-    int? statusCode,
-    Map<String, dynamic>? meta,
-  }) {
-    return ApiResponseSuccess<T>(
-      data: data ?? this.data,
-      message: message ?? this.message,
-      statusCode: statusCode ?? this.statusCode,
-      meta: meta ?? this.meta,
-    );
-  }
 }
 
-class ApiResponseError<T> extends ApiResponse<T> {
+final class ApiResponseError<T> extends ApiResponse<T> {
   final String message;
   final Object? error;
-  final int statusCode;
+  final int? statusCode;
+  @override
   final StackTrace? stackTrace;
+  @override
   final T? data;
 
   const ApiResponseError({
     required this.message,
     this.error,
-    this.statusCode = 500,
+    this.statusCode,
     this.stackTrace,
     this.data,
   });
-
-  @override
-  String toString() =>
-      'ApiResponseError(message: $message, error: $error, statusCode: $statusCode)';
-
-  ApiResponseError<T> copyWith({
-    String? message,
-    Object? error,
-    int? statusCode,
-    StackTrace? stackTrace,
-    T? data,
-  }) {
-    return ApiResponseError<T>(
-      message: message ?? this.message,
-      error: error ?? this.error,
-      statusCode: statusCode ?? this.statusCode,
-      stackTrace: stackTrace ?? this.stackTrace,
-      data: data ?? this.data,
-    );
-  }
 }
 
-class ApiResponseLoading<T> extends ApiResponse<T> {
+final class ApiResponseLoading<T> extends ApiResponse<T> {
   const ApiResponseLoading();
-
-  @override
-  String toString() => 'ApiResponseLoading()';
 }
 
-// Extension for easy response creation
-extension ApiResponseFactories on ApiResponse {
-  static ApiResponse<T> success<T>({
-    required T data,
-    String? message,
-    int statusCode = 200,
-    Map<String, dynamic>? meta,
-  }) => ApiResponse.success(
-    data: data,
-    message: message,
-    statusCode: statusCode,
-    meta: meta,
-  );
+/// Small helper to create typed objects from dynamic JSON
+T? parseDynamicToType<T>(
+  dynamic raw, {
+  T Function(Map<String, dynamic>)? fromJson,
+  bool allowListToSingle = false, // when API sometimes returns list but expected single
+}) {
+  if (raw == null) return null;
+  // If T is Map<String, dynamic>
+  if (T is Map<String, dynamic>) {
+    if (raw is Map<String, dynamic>) return raw as T;
+    if (raw is String) {
+      try {
+        return jsonDecode(raw) as T;
+      } catch (_) {
+        // not JSON, return raw if matches
+        return raw as T;
+      }
+    }
+  }
 
-  static ApiResponse<T> error<T>({
-    required String message,
-    Object? error,
-    int statusCode = 500,
-    StackTrace? stackTrace,
-    T? data,
-  }) => ApiResponse.error(
-    message: message,
-    error: error,
-    statusCode: statusCode,
-    stackTrace: stackTrace,
-    data: data,
-  );
+  if (fromJson != null) {
+    if (raw is Map<String, dynamic>) {
+      return fromJson(raw);
+    } else if (raw is List) {
+      // if caller expects T to be List<X>, they should pass fromJson and T as List<X>.
+      // This helper cannot reliably construct List<X> because generics are erased.
+      // Caller-side mapping is recommended for lists (see ApiService below).
+      // If allowListToSingle is set, try to use first element.
+      if (allowListToSingle && raw.isNotEmpty && raw.first is Map<String, dynamic>) {
+        return fromJson(raw.first as Map<String, dynamic>);
+      }
+    }
+  }
 
-  static ApiResponse<T> loading<T>() => const ApiResponse.loading();
+  // Last resort: try to cast
+  try {
+    return raw as T;
+  } catch (_) {
+    return null;
+  }
 }

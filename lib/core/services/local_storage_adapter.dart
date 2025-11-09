@@ -4,6 +4,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'storage_adapter.dart';
 
+Future<LocalStorage> loadStorage() async {
+  final sp = SharedPreferencesStorageAdapter();
+  final ss = SecureStorageAdapter();
+  final storage = LocalStorage(
+    secureStorageAdapter: ss,
+    sharedPreferencesAdapter: sp,
+  );
+  await storage.init();
+  return storage;
+}
+
 class LocalStorage implements StorageAdapter {
   final SharedPreferencesStorageAdapter sharedPreferencesAdapter;
   final SecureStorageAdapter secureStorageAdapter;
@@ -14,13 +25,15 @@ class LocalStorage implements StorageAdapter {
   });
   @override
   Future<void> init() async {
-    await sharedPreferencesAdapter.init();
-    await secureStorageAdapter.init();
+    await Future.wait([
+      sharedPreferencesAdapter.init(),
+      secureStorageAdapter.init(),
+    ]);
   }
 
   @override
   Future<void> clear() async {
-    await sharedPreferencesAdapter.clear();
+    sharedPreferencesAdapter.clear();
     await secureStorageAdapter.clear();
   }
 

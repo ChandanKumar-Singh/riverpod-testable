@@ -60,33 +60,12 @@ final networkInfoProvider = Provider<NetworkInfo>((ref) {
 //////////// SERVICES PROVIDERS ////////////
 
 final apiServiceProvider = Provider<ApiService>((ref) {
-  final http = ref.watch(httpClientProvider);
-  return AuthRepository(http);
+  return AuthRepository(ref);
 });
 
-final _sharedPreferencesProvider = Provider<SharedPreferencesStorageAdapter>((
-  ref,
-) {
-  // Default local adapter. In prod you could provide secure storage.
-  return SharedPreferencesStorageAdapter();
-});
-
-final _secureStorageProvider = Provider<SecureStorageAdapter>((ref) {
-  // Default local adapter. In prod you could provide secure storage.
-  return SecureStorageAdapter();
-});
-
-final storageProvider = Provider<LocalStorage>((ref) {
-  // Default local adapter. In prod you could provide secure storage.
-  final sp = ref.watch(_sharedPreferencesProvider);
-  final ss = ref.watch(_secureStorageProvider);
-  final adaptor = LocalStorage(
-    secureStorageAdapter: ss,
-    sharedPreferencesAdapter: sp,
-  );
-  adaptor.init();
-  return adaptor;
-});
+final storageProvider = Provider<LocalStorage>(
+  (ref) => throw UnimplementedError(),
+);
 
 //////////// HELPERS / UTILITIES PROVIDERS //////////
 
