@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
-import 'package:testable/main.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../shared/widgets/sample_screen.dart';
 
@@ -12,6 +11,7 @@ part '../../shared/widgets/app_breadcrumb.dart';
 /// ------------------------------------------------------
 /// AUTO ROUTE SETUP
 /// ------------------------------------------------------
+
 @AutoRouterConfig(replaceInRouteName: 'Page,Screen,Route')
 class AppRouter extends RootStackRouter {
   AppRouter({required this.ref});

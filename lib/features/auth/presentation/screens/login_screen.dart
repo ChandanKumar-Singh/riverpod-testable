@@ -1,6 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/shared/theme/theme_switcher.dart';
+import 'package:toastification/toastification.dart';
+import '../../../../core/utils/toasts/toasts.dart';
 import '../../data/providers/auth_provider.dart';
 
 @RoutePage()
@@ -27,7 +30,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text('Login'), actions: [ThemeSwitcher()]),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -46,9 +49,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: authState.status == AuthStatus.loading
                   ? null
                   : () {
-                      ref
-                          .read(authProvider.notifier)
-                          .login(emailController.text, passwordController.text);
+                      AppToastification.show(
+                        type: ToastificationType.error,
+                        style: ToastificationStyle.flat,
+                        title: "Component updates available.",
+                        // message: "Component updates available.",
+                        actions: [
+                          ToastAction(
+                            label: 'View',
+                            icon: Icons.open_in_new,
+                            onPressed: () => print('sfdsfdsfsdfsdfsdfsdf'),
+                          ),
+                        ],
+                      );
+
+                      // ref
+                      //     .read(authProvider.notifier)
+                      //     .login(emailController.text, passwordController.text);
                     },
               child: authState.status == AuthStatus.loading
                   ? const CircularProgressIndicator()

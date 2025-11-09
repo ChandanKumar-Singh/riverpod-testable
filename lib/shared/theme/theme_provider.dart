@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/utils/toasts/toasts.dart';
 import 'theme_storage.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
@@ -25,5 +26,6 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else {
       await setTheme(ThemeMode.light);
     }
+    AppToastification.success('Theme changed to ${state.name}');
   }
 }
