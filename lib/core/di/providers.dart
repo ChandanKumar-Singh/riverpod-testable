@@ -51,14 +51,14 @@ final httpClientProvider = Provider<AppHttpClient>((ref) {
   final env = ref.watch(envProvider);
   final dio = ref.watch(_dioProvider);
   // Token getter for authenticated requests
-  final tokenGetter = () async {
+  Future<String?> tokenGetter() async {
     try {
       final storage = ref.read(storageProvider);
       return await storage.getString(StorageKeys.token, secure: true);
     } catch (e) {
       return null;
     }
-  };
+  }
   return AppHttpClient(
     dio: dio,
     logger: logger,

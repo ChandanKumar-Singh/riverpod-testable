@@ -76,8 +76,11 @@ final class ApiResponseSuccess<T> extends ApiResponse<T> {
     this.statusCode,
     this.meta,
   });
+  @override
   final T data;
+  @override
   final String? message;
+  @override
   final int? statusCode;
   final Map<String, dynamic>? meta;
 }
@@ -91,10 +94,13 @@ final class ApiResponseError<T> extends ApiResponse<T> {
     this.stackTrace,
     this.data,
   });
+  @override
   final String message;
   final Object? error;
+  @override
   final int? statusCode;
   final StackTrace? stackTrace;
+  @override
   final T? data;
 }
 

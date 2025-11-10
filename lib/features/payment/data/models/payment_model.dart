@@ -8,10 +8,8 @@ class PaymentModel {
   PaymentModel({
     required this.id,
     required this.amount,
-    this.currency = 'USD',
-    required this.status,
+    required this.status, required this.createdAt, this.currency = 'USD',
     this.description,
-    required this.createdAt,
     this.updatedAt,
   });
 

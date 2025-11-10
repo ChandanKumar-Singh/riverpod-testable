@@ -10,7 +10,7 @@ import 'package:testable/app/router/app_router.dart';
 /// It shows current route info, and allows navigating to all defined routes.
 class SampleScreen extends ConsumerWidget {
 
-  const SampleScreen({super.key, required this.title, required this.color});
+  const SampleScreen({required this.title, required this.color, super.key});
   final String title;
   final Color color;
 

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 class ErrorBanner extends StatelessWidget {
 
   const ErrorBanner({
-    super.key,
-    required this.message,
+    required this.message, super.key,
     this.onDismiss,
     this.autoHideDuration,
   });
@@ -51,7 +50,7 @@ class ErrorBanner extends StatelessWidget {
 /// Success banner
 class SuccessBanner extends StatelessWidget {
 
-  const SuccessBanner({super.key, required this.message, this.onDismiss});
+  const SuccessBanner({required this.message, super.key, this.onDismiss});
   final String message;
   final VoidCallback? onDismiss;
 

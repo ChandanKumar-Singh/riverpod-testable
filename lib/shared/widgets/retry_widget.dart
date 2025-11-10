@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 class RetryWidget extends StatelessWidget {
 
   const RetryWidget({
-    super.key,
-    required this.message,
-    required this.onRetry,
+    required this.message, required this.onRetry, super.key,
     this.icon,
   });
   final String message;

@@ -30,17 +30,19 @@ class AppLogger {
       final emoji = _showEmojis ? _getLevelEmoji(record.level) : '';
       final levelName = record.level.name.toUpperCase().padRight(7);
 
-      print('$emoji [$levelName] ${record.loggerName}: ${record.message}');
+      _print('$emoji [$levelName] ${record.loggerName}: ${record.message}');
 
       if (record.error != null) {
-        print('   ERROR: ${record.error}');
+        _print(record.error);
       }
 
       if (record.stackTrace != null) {
-        print('   STACK: ${record.stackTrace}');
+        _print('   STACK: ${record.stackTrace}');
       }
     });
   }
+
+  void _print(dynamic record) => print('   ERROR: $record');
 
   Level _toLoggingLevel(LogLevel level) {
     return switch (level) {
@@ -141,6 +143,6 @@ enum LogLevel {
   error(4),
   fatal(5);
 
-  final int i;
   const LogLevel(this.i);
+  final int i;
 }

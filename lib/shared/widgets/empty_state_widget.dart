@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 class EmptyStateWidget extends StatelessWidget {
 
   const EmptyStateWidget({
-    super.key,
-    required this.icon,
-    required this.title,
+    required this.icon, required this.title, super.key,
     this.message,
     this.action,
     this.iconColor,
@@ -85,7 +83,7 @@ class EmptyListWidget extends StatelessWidget {
 /// Empty state for errors
 class ErrorEmptyStateWidget extends StatelessWidget {
 
-  const ErrorEmptyStateWidget({super.key, required this.message, this.onRetry});
+  const ErrorEmptyStateWidget({required this.message, super.key, this.onRetry});
   final String message;
   final VoidCallback? onRetry;
 

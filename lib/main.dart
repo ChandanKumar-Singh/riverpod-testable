@@ -9,7 +9,7 @@ import 'package:testable/core/utils/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: '.env');
 
   /// Providers [the necessary dependencies for the app]
   final container = await bootstrap();

@@ -35,7 +35,7 @@ class LocalStorage implements StorageAdapter {
 
   @override
   Future<void> clear() async {
-    sharedPreferencesAdapter.clear();
+    await sharedPreferencesAdapter.clear();
     await secureStorageAdapter.clear();
   }
 
@@ -122,12 +122,12 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
     // In production, you might want to use a proper logger
     // For now, using print but you can replace with your logger
     if (error != null) {
-      print('🔄 SharedPreferencesStorage: $message - Error: $error');
+      _print('🔄 SharedPreferencesStorage: $message - Error: $error');
       if (stackTrace != null) {
-        print('Stack Trace: $stackTrace');
+        _print('Stack Trace: $stackTrace');
       }
     } else {
-      print('🔄 SharedPreferencesStorage: $message');
+      _print('🔄 SharedPreferencesStorage: $message');
     }
   }
 
@@ -358,12 +358,12 @@ class SecureStorageAdapter implements StorageAdapter {
   // Private method for logging
   void _print(String message, {Object? error, StackTrace? stackTrace}) {
     if (error != null) {
-      print('🔒 SecureStorageAdapter: $message - Error: $error');
+      _print('🔒 SecureStorageAdapter: $message - Error: $error');
       if (stackTrace != null) {
-        print('Stack Trace: $stackTrace');
+        _print('Stack Trace: $stackTrace');
       }
     } else {
-      print('🔒 SecureStorageAdapter: $message');
+      _print('🔒 SecureStorageAdapter: $message');
     }
   }
 

@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login'), actions: [const ThemeSwitcher()]),
+      appBar: AppBar(title: const Text('Login'), actions: const [ThemeSwitcher()]),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

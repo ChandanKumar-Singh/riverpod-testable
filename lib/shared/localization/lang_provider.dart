@@ -23,7 +23,7 @@ class LangNotifier extends StateNotifier<Locale> {
   }
 
   Future<void> nextLocale() async {
-    final all = SupportedLocales.all;
+    const all = SupportedLocales.all;
     final currentIndex = all.indexWhere(
       (l) => l.languageCode == state.languageCode,
     );

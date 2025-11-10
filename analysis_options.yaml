@@ -23,6 +23,8 @@ analyzer:
     missing_return: error
     # Treat invalid_annotation_target as warnings
     invalid_annotation_target: warning
+    unintended_html_in_doc_comment: ignore
+    inference_failure_on_instance_creation: ignore
   language:
     strict-casts: true
     strict-inference: true

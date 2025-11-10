@@ -21,8 +21,7 @@ import 'package:flutter/material.dart';
 class ErrorDisplay extends StatelessWidget {
 
   const ErrorDisplay({
-    super.key,
-    required this.error,
+    required this.error, super.key,
     this.stack,
     this.title,
     this.onRetry,
@@ -36,7 +35,7 @@ class ErrorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDebug = kDebugMode;
+    const isDebug = kDebugMode;
 
     return Center(
       child: Padding(
@@ -56,7 +55,7 @@ class ErrorDisplay extends StatelessWidget {
 
               Text(
                 title ??
-                    (isDebug ? "An Error Occurred" : "Something went wrong"),
+                    (isDebug ? 'An Error Occurred' : 'Something went wrong'),
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -71,7 +70,7 @@ class ErrorDisplay extends StatelessWidget {
               // Release version — safe generic text
               if (!isDebug)
                 Text(
-                  "Please try again later.",
+                  'Please try again later.',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -91,7 +90,7 @@ class ErrorDisplay extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  label: const Text("Retry"),
+                  label: const Text('Retry'),
                 ),
             ],
           ),
@@ -105,7 +104,7 @@ class ErrorDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SelectableText(
-          "Error: $error",
+          'Error: $error',
           style: const TextStyle(
             fontSize: 14,
             color: Colors.red,
@@ -115,10 +114,10 @@ class ErrorDisplay extends StatelessWidget {
         const SizedBox(height: 10),
         if (stack != null)
           SelectableText(
-            "Stacktrace:\n$stack",
+            'Stacktrace:\n$stack',
             style: const TextStyle(
               fontSize: 12,
-              fontFamily: "monospace",
+              fontFamily: 'monospace',
               color: Colors.black87,
             ),
           ),
@@ -143,7 +142,7 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDebug = kDebugMode;
+    const bool isDebug = kDebugMode;
 
     /// ✅ Debug mode → actual Flutter error widget
     if (isDebug && flutterError != null) {
@@ -163,7 +162,7 @@ class ErrorScreen extends StatelessWidget {
               Icon(Icons.error_outline, size: 100, color: Colors.red.shade400),
               const SizedBox(height: 20),
               Text(
-                "Oops! Something went wrong",
+                'Oops! Something went wrong',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -179,7 +178,7 @@ class ErrorScreen extends StatelessWidget {
               if (onRetry != null)
                 ElevatedButton.icon(
                   icon: const Icon(Icons.refresh),
-                  label: const Text("Retry"),
+                  label: const Text('Retry'),
                   onPressed: onRetry,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(

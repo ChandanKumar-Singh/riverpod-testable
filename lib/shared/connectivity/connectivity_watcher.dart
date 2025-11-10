@@ -22,8 +22,7 @@ class ConnectivityState {
 
   const ConnectivityState({
     required this.status,
-    this.lastResult,
-    required this.lastChanged,
+    required this.lastChanged, this.lastResult,
     this.isSimulated = false,
   });
   final ConnectivityStatus status;
@@ -212,8 +211,7 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
 class ConnectivityWatcher extends ConsumerStatefulWidget {
 
   const ConnectivityWatcher({
-    super.key,
-    required this.child,
+    required this.child, super.key,
     this.onlineBannerDuration = const Duration(seconds: 3),
     this.showTransitionAnimations = true,
     this.showDebugPanel = false,
@@ -536,7 +534,7 @@ class _ConnectivityBanner extends StatelessWidget {
 
 class ConnectivityDebugPanel extends ConsumerWidget {
 
-  const ConnectivityDebugPanel({super.key, required this.connectivityState});
+  const ConnectivityDebugPanel({required this.connectivityState, super.key});
   final ConnectivityState connectivityState;
 
   @override
