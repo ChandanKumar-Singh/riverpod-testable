@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Error banner that can be shown at the top of a screen
 class ErrorBanner extends StatelessWidget {
-
   const ErrorBanner({
-    required this.message, super.key,
+    required this.message,
+    super.key,
     this.onDismiss,
     this.autoHideDuration,
   });
@@ -49,7 +49,6 @@ class ErrorBanner extends StatelessWidget {
 
 /// Success banner
 class SuccessBanner extends StatelessWidget {
-
   const SuccessBanner({required this.message, super.key, this.onDismiss});
   final String message;
   final VoidCallback? onDismiss;
@@ -59,7 +58,7 @@ class SuccessBanner extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.green.withOpacity(0.1),
+      color: Colors.green.withAlpha(25),
       child: Row(
         children: [
           Icon(Icons.check_circle_outline, color: Colors.green[700]),

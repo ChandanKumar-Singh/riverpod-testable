@@ -19,10 +19,10 @@ enum ConnectivityStatus {
 }
 
 class ConnectivityState {
-
   const ConnectivityState({
     required this.status,
-    required this.lastChanged, this.lastResult,
+    required this.lastChanged,
+    this.lastResult,
     this.isSimulated = false,
   });
   final ConnectivityStatus status;
@@ -63,7 +63,6 @@ final connectivityProvider =
     );
 
 class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
-
   ConnectivityNotifier()
     : super(
         ConnectivityState(
@@ -209,9 +208,9 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
 /// ------------------------------------------------------
 
 class ConnectivityWatcher extends ConsumerStatefulWidget {
-
   const ConnectivityWatcher({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.onlineBannerDuration = const Duration(seconds: 3),
     this.showTransitionAnimations = true,
     this.showDebugPanel = false,
@@ -431,7 +430,6 @@ class _ConnectivityWatcherState extends ConsumerState<ConnectivityWatcher>
 enum BannerState { online, offline, hidden }
 
 class BannerConfig {
-
   const BannerConfig({
     required this.message,
     required this.backgroundColor,
@@ -447,7 +445,6 @@ class BannerConfig {
 }
 
 class _ConnectivityBanner extends StatelessWidget {
-
   const _ConnectivityBanner({required this.config, this.onClose});
   final BannerConfig config;
   final VoidCallback? onClose;
@@ -466,13 +463,13 @@ class _ConnectivityBanner extends StatelessWidget {
           // borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: config.backgroundColor.withOpacity(0.3),
+              color: config.backgroundColor.withAlpha(80),
               blurRadius: 16,
               offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha(25),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -510,7 +507,7 @@ class _ConnectivityBanner extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withAlpha(51),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -533,7 +530,6 @@ class _ConnectivityBanner extends StatelessWidget {
 /// ------------------------------------------------------
 
 class ConnectivityDebugPanel extends ConsumerWidget {
-
   const ConnectivityDebugPanel({required this.connectivityState, super.key});
   final ConnectivityState connectivityState;
 
@@ -555,7 +551,7 @@ class ConnectivityDebugPanel extends ConsumerWidget {
             border: Border.all(color: Colors.grey.shade300),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha(25),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -670,7 +666,6 @@ class ConnectivityDebugPanel extends ConsumerWidget {
 }
 
 class _DebugInfoRow extends StatelessWidget {
-
   const _DebugInfoRow({
     required this.label,
     required this.value,
@@ -691,9 +686,9 @@ class _DebugInfoRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withAlpha(51),
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: color.withOpacity(0.5)),
+              border: Border.all(color: color.withAlpha(130)),
             ),
             child: Text(
               value,

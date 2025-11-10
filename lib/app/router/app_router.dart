@@ -121,7 +121,7 @@ class HomeScreen extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.2),
+          backgroundColor: color.withAlpha(51),
           child: Icon(icon, color: color),
         ),
         title: Text(title),
@@ -253,7 +253,6 @@ class RouteHistoryNotifier extends StateNotifier<List<RouteLogEntry>> {
 }
 
 class RouteLogEntry {
-
   const RouteLogEntry({
     required this.name,
     required this.path,

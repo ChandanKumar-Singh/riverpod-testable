@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 /// Reusable empty state widget
 class EmptyStateWidget extends StatelessWidget {
-
   const EmptyStateWidget({
-    required this.icon, required this.title, super.key,
+    required this.icon,
+    required this.title,
+    super.key,
     this.message,
     this.action,
     this.iconColor,
@@ -28,7 +29,7 @@ class EmptyStateWidget extends StatelessWidget {
               size: 64,
               color:
                   iconColor ??
-                  Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  Theme.of(context).colorScheme.onSurface.withAlpha(130),
             ),
             const SizedBox(height: 16),
             Text(
@@ -45,7 +46,7 @@ class EmptyStateWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  ).colorScheme.onSurface.withAlpha(180),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -60,7 +61,6 @@ class EmptyStateWidget extends StatelessWidget {
 
 /// Empty state for lists
 class EmptyListWidget extends StatelessWidget {
-
   const EmptyListWidget({
     super.key,
     this.message = 'No items found',
@@ -82,7 +82,6 @@ class EmptyListWidget extends StatelessWidget {
 
 /// Empty state for errors
 class ErrorEmptyStateWidget extends StatelessWidget {
-
   const ErrorEmptyStateWidget({required this.message, super.key, this.onRetry});
   final String message;
   final VoidCallback? onRetry;

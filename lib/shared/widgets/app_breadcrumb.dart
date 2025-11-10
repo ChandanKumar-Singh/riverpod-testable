@@ -8,7 +8,6 @@ part of '../../app/router/app_router.dart';
 /// Displays an animated breadcrumb trail based on [routeHistoryProvider].
 /// Tapping on any crumb navigates back to that route.
 class AppBreadcrumb extends ConsumerWidget {
-
   const AppBreadcrumb({
     super.key,
     this.showIcons = true,
@@ -35,7 +34,7 @@ class AppBreadcrumb extends ConsumerWidget {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withAlpha(10),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -63,7 +62,7 @@ class AppBreadcrumb extends ConsumerWidget {
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(
                                   context,
-                                ).colorScheme.onSurface.withOpacity(0.7),
+                                ).colorScheme.onSurface.withAlpha(180),
                           fontWeight: isLast
                               ? FontWeight.w600
                               : FontWeight.w500,

@@ -9,7 +9,6 @@ import 'package:testable/app/router/app_router.dart';
 /// A reusable sample screen used across projects for testing routes.
 /// It shows current route info, and allows navigating to all defined routes.
 class SampleScreen extends ConsumerWidget {
-
   const SampleScreen({required this.title, required this.color, super.key});
   final String title;
   final Color color;
@@ -29,7 +28,7 @@ class SampleScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         children: [
           Card(
-            color: color.withOpacity(0.1),
+            color: color.withAlpha(25),
             elevation: 3,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

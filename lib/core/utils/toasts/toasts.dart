@@ -7,7 +7,6 @@ import 'package:toastification/toastification.dart';
 
 /// Simple action model for buttons inside toasts
 class ToastAction {
-
   const ToastAction({
     required this.label,
     required this.onPressed,
@@ -73,7 +72,7 @@ class AppToastification {
           boxShadow ??
           [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withAlpha(20),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -110,7 +109,7 @@ class AppToastification {
                 style: TextStyle(
                   fontSize: 12.5,
                   height: 1.3,
-                  color: effectiveForeground.withOpacity(0.95),
+                  color: effectiveForeground.withAlpha(240),
                 ),
               ),
             ),
@@ -829,7 +828,7 @@ class _AnimatedToastState extends State<_AnimatedToast>
               value: 1.0,
               backgroundColor: Colors.transparent,
               valueColor: AlwaysStoppedAnimation<Color>(
-                config.progressBarColor ?? theme.textColor.withOpacity(0.3),
+                config.progressBarColor ?? theme.textColor.withAlpha( 255 *0.3),
               ),
             ),
           ),
@@ -1382,7 +1381,7 @@ class _AnimatedToastState extends State<AnimatedToast>
               value: 1.0,
               backgroundColor: Colors.transparent,
               valueColor: AlwaysStoppedAnimation<Color>(
-                config.progressBarColor ?? theme.textColor.withOpacity(0.3),
+                config.progressBarColor ?? theme.textColor.withAlpha( 255 *0.3),
               ),
             ),
           ),

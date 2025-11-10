@@ -452,13 +452,13 @@ class _ConnectivityBanner extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: config.backgroundColor.withOpacity(0.3),
+              color: config.backgroundColor.withAlpha( 255 *0.3),
               blurRadius: 16,
               offset: const Offset(0, 4),
               spreadRadius: 0,
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha( 255 *0.1),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -500,7 +500,7 @@ class _ConnectivityBanner extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withAlpha( 255 *0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -693,9 +693,9 @@ class _DebugInfoRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withAlpha( 255 *0.2),
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: color.withOpacity(0.5)),
+              border: Border.all(color: color.withAlpha( 255 *0.5)),
             ),
             child: Text(
               value,
