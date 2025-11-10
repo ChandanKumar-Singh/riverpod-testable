@@ -1,3 +1,5 @@
+// FEATURE: ENV
+
 // core/config/env.dart
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

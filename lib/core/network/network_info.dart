@@ -1,3 +1,6 @@
+// FEATURE: Network
+
+
 // core/network/network_info.dart
 import 'package:connectivity_plus/connectivity_plus.dart';
 

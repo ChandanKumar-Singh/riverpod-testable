@@ -1,3 +1,4 @@
+// FEATURE: Localization
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';

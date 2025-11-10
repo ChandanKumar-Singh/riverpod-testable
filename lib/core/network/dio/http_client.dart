@@ -1,3 +1,5 @@
+// FEATURE: Dio (HTTP CLIENT)
+
 // lib/core/network/http_client.dart
 import 'dart:async';
 import 'dart:convert';

@@ -1,3 +1,5 @@
+// FEATURE: Errors
+
 // core/errors/exceptions.dart
 
 /// Exception types used by core services

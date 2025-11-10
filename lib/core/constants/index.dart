@@ -1,3 +1,5 @@
+// FEATURE: Constants
+
 import 'package:flutter/material.dart';
 
 import '../config/env.dart';
