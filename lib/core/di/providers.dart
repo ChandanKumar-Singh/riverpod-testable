@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import '../../app/router/app_router.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../shared/localization/lang_provider.dart';
 import '../../shared/localization/lang_storage.dart';
 import '../../shared/theme/theme_provider.dart';
@@ -13,9 +14,9 @@ import '../config/env.dart';
 import '../utils/logger.dart';
 import '../network/dio/http_client.dart';
 import '../services/api_service.dart';
-import '../services/api/api_service_impl.dart';
-import '../services/local_storage_adapter.dart';
+import '../services/storage_adapter.dart';
 import '../network/network_info.dart';
+import '../constants/index.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 ////////// APP PROVIDERS ////////////
@@ -49,7 +50,21 @@ final httpClientProvider = Provider<AppHttpClient>((ref) {
   final logger = ref.watch(loggerProvider);
   final env = ref.watch(envProvider);
   final dio = ref.watch(_dioProvider);
-  return AppHttpClient(dio: dio, logger: logger, env: env);
+  // Token getter for authenticated requests
+  final tokenGetter = () async {
+    try {
+      final storage = ref.read(storageProvider);
+      return await storage.getString(StorageKeys.token, secure: true);
+    } catch (e) {
+      return null;
+    }
+  };
+  return AppHttpClient(
+    dio: dio,
+    logger: logger,
+    env: env,
+    tokenGetter: tokenGetter,
+  );
 });
 
 final _connectivityProvider = Provider((ref) => Connectivity());
@@ -65,8 +80,9 @@ final apiServiceProvider = Provider<ApiService>((ref) {
   return AuthRepository(ref);
 });
 
-final storageProvider = Provider<LocalStorage>(
-  (ref) => throw UnimplementedError(),
+// Storage provider - must be overridden in bootstrap with actual storage instance
+final storageProvider = Provider<StorageAdapter>(
+  (ref) => throw StateError('StorageProvider must be overridden in bootstrap. Call storageProvider.overrideWithValue(storage) in bootstrap().'),
 );
 
 //////////// HELPERS / UTILITIES PROVIDERS //////////

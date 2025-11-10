@@ -2,8 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
-import 'package:toastification/toastification.dart';
-import '../../../../core/utils/toasts/toasts.dart';
 import '../../data/providers/auth_provider.dart';
 
 @RoutePage()
@@ -45,31 +43,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
+            if (authState.error != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  authState.error!,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              ),
             ElevatedButton(
               onPressed: authState.status == AuthStatus.loading
                   ? null
                   : () {
-                    // throw Exception('sdfsdfdsfdsfsdf');
-                      AppToastification.show(
-                        type: ToastificationType.error,
-                        style: ToastificationStyle.flat,
-                        title: "Component updates available.",
-                        // message: "Component updates available.",
-                        actions: [
-                          ToastAction(
-                            label: 'View',
-                            icon: Icons.open_in_new,
-                            onPressed: () => print('sfdsfdsfsdfsdfsdfsdf'),
-                          ),
-                        ],
-                      );
-
-                      // ref
-                      //     .read(authProvider.notifier)
-                      //     .login(emailController.text, passwordController.text);
+                      ref.read(authProvider.notifier).login(
+                            emailController.text.trim(),
+                            passwordController.text,
+                          );
                     },
               child: authState.status == AuthStatus.loading
-                  ? const CircularProgressIndicator()
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
                   : const Text('Login'),
             ),
           ],

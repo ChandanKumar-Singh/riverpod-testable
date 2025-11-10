@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/network/dio/models/api_response.dart';
 import '../../data/models/user_model.dart';
 import '../repositories/auth_repository_impl.dart';
 
@@ -27,23 +26,84 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> login(String email, String password) async {
-    state = state.copyWith(status: AuthStatus.loading);
-    final res = await _repo.sendOtp('2503');
-    if (res.isSuccess && res.data == true) {
-      final res0 = await _repo.verifyOTP('2503', '7777');
-      if (res0.isSuccess) {
-        await _repo.saveSession(res0.data!);
-        // state = AuthState(status: AuthStatus.authenticated, user: res.data);
+    try {
+      state = state.copyWith(status: AuthStatus.loading);
+      final res = await _repo.login(email, password);
+      if (res.isSuccess && res.data != null) {
+        final user = res.data!;
+        // Extract token from response or user model
+        final token = user.token;
+        await _repo.saveSession(user, token: token);
+        state = AuthState(status: AuthStatus.authenticated, user: user);
       } else {
-        state = const AuthState(status: AuthStatus.unauthenticated);
+        state = AuthState(
+          status: AuthStatus.unauthenticated,
+          error: res.message ?? 'Login failed',
+        );
       }
+    } catch (e) {
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        error: e.toString(),
+      );
+    }
+  }
+  
+  Future<void> loginWithOtp(String contact, String otp) async {
+    try {
+      state = state.copyWith(status: AuthStatus.loading);
+      final res = await _repo.verifyOTP(contact, otp);
+      if (res.isSuccess && res.data != null) {
+        final user = res.data!;
+        final token = user.token;
+        await _repo.saveSession(user, token: token);
+        state = AuthState(status: AuthStatus.authenticated, user: user);
+      } else {
+        state = AuthState(
+          status: AuthStatus.unauthenticated,
+          error: res.message ?? 'OTP verification failed',
+        );
+      }
+    } catch (e) {
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        error: e.toString(),
+      );
+    }
+  }
+  
+  Future<void> sendOtp(String contact) async {
+    try {
+      state = state.copyWith(status: AuthStatus.loading);
+      final res = await _repo.sendOtp(contact);
+      if (res.isSuccess && res.data == true) {
+        // OTP sent successfully
+        state = state.copyWith(status: AuthStatus.initial);
+      } else {
+        state = AuthState(
+          status: AuthStatus.unauthenticated,
+          error: res.message ?? 'Failed to send OTP',
+        );
+      }
+    } catch (e) {
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        error: e.toString(),
+      );
     }
   }
 
   Future<void> logout() async {
-    await _repo.clearSession();
-    await _repo.logout();
-    state = const AuthState(status: AuthStatus.unauthenticated);
+    try {
+      state = state.copyWith(status: AuthStatus.loading);
+      await _repo.logout();
+      await _repo.clearSession();
+      state = const AuthState(status: AuthStatus.unauthenticated);
+    } catch (e) {
+      // Even if logout fails, clear local session
+      await _repo.clearSession();
+      state = const AuthState(status: AuthStatus.unauthenticated);
+    }
   }
 }
 
@@ -52,10 +112,23 @@ enum AuthStatus { initial, authenticated, unauthenticated, loading }
 class AuthState {
   final AuthStatus status;
   final UserModel? user;
+  final String? error;
 
-  const AuthState({this.status = AuthStatus.initial, this.user});
+  const AuthState({
+    this.status = AuthStatus.initial,
+    this.user,
+    this.error,
+  });
 
-  AuthState copyWith({AuthStatus? status, UserModel? user}) {
-    return AuthState(status: status ?? this.status, user: user ?? this.user);
+  AuthState copyWith({
+    AuthStatus? status,
+    UserModel? user,
+    String? error,
+  }) {
+    return AuthState(
+      status: status ?? this.status,
+      user: user ?? this.user,
+      error: error ?? this.error,
+    );
   }
 }

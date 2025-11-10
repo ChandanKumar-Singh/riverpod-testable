@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testable/core/di/providers.dart';
-import 'package:testable/core/services/local_storage_adapter.dart';
+import '../../core/di/providers.dart';
+import '../../core/services/storage_adapter.dart';
 
 final langStorageProvider = Provider<LangStorage>((ref) {
   final storage = ref.watch(storageProvider);
@@ -11,18 +10,16 @@ final langStorageProvider = Provider<LangStorage>((ref) {
 });
 
 class LangStorage {
-  final LocalStorage storage;
+  final StorageAdapter storage;
   LangStorage(this.storage);
   static const _key = 'language_code';
 
   Future<void> saveLocale(Locale locale) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, locale.languageCode);
+    await storage.save(_key, locale.languageCode);
   }
 
   Future<Locale> loadLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    final code = prefs.getString(_key);
+    final code = await storage.getString(_key);
     if (code == null) return const Locale('en');
     return Locale(code);
   }

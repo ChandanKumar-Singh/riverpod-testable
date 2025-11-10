@@ -86,9 +86,7 @@ final class ApiResponseError<T> extends ApiResponse<T> {
   final String message;
   final Object? error;
   final int? statusCode;
-  @override
   final StackTrace? stackTrace;
-  @override
   final T? data;
 
   const ApiResponseError({

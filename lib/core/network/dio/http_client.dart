@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 
 import '../../config/env.dart';
 import '../../utils/logger.dart';
-import 'models/api_response.dart';
 
 typedef TokenGetter = Future<String?> Function();
 
@@ -135,7 +134,7 @@ class AppHttpClient {
           )
           .timeout(timeout ?? const Duration(seconds: 30));
       return resp;
-    } on DioException catch (e) {
+    } on DioException {
       // Bubble up DioException to service layer which will normalize to ApiResponse
       rethrow;
     } on TimeoutException catch (t) {

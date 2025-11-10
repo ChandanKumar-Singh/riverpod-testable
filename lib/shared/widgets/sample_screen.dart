@@ -17,7 +17,6 @@ class SampleScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = AutoRouter.of(context);
-    final history = ref.watch(routeHistoryProvider);
     final currentRoute = router.current.name;
 
     return Scaffold(

@@ -11,7 +11,12 @@ class Env {
   final bool isTest;
   final bool refreshTokenEnabled;
 
-  const Env._({required this.baseUrl, required this.enableLogging, this.isTest = false,this.refreshTokenEnabled =false});
+  const Env._({
+    required this.baseUrl,
+    required this.enableLogging,
+    this.isTest = false,
+    this.refreshTokenEnabled = false,
+  });
 
   static Env get current {
     const bool isProd =

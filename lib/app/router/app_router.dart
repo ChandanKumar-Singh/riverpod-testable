@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/user/presentation/screens/profile_screen.dart';
+import '../../features/payment/presentation/screens/payment_screen.dart';
 import '../../shared/widgets/sample_screen.dart';
 
 part 'app_router.gr.dart';
@@ -27,6 +29,8 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashScreenRoute.page, initial: true),
     AutoRoute(page: HomeScreenRoute.page),
+    AutoRoute(page: UserProfileScreenRoute.page),
+    AutoRoute(page: PaymentScreenRoute.page),
     AutoRoute(page: ProfileScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: AboutScreenRoute.page),

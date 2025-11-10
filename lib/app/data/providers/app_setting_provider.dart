@@ -14,7 +14,7 @@ class AppSettingsNotifier extends StateNotifier<AppSettingsModel> {
   AppSettingsNotifier(this.repo) : super(AppSettingsModel());
 
   Future<void> load() async {
-    final data = await repo.loadSettings();
+    await repo.loadSettings();
     // state = AppSettingsModel.fromJson(data);
   }
 

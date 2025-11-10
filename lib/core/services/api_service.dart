@@ -45,12 +45,6 @@ class ApiService {
     Map<String, dynamic>? extra,
   }) async {
     int attempt = 0;
-    final header = {...?headers,
-    
-    };
-    if(requiresAuth){
-      // ADD token here
-    }
     while (true) {
       attempt++;
       try {
@@ -59,7 +53,7 @@ class ApiService {
           method: method.name.toUpperCase(),
           queryParameters: queryParameters,
           data: body,
-          headers: header,
+          headers: headers,
           cancelToken: cancelToken,
           timeout: timeout,
           extra: {...?extra, 'requiresAuth': requiresAuth},

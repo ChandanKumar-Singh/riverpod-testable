@@ -40,9 +40,12 @@ class LocalStorage implements StorageAdapter {
   }
 
   @override
-  Future<void> delete(String key) async {
-    await sharedPreferencesAdapter.delete(key);
-    await secureStorageAdapter.delete(key);
+  Future<void> delete(String key, {bool secure = false}) async {
+    if (secure) {
+      await secureStorageAdapter.delete(key, secure: secure);
+    } else {
+      await sharedPreferencesAdapter.delete(key, secure: secure);
+    }
   }
 
   @override
@@ -147,11 +150,11 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<void> save(String key, dynamic value) async {
+  Future<void> save(String key, dynamic value, {bool secure = false}) async {
     try {
       await init();
       if (value == null) {
-        await delete(key);
+        await delete(key, secure: secure);
         return;
       }
 
@@ -178,7 +181,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<String?> getString(String key) async {
+  Future<String?> getString(String key, {bool secure = false}) async {
     try {
       await init();
       final value = _prefs!.getString(key);
@@ -194,7 +197,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<int?> getInt(String key) async {
+  Future<int?> getInt(String key, {bool secure = false}) async {
     try {
       await init();
       final value = _prefs!.getInt(key);
@@ -210,7 +213,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<bool?> getBool(String key) async {
+  Future<bool?> getBool(String key, {bool secure = false}) async {
     try {
       await init();
       final value = _prefs!.getBool(key);
@@ -226,7 +229,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<double?> getDouble(String key) async {
+  Future<double?> getDouble(String key, {bool secure = false}) async {
     try {
       await init();
       final value = _prefs!.getDouble(key);
@@ -242,7 +245,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<List<String>?> getStringList(String key) async {
+  Future<List<String>?> getStringList(String key, {bool secure = false}) async {
     try {
       await init();
       final value = _prefs!.getStringList(key);
@@ -258,7 +261,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<Map<String, dynamic>?> getMap(String key) async {
+  Future<Map<String, dynamic>?> getMap(String key, {bool secure = false}) async {
     try {
       await init();
       final jsonString = _prefs!.getString(key);
@@ -275,7 +278,7 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<void> delete(String key) async {
+  Future<void> delete(String key, {bool secure = false}) async {
     try {
       await init();
       await _prefs!.remove(key);
@@ -387,13 +390,13 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<void> save(String key, dynamic value) async {
+  Future<void> save(String key, dynamic value, {bool secure = false}) async {
     try {
       await init();
       _print('Saving secure value for key: $key');
 
       if (value == null) {
-        await delete(key);
+        await delete(key, secure: secure);
         return;
       }
 
@@ -422,7 +425,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<String?> getString(String key) async {
+  Future<String?> getString(String key, {bool secure = false}) async {
     try {
       await init();
       final value = await _secureStorage.read(key: key);
@@ -438,7 +441,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<int?> getInt(String key) async {
+  Future<int?> getInt(String key, {bool secure = false}) async {
     try {
       await init();
       final stringValue = await _secureStorage.read(key: key);
@@ -460,7 +463,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<bool?> getBool(String key) async {
+  Future<bool?> getBool(String key, {bool secure = false}) async {
     try {
       await init();
       final stringValue = await _secureStorage.read(key: key);
@@ -483,7 +486,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<double?> getDouble(String key) async {
+  Future<double?> getDouble(String key, {bool secure = false}) async {
     try {
       await init();
       final stringValue = await _secureStorage.read(key: key);
@@ -505,7 +508,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<List<String>?> getStringList(String key) async {
+  Future<List<String>?> getStringList(String key, {bool secure = false}) async {
     try {
       await init();
       // Secure storage doesn't natively support lists, so we'll use JSON
@@ -539,7 +542,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<Map<String, dynamic>?> getMap(String key) async {
+  Future<Map<String, dynamic>?> getMap(String key, {bool secure = false}) async {
     try {
       await init();
       final jsonString = await _secureStorage.read(key: key);
@@ -556,7 +559,7 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<void> delete(String key) async {
+  Future<void> delete(String key, {bool secure = false}) async {
     try {
       await init();
       await _secureStorage.delete(key: key);

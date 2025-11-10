@@ -59,6 +59,22 @@ class LoginScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PaymentScreen]
+class PaymentScreenRoute extends PageRouteInfo<void> {
+  const PaymentScreenRoute({List<PageRouteInfo>? children})
+    : super(PaymentScreenRoute.name, initialChildren: children);
+
+  static const String name = 'PaymentScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PaymentScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileScreenRoute extends PageRouteInfo<void> {
   const ProfileScreenRoute({List<PageRouteInfo>? children})
@@ -102,6 +118,22 @@ class SplashScreenRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SplashScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [UserProfileScreen]
+class UserProfileScreenRoute extends PageRouteInfo<void> {
+  const UserProfileScreenRoute({List<PageRouteInfo>? children})
+    : super(UserProfileScreenRoute.name, initialChildren: children);
+
+  static const String name = 'UserProfileScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const UserProfileScreen();
     },
   );
 }

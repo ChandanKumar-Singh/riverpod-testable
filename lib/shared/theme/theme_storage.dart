@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testable/core/di/providers.dart';
-import '../../core/services/local_storage_adapter.dart';
+import '../../core/di/providers.dart';
+import '../../core/services/storage_adapter.dart';
 
 final themeStorageProvider = Provider<ThemeStorage>((ref) {
   final storage = ref.read(storageProvider);
@@ -10,19 +9,17 @@ final themeStorageProvider = Provider<ThemeStorage>((ref) {
 });
 
 class ThemeStorage {
-  final LocalStorage storage;
+  final StorageAdapter storage;
   const ThemeStorage(this.storage);
 
   static const _key = 'theme_mode';
 
   Future<void> saveThemeMode(ThemeMode mode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, mode.name);
+    await storage.save(_key, mode.name);
   }
 
   Future<ThemeMode> loadThemeMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getString(_key);
+    final saved = await storage.getString(_key);
     switch (saved) {
       case 'dark':
         return ThemeMode.dark;
