@@ -27,4 +27,3 @@ class PaymentModel {
 
   Map<String, dynamic> toJson() => _$PaymentModelToJson(this);
 }
-

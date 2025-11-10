@@ -32,7 +32,9 @@ class ErrorHandler {
           return 'Resource not found.';
         } else if (statusCode == 500) {
           return 'Server error. Please try again later.';
-        } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
+        } else if (statusCode != null &&
+            statusCode >= 400 &&
+            statusCode < 500) {
           return 'Client error. Please check your input.';
         } else if (statusCode != null && statusCode >= 500) {
           return 'Server error. Please try again later.';
@@ -79,4 +81,3 @@ class ErrorHandler {
     return false;
   }
 }
-

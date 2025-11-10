@@ -1,4 +1,5 @@
 part of 'index.dart';
+
 /// Asset paths
 class Pngs {
   static const String logo = 'assets/images/logo.png';

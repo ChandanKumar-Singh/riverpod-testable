@@ -10,7 +10,7 @@ void main() {
         requestOptions: RequestOptions(path: '/test'),
         type: DioExceptionType.connectionTimeout,
       );
-      
+
       final message = ErrorHandler.getErrorMessage(error);
       expect(message, contains('timeout'));
       expect(message, contains('connection'));
@@ -25,7 +25,7 @@ void main() {
           statusCode: 401,
         ),
       );
-      
+
       final message = ErrorHandler.getErrorMessage(error);
       expect(message, contains('Unauthorized'));
       expect(message, contains('login'));
@@ -40,7 +40,7 @@ void main() {
           statusCode: 500,
         ),
       );
-      
+
       final message = ErrorHandler.getErrorMessage(error);
       expect(message, contains('Server error'));
     });
@@ -50,7 +50,7 @@ void main() {
         requestOptions: RequestOptions(path: '/test'),
         type: DioExceptionType.connectionError,
       );
-      
+
       final message = ErrorHandler.getErrorMessage(error);
       expect(message, contains('internet connection'));
     });
@@ -60,7 +60,7 @@ void main() {
         message: 'Custom error message',
         statusCode: 400,
       );
-      
+
       final message = ErrorHandler.getErrorMessage(error);
       expect(message, 'Custom error message');
     });
@@ -82,14 +82,14 @@ void main() {
         requestOptions: RequestOptions(path: '/test'),
         type: DioExceptionType.connectionTimeout,
       );
-      
+
       expect(ErrorHandler.isRetryable(timeoutError), isTrue);
-      
+
       final connectionError = DioException(
         requestOptions: RequestOptions(path: '/test'),
         type: DioExceptionType.connectionError,
       );
-      
+
       expect(ErrorHandler.isRetryable(connectionError), isTrue);
     });
 
@@ -102,7 +102,7 @@ void main() {
           statusCode: 400,
         ),
       );
-      
+
       expect(ErrorHandler.isRetryable(error400), isFalse);
     });
 
@@ -115,9 +115,9 @@ void main() {
           statusCode: 401,
         ),
       );
-      
+
       expect(ErrorHandler.requiresAuth(error401), isTrue);
-      
+
       final error403 = DioException(
         requestOptions: RequestOptions(path: '/test'),
         type: DioExceptionType.badResponse,
@@ -126,7 +126,7 @@ void main() {
           statusCode: 403,
         ),
       );
-      
+
       expect(ErrorHandler.requiresAuth(error403), isTrue);
     });
 
@@ -139,10 +139,8 @@ void main() {
           statusCode: 500,
         ),
       );
-      
+
       expect(ErrorHandler.requiresAuth(error500), isFalse);
     });
   });
 }
-
-

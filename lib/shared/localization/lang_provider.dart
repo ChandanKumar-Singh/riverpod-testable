@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'lang_storage.dart';
 import 'supported_locales.dart';
 
-
 class LangNotifier extends StateNotifier<Locale> {
   final LangStorage _storage;
 

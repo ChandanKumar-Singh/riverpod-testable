@@ -261,7 +261,10 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<Map<String, dynamic>?> getMap(String key, {bool secure = false}) async {
+  Future<Map<String, dynamic>?> getMap(
+    String key, {
+    bool secure = false,
+  }) async {
     try {
       await init();
       final jsonString = _prefs!.getString(key);
@@ -542,7 +545,10 @@ class SecureStorageAdapter implements StorageAdapter {
   }
 
   @override
-  Future<Map<String, dynamic>?> getMap(String key, {bool secure = false}) async {
+  Future<Map<String, dynamic>?> getMap(
+    String key, {
+    bool secure = false,
+  }) async {
     try {
       await init();
       final jsonString = await _secureStorage.read(key: key);

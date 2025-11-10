@@ -6,7 +6,6 @@ import '../l10n/app_localizations.dart';
 import '../shared/connectivity/connectivity_watcher.dart';
 import '../shared/theme/app_theme.dart';
 
-
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
@@ -33,7 +32,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         data: themeMode == ThemeMode.dark ? AppTheme.dark : AppTheme.light,
         child: MaterialApp.router(
           title: 'Testable App',
-          routerConfig: router.config(navigatorObservers: () => router.observers),
+          routerConfig: router.config(
+            navigatorObservers: () => router.observers,
+          ),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           locale: locale,
@@ -41,7 +42,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: themeMode,
-      
+
           // home: MyHomePage(title: ''),
           builder: (context, child) {
             return ConnectivityWatcher(

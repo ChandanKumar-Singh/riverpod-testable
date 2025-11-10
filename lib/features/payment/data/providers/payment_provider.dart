@@ -1,8 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/payment_model.dart';
 
-final paymentProvider =
-    StateNotifierProvider<PaymentNotifier, PaymentState>(
+final paymentProvider = StateNotifierProvider<PaymentNotifier, PaymentState>(
   (ref) => PaymentNotifier(ref),
 );
 
@@ -16,15 +15,9 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
       state = state.copyWith(status: PaymentStatus.loading);
       // TODO: Implement payment loading from repository
       await Future.delayed(const Duration(seconds: 1));
-      state = state.copyWith(
-        status: PaymentStatus.loaded,
-        payments: [],
-      );
+      state = state.copyWith(status: PaymentStatus.loaded, payments: []);
     } catch (e) {
-      state = state.copyWith(
-        status: PaymentStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: PaymentStatus.error, error: e.toString());
     }
   }
 
@@ -38,10 +31,7 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
         payments: [...state.payments, payment],
       );
     } catch (e) {
-      state = state.copyWith(
-        status: PaymentStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: PaymentStatus.error, error: e.toString());
     }
   }
 }
@@ -71,4 +61,3 @@ class PaymentState {
     );
   }
 }
-

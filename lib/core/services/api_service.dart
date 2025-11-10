@@ -145,7 +145,7 @@ class ApiService {
       if (hasResponseCode) {
         final bool success =
             (raw['response_code'] == 1) || (raw['success'] == true);
-        final message = raw['response_message'] ?? raw['message'];
+        final message = (raw['response_message'] ?? raw['message']) as String?;
         final obj = raw['response_obj'] ?? raw['data'] ?? raw['payload'];
 
         if (success) {

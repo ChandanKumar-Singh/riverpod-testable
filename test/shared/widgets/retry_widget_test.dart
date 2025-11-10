@@ -8,10 +8,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: RetryWidget(
-              message: 'Error occurred',
-              onRetry: () {},
-            ),
+            body: RetryWidget(message: 'Error occurred', onRetry: () {}),
           ),
         ),
       );
@@ -21,9 +18,11 @@ void main() {
       expect(find.text('Retry'), findsOneWidget);
     });
 
-    testWidgets('should call onRetry when retry button is pressed', (tester) async {
+    testWidgets('should call onRetry when retry button is pressed', (
+      tester,
+    ) async {
       bool retryPressed = false;
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -61,4 +60,3 @@ void main() {
     });
   });
 }
-

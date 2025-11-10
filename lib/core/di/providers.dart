@@ -82,7 +82,9 @@ final apiServiceProvider = Provider<ApiService>((ref) {
 
 // Storage provider - must be overridden in bootstrap with actual storage instance
 final storageProvider = Provider<StorageAdapter>(
-  (ref) => throw StateError('StorageProvider must be overridden in bootstrap. Call storageProvider.overrideWithValue(storage) in bootstrap().'),
+  (ref) => throw StateError(
+    'StorageProvider must be overridden in bootstrap. Call storageProvider.overrideWithValue(storage) in bootstrap().',
+  ),
 );
 
 //////////// HELPERS / UTILITIES PROVIDERS //////////

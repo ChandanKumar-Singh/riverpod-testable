@@ -12,7 +12,7 @@ class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final authState = ref.read(authProvider);
-    
+
     if (authState.status == AuthStatus.authenticated) {
       // User is authenticated, allow navigation
       resolver.next();
@@ -32,7 +32,7 @@ class PublicRouteGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final authState = ref.read(authProvider);
-    
+
     if (authState.status == AuthStatus.authenticated) {
       // User is already authenticated, redirect to home
       router.replace(const HomeScreenRoute());
@@ -42,4 +42,3 @@ class PublicRouteGuard extends AutoRouteGuard {
     }
   }
 }
-

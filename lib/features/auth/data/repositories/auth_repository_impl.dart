@@ -115,7 +115,11 @@ class AuthRepository extends ApiService {
           }
           return user;
         } catch (e) {
-          logger.e('Failed to parse user from session', e: e, tag: 'AuthRepository');
+          logger.e(
+            'Failed to parse user from session',
+            e: e,
+            tag: 'AuthRepository',
+          );
           await clearSession();
           return null;
         }
@@ -153,7 +157,7 @@ class AuthRepository extends ApiService {
       logger.e('Failed to clear session', e: e, tag: 'AuthRepository');
     }
   }
-  
+
   Future<String?> getToken() async {
     try {
       return await storage.getString(StorageKeys.token, secure: true);

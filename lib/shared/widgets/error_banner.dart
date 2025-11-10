@@ -53,11 +53,7 @@ class SuccessBanner extends StatelessWidget {
   final String message;
   final VoidCallback? onDismiss;
 
-  const SuccessBanner({
-    super.key,
-    required this.message,
-    this.onDismiss,
-  });
+  const SuccessBanner({super.key, required this.message, this.onDismiss});
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +63,14 @@ class SuccessBanner extends StatelessWidget {
       color: Colors.green.withOpacity(0.1),
       child: Row(
         children: [
-          Icon(
-            Icons.check_circle_outline,
-            color: Colors.green[700],
-          ),
+          Icon(Icons.check_circle_outline, color: Colors.green[700]),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              message,
-              style: TextStyle(
-                color: Colors.green[700],
-              ),
-            ),
+            child: Text(message, style: TextStyle(color: Colors.green[700])),
           ),
           if (onDismiss != null)
             IconButton(
-              icon: Icon(
-                Icons.close,
-                color: Colors.green[700],
-              ),
+              icon: Icon(Icons.close, color: Colors.green[700]),
               onPressed: onDismiss,
             ),
         ],
@@ -93,5 +78,3 @@ class SuccessBanner extends StatelessWidget {
     );
   }
 }
-
-

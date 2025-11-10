@@ -28,14 +28,16 @@ class EmptyStateWidget extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: iconColor ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+              color:
+                  iconColor ??
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
             const SizedBox(height: 16),
             Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             if (message != null) ...[
@@ -43,15 +45,14 @@ class EmptyStateWidget extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                    ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.7),
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
-            if (action != null) ...[
-              const SizedBox(height: 24),
-              action!,
-            ],
+            if (action != null) ...[const SizedBox(height: 24), action!],
           ],
         ),
       ),
@@ -86,11 +87,7 @@ class ErrorEmptyStateWidget extends StatelessWidget {
   final String message;
   final VoidCallback? onRetry;
 
-  const ErrorEmptyStateWidget({
-    super.key,
-    required this.message,
-    this.onRetry,
-  });
+  const ErrorEmptyStateWidget({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -109,5 +106,3 @@ class ErrorEmptyStateWidget extends StatelessWidget {
     );
   }
 }
-
-

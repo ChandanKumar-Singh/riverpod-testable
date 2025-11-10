@@ -1,4 +1,5 @@
 part of 'index.dart';
+
 /// Keys used in SharedPreferences, SecureStorage, etc.
 class StorageKeys {
   static const String token = 'auth_token';

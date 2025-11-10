@@ -36,10 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(
-              'Loading...',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            Text('Loading...', style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ),

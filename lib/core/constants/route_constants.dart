@@ -1,6 +1,5 @@
 part of 'index.dart';
 
-
 /// Named routes for navigation
 class RouteConstants {
   static String splash = '/';

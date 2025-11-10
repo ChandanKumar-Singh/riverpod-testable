@@ -10,9 +10,9 @@ help: ## Show this help message
 	@echo '$(BLUE)Available commands:$(NC)'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(GREEN)%-20s$(NC) %s\n", $$1, $$2}'
 
-install: ## Install Flutter dependencies
+install: ## Install fvm Flutter dependencies
 	@echo '$(BLUE)Installing dependencies...$(NC)'
-	flutter pub get
+	fvm flutter pub get
 	cd server && npm install
 
 setup: ## Initial project setup
@@ -21,41 +21,41 @@ setup: ## Initial project setup
 		cp .env.example .env; \
 		echo '$(GREEN)Created .env file from .env.example$(NC)'; \
 	fi
-	flutter pub get
-	flutter pub run build_runner build --delete-conflicting-outputs
+	fvm flutter pub get
+	fvm flutter pub run build_runner build --delete-conflicting-outputs
 	cd server && npm install
 	@echo '$(GREEN)Setup complete!$(NC)'
 
 test: ## Run tests
 	@echo '$(BLUE)Running tests...$(NC)'
-	flutter test
+	fvm flutter test
 
 test-coverage: ## Run tests with coverage
 	@echo '$(BLUE)Running tests with coverage...$(NC)'
-	flutter test --coverage
+	fvm flutter test --coverage
 	@echo '$(GREEN)Coverage report generated in coverage/lcov.info$(NC)'
 
 build: ## Build the app for all platforms
 	@echo '$(BLUE)Building app...$(NC)'
-	flutter build apk --release
-	flutter build ios --release --no-codesign
+	fvm flutter build apk --release
+	fvm flutter build ios --release --no-codesign
 	@echo '$(GREEN)Build complete!$(NC)'
 
 build-android: ## Build Android APK
 	@echo '$(BLUE)Building Android APK...$(NC)'
-	flutter build apk --release
+	fvm flutter build apk --release
 
 build-ios: ## Build iOS app
 	@echo '$(BLUE)Building iOS app...$(NC)'
-	flutter build ios --release --no-codesign
+	fvm flutter build ios --release --no-codesign
 
 build-web: ## Build web app
 	@echo '$(BLUE)Building web app...$(NC)'
-	flutter build web
+	fvm flutter build web
 
 clean: ## Clean build files
 	@echo '$(BLUE)Cleaning...$(NC)'
-	flutter clean
+	fvm flutter clean
 	cd server && rm -rf node_modules
 	@echo '$(GREEN)Clean complete!$(NC)'
 
@@ -69,15 +69,15 @@ format-check: ## Check code formatting
 
 analyze: ## Analyze code
 	@echo '$(BLUE)Analyzing code...$(NC)'
-	flutter analyze
+	fvm flutter analyze
 
 generate: ## Generate code (build_runner)
 	@echo '$(BLUE)Generating code...$(NC)'
-	flutter pub run build_runner build --delete-conflicting-outputs
+	fvm flutter pub run build_runner build --delete-conflicting-outputs
 
 generate-watch: ## Generate code in watch mode
 	@echo '$(BLUE)Generating code in watch mode...$(NC)'
-	flutter pub run build_runner watch --delete-conflicting-outputs
+	fvm flutter pub run build_runner watch --delete-conflicting-outputs
 
 coverage: test-coverage ## Alias for test-coverage
 	@echo '$(GREEN)Coverage report available in coverage/lcov.info$(NC)'
@@ -107,15 +107,15 @@ server-install: ## Install server dependencies
 
 run: ## Run the app
 	@echo '$(BLUE)Running app...$(NC)'
-	flutter run
+	fvm flutter run
 
 run-dev: ## Run app in development mode
 	@echo '$(BLUE)Running app in development mode...$(NC)'
-	flutter run --dart-define=ENV=dev
+	fvm flutter run --dart-define=ENV=dev
 
 run-prod: ## Run app in production mode
 	@echo '$(BLUE)Running app in production mode...$(NC)'
-	flutter run --dart-define=ENV=prod --release
+	fvm flutter run --dart-define=ENV=prod --release
 
 lint: analyze ## Alias for analyze
 

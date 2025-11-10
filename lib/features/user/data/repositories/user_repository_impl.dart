@@ -9,11 +9,11 @@ class UserRepository extends ApiService {
   final Ref ref;
 
   UserRepository(this.ref)
-      : super(
-          env: ref.read(envProvider),
-          client: ref.read(httpClientProvider),
-          logger: ref.read(loggerProvider),
-        );
+    : super(
+        env: ref.read(envProvider),
+        client: ref.read(httpClientProvider),
+        logger: ref.read(loggerProvider),
+      );
 
   Future<ApiResponse<UserProfileModel?>> getProfile() async {
     final res = await request<UserProfileModel?>(
@@ -22,7 +22,9 @@ class UserRepository extends ApiService {
       requiresAuth: true,
       fromJson: (data) {
         if (data.containsKey('user')) {
-          return UserProfileModel.fromJson(data['user'] as Map<String, dynamic>);
+          return UserProfileModel.fromJson(
+            data['user'] as Map<String, dynamic>,
+          );
         } else if (data.containsKey('data')) {
           final userData = data['data'];
           if (userData is Map<String, dynamic>) {
@@ -45,7 +47,9 @@ class UserRepository extends ApiService {
       requiresAuth: true,
       fromJson: (data) {
         if (data.containsKey('user')) {
-          return UserProfileModel.fromJson(data['user'] as Map<String, dynamic>);
+          return UserProfileModel.fromJson(
+            data['user'] as Map<String, dynamic>,
+          );
         } else if (data.containsKey('data')) {
           final userData = data['data'];
           if (userData is Map<String, dynamic>) {
@@ -58,4 +62,3 @@ class UserRepository extends ApiService {
     return res;
   }
 }
-

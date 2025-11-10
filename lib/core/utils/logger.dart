@@ -5,11 +5,6 @@ import 'package:logging/logging.dart';
 
 /// Simple, configurable logger wrapper
 class AppLogger {
-  final Logger _logger;
-  final bool _enabled;
-  final LogLevel _minLevel;
-  final bool _showEmojis;
-
   AppLogger({
     String name = 'AppLogger',
     bool enabled = true,
@@ -21,6 +16,10 @@ class AppLogger {
        _showEmojis = showEmojis {
     _setupLogging();
   }
+  final Logger _logger;
+  final bool _enabled;
+  final LogLevel _minLevel;
+  final bool _showEmojis;
 
   void _setupLogging() {
     if (!_enabled) return;
@@ -101,11 +100,7 @@ class AppLogger {
 
   void f(String message, {Object? e, StackTrace? st, String? tag}) {
     if (!_shouldLog(LogLevel.fatal)) return;
-    _logger.shout(
-      ((tag ?? '').isNotEmpty ? '[$tag] ' : '') + message,
-      e,
-      st,
-    );
+    _logger.shout(((tag ?? '').isNotEmpty ? '[$tag] ' : '') + message, e, st);
   }
 
   /// Network request logging

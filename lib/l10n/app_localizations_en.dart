@@ -12,7 +12,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Testable App';
 
   @override
-  String get appDescription => 'This is a testable application for localization.';
+  String get appDescription =>
+      'This is a testable application for localization.';
 
   @override
   String get hello => 'Hello';

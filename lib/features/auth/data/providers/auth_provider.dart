@@ -7,13 +7,12 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
 );
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  final Ref ref;
-  late final AuthRepository _repo;
-
   AuthNotifier(this.ref) : super(const AuthState()) {
     _repo = AuthRepository(ref);
     _initialize();
   }
+  final Ref ref;
+  late final AuthRepository _repo;
 
   Future<void> _initialize() async {
     state = state.copyWith(status: AuthStatus.loading);
@@ -48,7 +47,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
     }
   }
-  
+
   Future<void> loginWithOtp(String contact, String otp) async {
     try {
       state = state.copyWith(status: AuthStatus.loading);
@@ -71,7 +70,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
     }
   }
-  
+
   Future<void> sendOtp(String contact) async {
     try {
       state = state.copyWith(status: AuthStatus.loading);
@@ -110,21 +109,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
 enum AuthStatus { initial, authenticated, unauthenticated, loading }
 
 class AuthState {
+  const AuthState({this.status = AuthStatus.initial, this.user, this.error});
   final AuthStatus status;
   final UserModel? user;
   final String? error;
 
-  const AuthState({
-    this.status = AuthStatus.initial,
-    this.user,
-    this.error,
-  });
-
-  AuthState copyWith({
-    AuthStatus? status,
-    UserModel? user,
-    String? error,
-  }) {
+  AuthState copyWith({AuthStatus? status, UserModel? user, String? error}) {
     return AuthState(
       status: status ?? this.status,
       user: user ?? this.user,

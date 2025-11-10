@@ -7,7 +7,7 @@ void main() {
     // 1. Setting up a test environment
     // 2. Mocking the API service
     // 3. Testing the complete auth flow
-    
+
     test('should initialize auth state correctly', () {
       // TODO: Implement integration test for auth initialization
       expect(true, isTrue);
@@ -34,4 +34,3 @@ void main() {
     });
   });
 }
-

@@ -19,12 +19,12 @@ void main() {
         email: 'test@example.com',
         createdAt: DateTime.now(),
       );
-      
+
       final updatedState = initialState.copyWith(
         status: UserProfileStatus.loaded,
         profile: profile,
       );
-      
+
       expect(updatedState.status, UserProfileStatus.loaded);
       expect(updatedState.profile, profile);
       expect(updatedState.error, isNull);
@@ -41,9 +41,9 @@ void main() {
         profile: profile,
         error: 'Previous error',
       );
-      
+
       final updatedState = state.copyWith(status: UserProfileStatus.loading);
-      
+
       expect(updatedState.status, UserProfileStatus.loading);
       expect(updatedState.profile, profile);
       expect(updatedState.error, 'Previous error');
@@ -60,5 +60,3 @@ void main() {
     });
   });
 }
-
-

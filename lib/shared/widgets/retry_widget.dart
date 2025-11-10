@@ -44,5 +44,3 @@ class RetryWidget extends StatelessWidget {
     );
   }
 }
-
-

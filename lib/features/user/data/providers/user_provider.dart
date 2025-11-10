@@ -4,8 +4,8 @@ import '../repositories/user_repository_impl.dart';
 
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfileState>(
-  (ref) => UserProfileNotifier(ref),
-);
+      (ref) => UserProfileNotifier(ref),
+    );
 
 class UserProfileNotifier extends StateNotifier<UserProfileState> {
   final Ref ref;
@@ -87,4 +87,3 @@ class UserProfileState {
     );
   }
 }
-

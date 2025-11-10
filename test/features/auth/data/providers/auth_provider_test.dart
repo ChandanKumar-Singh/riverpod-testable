@@ -13,13 +13,17 @@ void main() {
 
     test('copyWith should update only provided fields', () {
       const initialState = AuthState();
-      final user = UserModel(id: '1', name: 'Test User', email: 'test@example.com');
-      
+      final user = UserModel(
+        id: '1',
+        name: 'Test User',
+        email: 'test@example.com',
+      );
+
       final updatedState = initialState.copyWith(
         status: AuthStatus.authenticated,
         user: user,
       );
-      
+
       expect(updatedState.status, AuthStatus.authenticated);
       expect(updatedState.user, user);
       expect(updatedState.error, isNull);
@@ -32,9 +36,9 @@ void main() {
         user: user,
         error: 'Previous error',
       );
-      
+
       final updatedState = state.copyWith(status: AuthStatus.loading);
-      
+
       expect(updatedState.status, AuthStatus.loading);
       expect(updatedState.user, user);
       expect(updatedState.error, 'Previous error');
@@ -51,4 +55,3 @@ void main() {
     });
   });
 }
-

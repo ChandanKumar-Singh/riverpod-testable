@@ -1,4 +1,5 @@
 part of 'index.dart';
+
 /// Global app-wide constants
 class AppConstants {
   static const String appName = 'Testable';

@@ -16,19 +16,18 @@ typedef TokenGetter = Future<String?> Function();
 ///  - custom logging via AppLogger
 ///  - ability to add per-request headers and cancel tokens
 class AppHttpClient {
-  final Dio _dio;
-  final AppLogger logger;
-  final Env env;
-  final TokenGetter? tokenGetter;
-
   AppHttpClient({
-    Dio? dio,
     required this.logger,
     required this.env,
+    Dio? dio,
     this.tokenGetter,
   }) : _dio = dio ?? Dio(BaseOptions(baseUrl: env.baseUrl)) {
     _setupInterceptors();
   }
+  final Dio _dio;
+  final AppLogger logger;
+  final Env env;
+  final TokenGetter? tokenGetter;
 
   Dio get dio => _dio;
 
@@ -122,7 +121,7 @@ class AppHttpClient {
       finalOptions.extra = {...(finalOptions.extra ?? {}), ...?extra};
 
       if (headers != null && headers.isNotEmpty) {
-        finalOptions.headers = {...finalOptions.headers as Map, ...headers};
+        finalOptions.headers = {...?finalOptions.headers, ...headers};
       }
       final resp = await _dio
           .request(

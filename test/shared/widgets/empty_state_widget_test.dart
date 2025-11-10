@@ -8,10 +8,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: EmptyStateWidget(
-              icon: Icons.inbox,
-              title: 'Empty',
-            ),
+            body: EmptyStateWidget(icon: Icons.inbox, title: 'Empty'),
           ),
         ),
       );
@@ -60,11 +57,7 @@ void main() {
   group('EmptyListWidget', () {
     testWidgets('should display default empty list message', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: EmptyListWidget(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: EmptyListWidget())),
       );
 
       expect(find.text('Empty'), findsOneWidget);
@@ -74,11 +67,7 @@ void main() {
     testWidgets('should display custom message', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: EmptyListWidget(
-              message: 'No payments found',
-            ),
-          ),
+          home: Scaffold(body: EmptyListWidget(message: 'No payments found')),
         ),
       );
 
@@ -104,13 +93,13 @@ void main() {
       expect(find.text('Retry'), findsOneWidget);
     });
 
-    testWidgets('should not display retry button when onRetry is null', (tester) async {
+    testWidgets('should not display retry button when onRetry is null', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: ErrorEmptyStateWidget(
-              message: 'Error occurred',
-            ),
+            body: ErrorEmptyStateWidget(message: 'Error occurred'),
           ),
         ),
       );
@@ -120,5 +109,3 @@ void main() {
     });
   });
 }
-
-

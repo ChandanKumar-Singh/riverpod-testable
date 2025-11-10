@@ -82,14 +82,14 @@ setup_env() {
 # Install Flutter dependencies
 install_flutter_deps() {
     print_info "Installing Flutter dependencies..."
-    flutter pub get
+    fvm flutter pub get
     print_success "Flutter dependencies installed"
 }
 
 # Generate code
 generate_code() {
     print_info "Generating code..."
-    flutter pub run build_runner build --delete-conflicting-outputs
+    fvm flutter pub run build_runner build --delete-conflicting-outputs
     print_success "Code generated"
 }
 

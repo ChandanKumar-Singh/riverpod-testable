@@ -212,6 +212,7 @@ class AppToastification {
     showIcon: true,
   );
 }
+
 /* 
 // =============================================================================
 // 🎨 Initialization

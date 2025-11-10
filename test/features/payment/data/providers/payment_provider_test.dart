@@ -19,12 +19,12 @@ void main() {
         status: 'pending',
         createdAt: DateTime.now(),
       );
-      
+
       final updatedState = initialState.copyWith(
         status: PaymentStatus.loaded,
         payments: [payment],
       );
-      
+
       expect(updatedState.status, PaymentStatus.loaded);
       expect(updatedState.payments.length, 1);
       expect(updatedState.payments.first, payment);
@@ -43,9 +43,9 @@ void main() {
         payments: [payment],
         error: 'Previous error',
       );
-      
+
       final updatedState = state.copyWith(status: PaymentStatus.loading);
-      
+
       expect(updatedState.status, PaymentStatus.loading);
       expect(updatedState.payments.length, 1);
       expect(updatedState.error, 'Previous error');
@@ -62,5 +62,3 @@ void main() {
     });
   });
 }
-
-

@@ -6,11 +6,7 @@ void main() {
   group('LoadingWidget', () {
     testWidgets('should display CircularProgressIndicator', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: LoadingWidget(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: LoadingWidget())),
       );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -19,9 +15,7 @@ void main() {
     testWidgets('should display message when provided', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: LoadingWidget(message: 'Loading...'),
-          ),
+          home: Scaffold(body: LoadingWidget(message: 'Loading...')),
         ),
       );
 
@@ -31,11 +25,7 @@ void main() {
 
     testWidgets('should not display message when not provided', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: LoadingWidget(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: LoadingWidget())),
       );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -48,10 +38,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LoadingOverlay(
-              isLoading: true,
-              child: const Text('Content'),
-            ),
+            body: LoadingOverlay(isLoading: true, child: const Text('Content')),
           ),
         ),
       );
@@ -60,7 +47,9 @@ void main() {
       expect(find.byType(LoadingWidget), findsOneWidget);
     });
 
-    testWidgets('should not show overlay when isLoading is false', (tester) async {
+    testWidgets('should not show overlay when isLoading is false', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -93,5 +82,3 @@ void main() {
     });
   });
 }
-
-

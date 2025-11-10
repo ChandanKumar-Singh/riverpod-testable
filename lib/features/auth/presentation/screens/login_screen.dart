@@ -55,7 +55,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: authState.status == AuthStatus.loading
                   ? null
                   : () {
-                      ref.read(authProvider.notifier).login(
+                      ref
+                          .read(authProvider.notifier)
+                          .login(
                             emailController.text.trim(),
                             passwordController.text,
                           );

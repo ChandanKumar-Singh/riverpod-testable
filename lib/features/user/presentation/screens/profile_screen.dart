@@ -44,74 +44,73 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       body: profileState.status == UserProfileStatus.loading
           ? const LoadingWidget(message: 'Loading profile...')
           : profileState.status == UserProfileStatus.error
-              ? RetryWidget(
-                  message: profileState.error ?? 'Error loading profile',
-                  onRetry: () {
-                    ref.read(userProfileProvider.notifier).loadProfile();
-                  },
-                )
-              : profileState.profile != null
-                  ? ListView(
-                      padding: const EdgeInsets.all(16),
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: profileState.profile!.avatar != null
-                              ? NetworkImage(profileState.profile!.avatar!)
-                              : null,
-                          child: profileState.profile!.avatar == null
-                              ? Text(
-                                  profileState.profile!.name[0].toUpperCase(),
-                                  style: const TextStyle(fontSize: 40),
-                                )
-                              : null,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          profileState.profile!.name,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        if (profileState.profile!.email != null) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            profileState.profile!.email!,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                        if (profileState.profile!.phone != null) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            profileState.profile!.phone!,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                        const SizedBox(height: 24),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.person),
-                            title: const Text('User ID'),
-                            subtitle: Text(profileState.profile!.id),
-                          ),
-                        ),
-                        if (authState.user != null)
-                          Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.email),
-                              title: const Text('Email'),
-                              subtitle: Text(authState.user!.email ?? 'N/A'),
-                            ),
-                          ),
-                      ],
-                    )
-                  : const EmptyStateWidget(
-                      icon: Icons.person_outline,
-                      title: 'No Profile',
-                      message: 'Profile data not available',
+          ? RetryWidget(
+              message: profileState.error ?? 'Error loading profile',
+              onRetry: () {
+                ref.read(userProfileProvider.notifier).loadProfile();
+              },
+            )
+          : profileState.profile != null
+          ? ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: profileState.profile!.avatar != null
+                      ? NetworkImage(profileState.profile!.avatar!)
+                      : null,
+                  child: profileState.profile!.avatar == null
+                      ? Text(
+                          profileState.profile!.name[0].toUpperCase(),
+                          style: const TextStyle(fontSize: 40),
+                        )
+                      : null,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  profileState.profile!.name,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                if (profileState.profile!.email != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    profileState.profile!.email!,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+                if (profileState.profile!.phone != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    profileState.profile!.phone!,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+                const SizedBox(height: 24),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('User ID'),
+                    subtitle: Text(profileState.profile!.id),
+                  ),
+                ),
+                if (authState.user != null)
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.email),
+                      title: const Text('Email'),
+                      subtitle: Text(authState.user!.email ?? 'N/A'),
                     ),
+                  ),
+              ],
+            )
+          : const EmptyStateWidget(
+              icon: Icons.person_outline,
+              title: 'No Profile',
+              message: 'Profile data not available',
+            ),
     );
   }
 }
-

@@ -106,7 +106,8 @@ final class ApiResponseLoading<T> extends ApiResponse<T> {
 T? parseDynamicToType<T>(
   dynamic raw, {
   T Function(Map<String, dynamic>)? fromJson,
-  bool allowListToSingle = false, // when API sometimes returns list but expected single
+  bool allowListToSingle =
+      false, // when API sometimes returns list but expected single
 }) {
   if (raw == null) return null;
   // If T is Map<String, dynamic>
@@ -130,7 +131,9 @@ T? parseDynamicToType<T>(
       // This helper cannot reliably construct List<X> because generics are erased.
       // Caller-side mapping is recommended for lists (see ApiService below).
       // If allowListToSingle is set, try to use first element.
-      if (allowListToSingle && raw.isNotEmpty && raw.first is Map<String, dynamic>) {
+      if (allowListToSingle &&
+          raw.isNotEmpty &&
+          raw.first is Map<String, dynamic>) {
         return fromJson(raw.first as Map<String, dynamic>);
       }
     }

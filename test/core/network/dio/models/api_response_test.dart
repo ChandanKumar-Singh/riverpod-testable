@@ -6,7 +6,7 @@ void main() {
     group('ApiResponseSuccess', () {
       test('should create success response with data', () {
         const response = ApiResponse.success(data: 'test data');
-        
+
         expect(response.isSuccess, isTrue);
         expect(response.isError, isFalse);
         expect(response.isLoading, isFalse);
@@ -18,7 +18,7 @@ void main() {
           data: 'test data',
           message: 'Success message',
         );
-        
+
         expect(response.isSuccess, isTrue);
         expect(response.data, 'test data');
         expect(response.message, 'Success message');
@@ -29,7 +29,7 @@ void main() {
           data: 'test data',
           statusCode: 200,
         );
-        
+
         expect(response.isSuccess, isTrue);
         expect(response.statusCode, 200);
       });
@@ -38,7 +38,7 @@ void main() {
     group('ApiResponseError', () {
       test('should create error response with message', () {
         const response = ApiResponse.error(message: 'Error message');
-        
+
         expect(response.isError, isTrue);
         expect(response.isSuccess, isFalse);
         expect(response.isLoading, isFalse);
@@ -50,7 +50,7 @@ void main() {
           message: 'Error message',
           statusCode: 404,
         );
-        
+
         expect(response.isError, isTrue);
         expect(response.statusCode, 404);
       });
@@ -61,7 +61,7 @@ void main() {
           message: 'Error message',
           error: error,
         );
-        
+
         expect(response.isError, isTrue);
         // Error is stored internally but not exposed via getter
         expect(response.message, 'Error message');
@@ -71,7 +71,7 @@ void main() {
     group('ApiResponseLoading', () {
       test('should create loading response', () {
         const response = ApiResponse<String>.loading();
-        
+
         expect(response.isLoading, isTrue);
         expect(response.isSuccess, isFalse);
         expect(response.isError, isFalse);
@@ -101,10 +101,7 @@ void main() {
 
     group('Message getter', () {
       test('should return message for success response', () {
-        const response = ApiResponse.success(
-          data: 'test',
-          message: 'Success',
-        );
+        const response = ApiResponse.success(data: 'test', message: 'Success');
         expect(response.message, 'Success');
       });
 
@@ -120,4 +117,3 @@ void main() {
     });
   });
 }
-
