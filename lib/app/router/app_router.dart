@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/auth/data/providers/auth_provider.dart';
 import '../../features/user/presentation/screens/profile_screen.dart';
 import '../../features/payment/presentation/screens/payment_screen.dart';
 import '../../shared/widgets/sample_screen.dart';
@@ -41,13 +42,94 @@ class AppRouter extends RootStackRouter {
   List<NavigatorObserver> get observers => [AppRouteObserver(ref)];
 }
 
-/// Sample screens (for demo/testing)
+/// Home screen with navigation to main features
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const SampleScreen(title: 'Home', color: Colors.blueAccent);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              context.pushRoute(const UserProfileScreenRoute());
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          if (authState.user != null)
+            Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text(authState.user!.name[0].toUpperCase()),
+                ),
+                title: Text('Welcome, ${authState.user!.name}'),
+                subtitle: Text(authState.user!.email ?? ''),
+              ),
+            ),
+          const SizedBox(height: 16),
+          _buildFeatureCard(
+            context,
+            title: 'Profile',
+            icon: Icons.person,
+            color: Colors.blue,
+            onTap: () => context.pushRoute(const UserProfileScreenRoute()),
+          ),
+          _buildFeatureCard(
+            context,
+            title: 'Payments',
+            icon: Icons.payment,
+            color: Colors.green,
+            onTap: () => context.pushRoute(const PaymentScreenRoute()),
+          ),
+          _buildFeatureCard(
+            context,
+            title: 'Settings',
+            icon: Icons.settings,
+            color: Colors.orange,
+            onTap: () => context.pushRoute(const SettingsScreenRoute()),
+          ),
+          _buildFeatureCard(
+            context,
+            title: 'About',
+            icon: Icons.info,
+            color: Colors.purple,
+            onTap: () => context.pushRoute(const AboutScreenRoute()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureCard(
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.2),
+          child: Icon(icon, color: color),
+        ),
+        title: Text(title),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: onTap,
+      ),
+    );
+  }
 }
 
 @RoutePage()

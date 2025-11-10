@@ -1,6 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../shared/widgets/loading_widget.dart';
+import '../../../../shared/widgets/empty_state_widget.dart';
+import '../../../../shared/widgets/retry_widget.dart';
 import '../../data/providers/user_provider.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 
@@ -39,27 +42,13 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         ],
       ),
       body: profileState.status == UserProfileStatus.loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const LoadingWidget(message: 'Loading profile...')
           : profileState.status == UserProfileStatus.error
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        profileState.error ?? 'Error loading profile',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.read(userProfileProvider.notifier).loadProfile();
-                        },
-                        child: const Text('Retry'),
-                      ),
-                    ],
-                  ),
+              ? RetryWidget(
+                  message: profileState.error ?? 'Error loading profile',
+                  onRetry: () {
+                    ref.read(userProfileProvider.notifier).loadProfile();
+                  },
                 )
               : profileState.profile != null
                   ? ListView(
@@ -117,7 +106,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                           ),
                       ],
                     )
-                  : const Center(child: Text('No profile data')),
+                  : const EmptyStateWidget(
+                      icon: Icons.person_outline,
+                      title: 'No Profile',
+                      message: 'Profile data not available',
+                    ),
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../shared/widgets/loading_widget.dart';
+import '../../../../shared/widgets/empty_state_widget.dart';
+import '../../../../shared/widgets/retry_widget.dart';
 import '../../data/providers/payment_provider.dart';
 
 @RoutePage()
@@ -29,30 +32,18 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
         title: const Text('Payments'),
       ),
       body: paymentState.status == PaymentStatus.loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const LoadingWidget(message: 'Loading payments...')
           : paymentState.status == PaymentStatus.error
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        paymentState.error ?? 'Error loading payments',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.read(paymentProvider.notifier).loadPayments();
-                        },
-                        child: const Text('Retry'),
-                      ),
-                    ],
-                  ),
+              ? RetryWidget(
+                  message: paymentState.error ?? 'Error loading payments',
+                  onRetry: () {
+                    ref.read(paymentProvider.notifier).loadPayments();
+                  },
                 )
               : paymentState.payments.isEmpty
-                  ? const Center(child: Text('No payments found'))
+                  ? const EmptyListWidget(
+                      message: 'No payments found. Tap + to create one.',
+                    )
                   : ListView.builder(
                       itemCount: paymentState.payments.length,
                       itemBuilder: (context, index) {
