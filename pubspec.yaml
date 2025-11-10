@@ -1,5 +1,5 @@
 name: testable
-description: "A new Flutter project."
+description: "Enterprise-grade, production-ready Flutter application with clean architecture, comprehensive testing, CI/CD, and best practices."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -64,6 +64,9 @@ dev_dependencies:
   retrofit_generator: ^10.1.2
   mockito: ^5.5.1
   flutter_gen_runner: ^5.12.0
+  integration_test:
+    sdk: flutter
+  coverage: ^1.7.0
 
 
 
@@ -102,5 +105,6 @@ flutter:
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
+  #       - font-weight: 700
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
