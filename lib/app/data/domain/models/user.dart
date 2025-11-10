@@ -82,7 +82,6 @@
 // }
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'user.freezed.dart'; // For freezed generated code
 part 'user.g.dart'; // For json_serializable generated code

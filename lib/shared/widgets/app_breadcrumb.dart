@@ -8,9 +8,6 @@ part of '../../app/router/app_router.dart';
 /// Displays an animated breadcrumb trail based on [routeHistoryProvider].
 /// Tapping on any crumb navigates back to that route.
 class AppBreadcrumb extends ConsumerWidget {
-  final bool showIcons;
-  final EdgeInsetsGeometry padding;
-  final TextStyle? textStyle;
 
   const AppBreadcrumb({
     super.key,
@@ -18,6 +15,9 @@ class AppBreadcrumb extends ConsumerWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     this.textStyle,
   });
+  final bool showIcons;
+  final EdgeInsetsGeometry padding;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

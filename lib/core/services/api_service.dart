@@ -4,23 +4,23 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 
-import '../config/env.dart';
-import '../network/dio/http_client.dart';
-import '../network/dio/models/api_response.dart';
-import '../utils/logger.dart';
+import 'package:testable/core/config/env.dart';
+import 'package:testable/core/network/dio/http_client.dart';
+import 'package:testable/core/network/dio/models/api_response.dart';
+import 'package:testable/core/utils/logger.dart';
 
 enum ApiMethod { get, post, put, delete, patch, head, options }
 
 class ApiService {
-  final AppHttpClient _client;
-  final AppLogger logger;
-  final Env env;
 
   ApiService({
     required AppHttpClient client,
     required this.logger,
     required this.env,
   }) : _client = client;
+  final AppHttpClient _client;
+  final AppLogger logger;
+  final Env env;
 
   /// Single unified request method.
   ///

@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Reusable empty state widget
 class EmptyStateWidget extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String? message;
-  final Widget? action;
-  final Color? iconColor;
 
   const EmptyStateWidget({
     super.key,
@@ -16,6 +11,11 @@ class EmptyStateWidget extends StatelessWidget {
     this.action,
     this.iconColor,
   });
+  final IconData icon;
+  final String title;
+  final String? message;
+  final Widget? action;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +62,14 @@ class EmptyStateWidget extends StatelessWidget {
 
 /// Empty state for lists
 class EmptyListWidget extends StatelessWidget {
-  final String message;
-  final Widget? action;
 
   const EmptyListWidget({
     super.key,
     this.message = 'No items found',
     this.action,
   });
+  final String message;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +84,10 @@ class EmptyListWidget extends StatelessWidget {
 
 /// Empty state for errors
 class ErrorEmptyStateWidget extends StatelessWidget {
-  final String message;
-  final VoidCallback? onRetry;
 
   const ErrorEmptyStateWidget({super.key, required this.message, this.onRetry});
+  final String message;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {

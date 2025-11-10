@@ -56,7 +56,7 @@ void main() {
     });
 
     test('should return message from ApiResponseError', () {
-      final error = ApiResponseError<String>(
+      const error = ApiResponseError<String>(
         message: 'Custom error message',
         statusCode: 400,
       );

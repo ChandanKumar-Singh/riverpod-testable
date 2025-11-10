@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../features/auth/data/providers/auth_provider.dart';
-import 'app_router.dart';
+import 'package:testable/features/auth/data/providers/auth_provider.dart';
+import 'package:testable/app/router/app_router.dart';
 
 /// Route guard that checks if user is authenticated
 class AuthGuard extends AutoRouteGuard {
-  final Ref ref;
 
   AuthGuard(this.ref);
+  final Ref ref;
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
@@ -25,9 +25,9 @@ class AuthGuard extends AutoRouteGuard {
 
 /// Route guard for public routes (redirects to home if already authenticated)
 class PublicRouteGuard extends AutoRouteGuard {
-  final Ref ref;
 
   PublicRouteGuard(this.ref);
+  final Ref ref;
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {

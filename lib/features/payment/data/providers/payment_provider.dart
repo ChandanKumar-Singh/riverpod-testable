@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/payment_model.dart';
+import 'package:testable/features/payment/data/models/payment_model.dart';
 
 final paymentProvider = StateNotifierProvider<PaymentNotifier, PaymentState>(
   (ref) => PaymentNotifier(ref),
 );
 
 class PaymentNotifier extends StateNotifier<PaymentState> {
-  final Ref ref;
 
   PaymentNotifier(this.ref) : super(const PaymentState());
+  final Ref ref;
 
   Future<void> loadPayments() async {
     try {
@@ -39,15 +39,15 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
 enum PaymentStatus { initial, loading, loaded, error }
 
 class PaymentState {
-  final PaymentStatus status;
-  final List<PaymentModel> payments;
-  final String? error;
 
   const PaymentState({
     this.status = PaymentStatus.initial,
     this.payments = const [],
     this.error,
   });
+  final PaymentStatus status;
+  final List<PaymentModel> payments;
+  final String? error;
 
   PaymentState copyWith({
     PaymentStatus? status,

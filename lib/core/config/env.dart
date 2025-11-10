@@ -6,10 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 /// Simple environment configuration.
 /// In production you may load from --dart-define, separate files, or CI secrets.
 class Env {
-  final String baseUrl;
-  final bool enableLogging;
-  final bool isTest;
-  final bool refreshTokenEnabled;
 
   const Env._({
     required this.baseUrl,
@@ -17,6 +13,10 @@ class Env {
     this.isTest = false,
     this.refreshTokenEnabled = false,
   });
+  final String baseUrl;
+  final bool enableLogging;
+  final bool isTest;
+  final bool refreshTokenEnabled;
 
   static Env get current {
     const bool isProd =

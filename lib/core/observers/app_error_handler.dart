@@ -4,14 +4,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../di/providers.dart';
-import '../utils/logger.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/core/utils/logger.dart';
 
 /// Central error handler (singleton)
 class AppErrorHandler {
-  static final AppErrorHandler _instance = AppErrorHandler._internal();
   factory AppErrorHandler() => _instance;
   AppErrorHandler._internal();
+  static final AppErrorHandler _instance = AppErrorHandler._internal();
 
   late final AppLogger _logger;
 
@@ -66,8 +66,8 @@ final appErrorHandlerProvider = Provider<AppErrorHandler>((ref) {
 
 /// Hook into Riverpod’s error reporting
 class RiverpodErrorObserver extends ProviderObserver {
-  final AppLogger logger;
   RiverpodErrorObserver(this.logger);
+  final AppLogger logger;
 
   @override
   void providerDidFail(

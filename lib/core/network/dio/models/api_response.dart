@@ -69,10 +69,6 @@ sealed class ApiResponse<T> {
 }
 
 final class ApiResponseSuccess<T> extends ApiResponse<T> {
-  final T data;
-  final String? message;
-  final int? statusCode;
-  final Map<String, dynamic>? meta;
 
   const ApiResponseSuccess({
     required this.data,
@@ -80,14 +76,13 @@ final class ApiResponseSuccess<T> extends ApiResponse<T> {
     this.statusCode,
     this.meta,
   });
+  final T data;
+  final String? message;
+  final int? statusCode;
+  final Map<String, dynamic>? meta;
 }
 
 final class ApiResponseError<T> extends ApiResponse<T> {
-  final String message;
-  final Object? error;
-  final int? statusCode;
-  final StackTrace? stackTrace;
-  final T? data;
 
   const ApiResponseError({
     required this.message,
@@ -96,6 +91,11 @@ final class ApiResponseError<T> extends ApiResponse<T> {
     this.stackTrace,
     this.data,
   });
+  final String message;
+  final Object? error;
+  final int? statusCode;
+  final StackTrace? stackTrace;
+  final T? data;
 }
 
 final class ApiResponseLoading<T> extends ApiResponse<T> {

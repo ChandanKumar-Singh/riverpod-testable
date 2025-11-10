@@ -7,11 +7,6 @@ import 'package:toastification/toastification.dart';
 
 /// Simple action model for buttons inside toasts
 class ToastAction {
-  final String label;
-  final VoidCallback onPressed;
-  final IconData? icon;
-  final Color? color;
-  final bool closeOnTap;
 
   const ToastAction({
     required this.label,
@@ -20,6 +15,11 @@ class ToastAction {
     this.color,
     this.closeOnTap = true,
   });
+  final String label;
+  final VoidCallback onPressed;
+  final IconData? icon;
+  final Color? color;
+  final bool closeOnTap;
 }
 
 /// Global toast manager

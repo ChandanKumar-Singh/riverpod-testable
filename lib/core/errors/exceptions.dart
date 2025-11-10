@@ -4,25 +4,25 @@
 
 /// Exception types used by core services
 class ServerException implements Exception {
+  ServerException(this.message, {this.statusCode});
   final String? message;
   final int? statusCode;
-  ServerException(this.message, {this.statusCode});
 
   @override
   String toString() => 'ServerException($statusCode): $message';
 }
 
 class NetworkException implements Exception {
-  final String? message;
   NetworkException([this.message = 'No internet connection']);
+  final String? message;
 
   @override
   String toString() => 'NetworkException: $message';
 }
 
 class CacheException implements Exception {
-  final String? message;
   CacheException([this.message = 'Cache error']);
+  final String? message;
 
   @override
   String toString() => 'CacheException: $message';

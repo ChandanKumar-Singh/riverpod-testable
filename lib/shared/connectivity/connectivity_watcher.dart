@@ -19,10 +19,6 @@ enum ConnectivityStatus {
 }
 
 class ConnectivityState {
-  final ConnectivityStatus status;
-  final ConnectivityResult? lastResult;
-  final DateTime lastChanged;
-  final bool isSimulated;
 
   const ConnectivityState({
     required this.status,
@@ -30,6 +26,10 @@ class ConnectivityState {
     required this.lastChanged,
     this.isSimulated = false,
   });
+  final ConnectivityStatus status;
+  final ConnectivityResult? lastResult;
+  final DateTime lastChanged;
+  final bool isSimulated;
 
   ConnectivityState copyWith({
     ConnectivityStatus? status,
@@ -64,9 +64,6 @@ final connectivityProvider =
     );
 
 class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
-  bool _isSimulating = false;
-  bool showInitial = false;
 
   ConnectivityNotifier()
     : super(
@@ -78,6 +75,9 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
       ) {
     _init();
   }
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  bool _isSimulating = false;
+  bool showInitial = false;
 
   Future<void> _init() async {
     final connectivity = Connectivity();
@@ -210,10 +210,6 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
 /// ------------------------------------------------------
 
 class ConnectivityWatcher extends ConsumerStatefulWidget {
-  final Widget child;
-  final Duration onlineBannerDuration;
-  final bool showTransitionAnimations;
-  final bool showDebugPanel;
 
   const ConnectivityWatcher({
     super.key,
@@ -222,6 +218,10 @@ class ConnectivityWatcher extends ConsumerStatefulWidget {
     this.showTransitionAnimations = true,
     this.showDebugPanel = false,
   });
+  final Widget child;
+  final Duration onlineBannerDuration;
+  final bool showTransitionAnimations;
+  final bool showDebugPanel;
 
   @override
   ConsumerState<ConnectivityWatcher> createState() =>
@@ -331,21 +331,21 @@ class _ConnectivityWatcherState extends ConsumerState<ConnectivityWatcher>
 
   BannerConfig _getBannerConfig() {
     return switch (_currentBannerState) {
-      BannerState.online => BannerConfig(
+      BannerState.online => const BannerConfig(
         message: 'Back Online 🌐',
         backgroundColor: Colors.green,
         icon: Icons.wifi_rounded,
         iconColor: Colors.white,
         showClose: false,
       ),
-      BannerState.offline => BannerConfig(
+      BannerState.offline => const BannerConfig(
         message: 'No Internet Connection ❌',
         backgroundColor: Colors.redAccent,
         icon: Icons.wifi_off_rounded,
         iconColor: Colors.white,
         showClose: false,
       ),
-      BannerState.hidden => BannerConfig(
+      BannerState.hidden => const BannerConfig(
         message: '',
         backgroundColor: Colors.transparent,
         icon: Icons.error,
@@ -433,11 +433,6 @@ class _ConnectivityWatcherState extends ConsumerState<ConnectivityWatcher>
 enum BannerState { online, offline, hidden }
 
 class BannerConfig {
-  final String message;
-  final Color backgroundColor;
-  final IconData icon;
-  final Color iconColor;
-  final bool showClose;
 
   const BannerConfig({
     required this.message,
@@ -446,13 +441,18 @@ class BannerConfig {
     required this.iconColor,
     required this.showClose,
   });
+  final String message;
+  final Color backgroundColor;
+  final IconData icon;
+  final Color iconColor;
+  final bool showClose;
 }
 
 class _ConnectivityBanner extends StatelessWidget {
-  final BannerConfig config;
-  final VoidCallback? onClose;
 
   const _ConnectivityBanner({required this.config, this.onClose});
+  final BannerConfig config;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -535,9 +535,9 @@ class _ConnectivityBanner extends StatelessWidget {
 /// ------------------------------------------------------
 
 class ConnectivityDebugPanel extends ConsumerWidget {
-  final ConnectivityState connectivityState;
 
   const ConnectivityDebugPanel({super.key, required this.connectivityState});
+  final ConnectivityState connectivityState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -672,15 +672,15 @@ class ConnectivityDebugPanel extends ConsumerWidget {
 }
 
 class _DebugInfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final Color color;
 
   const _DebugInfoRow({
     required this.label,
     required this.value,
     required this.color,
   });
+  final String label;
+  final String value;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {

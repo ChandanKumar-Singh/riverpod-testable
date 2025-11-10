@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'app/app.dart';
-import 'core/di/providers.dart';
-import 'core/observers/app_error_handler.dart';
-import 'core/services/local_storage_adapter.dart';
-import 'core/utils/logger.dart';
+import 'package:testable/app/app.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/core/observers/app_error_handler.dart';
+import 'package:testable/core/services/local_storage_adapter.dart';
+import 'package:testable/core/utils/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

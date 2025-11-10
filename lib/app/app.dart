@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toastification/toastification.dart';
-import '../core/di/providers.dart';
-import '../l10n/app_localizations.dart';
-import '../shared/connectivity/connectivity_watcher.dart';
-import '../shared/theme/app_theme.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/l10n/app_localizations.dart';
+import 'package:testable/shared/connectivity/connectivity_watcher.dart';
+import 'package:testable/shared/theme/app_theme.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -46,7 +46,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           // home: MyHomePage(title: ''),
           builder: (context, child) {
             return ConnectivityWatcher(
-              onlineBannerDuration: Duration(seconds: 3),
+              onlineBannerDuration: const Duration(seconds: 3),
               showTransitionAnimations: true,
               showDebugPanel: false,
               child: child!,

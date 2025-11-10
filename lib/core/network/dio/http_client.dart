@@ -5,8 +5,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
-import '../../config/env.dart';
-import '../../utils/logger.dart';
+import 'package:testable/core/config/env.dart';
+import 'package:testable/core/utils/logger.dart';
 
 typedef TokenGetter = Future<String?> Function();
 

@@ -1,15 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/services/storage_adapter.dart';
-import '../../../../core/services/api_service.dart';
-import '../../../../core/network/dio/models/api_response.dart';
-import '../../../../core/di/providers.dart';
-import '../models/user_model.dart';
+import 'package:testable/core/services/api_service.dart';
+import 'package:testable/core/network/dio/models/api_response.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/features/auth/data/models/user_model.dart';
 
 class AuthRepository extends ApiService {
-  final Ref ref;
-
-  StorageAdapter get storage => ref.read(storageProvider);
 
   AuthRepository(this.ref)
     : super(
@@ -17,6 +14,9 @@ class AuthRepository extends ApiService {
         client: ref.read(httpClientProvider),
         logger: ref.read(loggerProvider),
       );
+  final Ref ref;
+
+  StorageAdapter get storage => ref.read(storageProvider);
 
   Future<ApiResponse<bool>> sendOtp(String contact) async {
     final res = await request<bool>(

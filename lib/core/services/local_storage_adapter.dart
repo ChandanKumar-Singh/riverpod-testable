@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'storage_adapter.dart';
+import 'package:testable/core/services/storage_adapter.dart';
 
 Future<LocalStorage> loadStorage() async {
   final sp = SharedPreferencesStorageAdapter();
@@ -18,13 +18,13 @@ Future<LocalStorage> loadStorage() async {
 }
 
 class LocalStorage implements StorageAdapter {
-  final SharedPreferencesStorageAdapter sharedPreferencesAdapter;
-  final SecureStorageAdapter secureStorageAdapter;
 
   LocalStorage({
     required this.sharedPreferencesAdapter,
     required this.secureStorageAdapter,
   });
+  final SharedPreferencesStorageAdapter sharedPreferencesAdapter;
+  final SecureStorageAdapter secureStorageAdapter;
   @override
   Future<void> init() async {
     await Future.wait([
@@ -626,11 +626,11 @@ class SecureStorageAdapter implements StorageAdapter {
 
 /// Storage Exception class
 class StorageException implements Exception {
+
+  const StorageException(this.message, {this.error, this.stackTrace});
   final String message;
   final Object? error;
   final StackTrace? stackTrace;
-
-  const StorageException(this.message, {this.error, this.stackTrace});
 
   @override
   String toString() {

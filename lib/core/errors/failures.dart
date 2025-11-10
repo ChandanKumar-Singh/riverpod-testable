@@ -3,13 +3,13 @@
 /// Failures are the domain-friendly error representation returned by repositories/usecases.
 /// This separation means services throw Exceptions and domain layers consume Failures.
 abstract class Failure {
-  final String message;
   const Failure(this.message);
+  final String message;
 }
 
 class ServerFailure extends Failure {
-  final int? code;
   const ServerFailure(super.message, {this.code});
+  final int? code;
 }
 
 class NetworkFailure extends Failure {

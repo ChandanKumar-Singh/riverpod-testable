@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/repositories/app_settings_repository.dart';
-import '../domain/models/app_settings_model.dart';
+import 'package:testable/app/data/repositories/app_settings_repository.dart';
+import 'package:testable/app/data/domain/models/app_settings_model.dart';
 
 final appSettingsProvider =
     StateNotifierProvider<AppSettingsNotifier, AppSettingsModel>((ref) {
@@ -9,9 +9,9 @@ final appSettingsProvider =
     });
 
 class AppSettingsNotifier extends StateNotifier<AppSettingsModel> {
-  final AppSettingsRepository repo;
 
-  AppSettingsNotifier(this.repo) : super(AppSettingsModel());
+  AppSettingsNotifier(this.repo) : super(const AppSettingsModel());
+  final AppSettingsRepository repo;
 
   Future<void> load() async {
     await repo.loadSettings();

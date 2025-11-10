@@ -1,10 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../shared/widgets/loading_widget.dart';
-import '../../../../shared/widgets/empty_state_widget.dart';
-import '../../../../shared/widgets/retry_widget.dart';
-import '../../data/providers/payment_provider.dart';
+import 'package:testable/shared/widgets/loading_widget.dart';
+import 'package:testable/shared/widgets/empty_state_widget.dart';
+import 'package:testable/shared/widgets/retry_widget.dart';
+import 'package:testable/features/payment/data/providers/payment_provider.dart';
 
 @RoutePage()
 class PaymentScreen extends ConsumerStatefulWidget {

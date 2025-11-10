@@ -57,7 +57,7 @@ void main() {
 
       test('should create error response with error object', () {
         const error = 'Error details';
-        final response = ApiResponse.error(
+        const response = ApiResponse.error(
           message: 'Error message',
           error: error,
         );

@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
-import '../../data/providers/auth_provider.dart';
+import 'package:testable/features/auth/data/providers/auth_provider.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login'), actions: [ThemeSwitcher()]),
+      appBar: AppBar(title: const Text('Login'), actions: [const ThemeSwitcher()]),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

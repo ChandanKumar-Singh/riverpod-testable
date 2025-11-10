@@ -4,15 +4,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app/router/app_router.dart';
+import 'package:testable/app/router/app_router.dart';
 
 /// A reusable sample screen used across projects for testing routes.
 /// It shows current route info, and allows navigating to all defined routes.
 class SampleScreen extends ConsumerWidget {
-  final String title;
-  final Color color;
 
   const SampleScreen({super.key, required this.title, required this.color});
+  final String title;
+  final Color color;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,7 +64,7 @@ class SampleScreen extends ConsumerWidget {
             'Route History:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          AppBreadcrumb(),
+          const AppBreadcrumb(),
           const SizedBox(height: 24),
           Text(
             'Navigate to:',

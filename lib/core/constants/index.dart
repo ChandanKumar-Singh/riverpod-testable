@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../config/env.dart';
+import 'package:testable/core/config/env.dart';
 
 part './api_constants.dart';
 part './app_constants.dart';

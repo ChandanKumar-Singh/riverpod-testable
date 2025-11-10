@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/di/providers.dart';
-import '../../core/services/storage_adapter.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/core/services/storage_adapter.dart';
 
 final themeStorageProvider = Provider<ThemeStorage>((ref) {
   final storage = ref.read(storageProvider);
@@ -9,8 +9,8 @@ final themeStorageProvider = Provider<ThemeStorage>((ref) {
 });
 
 class ThemeStorage {
-  final StorageAdapter storage;
   const ThemeStorage(this.storage);
+  final StorageAdapter storage;
 
   static const _key = 'theme_mode';
 

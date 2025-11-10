@@ -4,13 +4,6 @@ part 'user_profile_model.g.dart';
 
 @JsonSerializable()
 class UserProfileModel {
-  final String id;
-  final String name;
-  final String? email;
-  final String? phone;
-  final String? avatar;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
 
   UserProfileModel({
     required this.id,
@@ -24,6 +17,13 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       _$UserProfileModelFromJson(json);
+  final String id;
+  final String name;
+  final String? email;
+  final String? phone;
+  final String? avatar;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Map<String, dynamic> toJson() => _$UserProfileModelToJson(this);
 }

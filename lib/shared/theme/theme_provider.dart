@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/utils/toasts/toasts.dart';
-import 'theme_storage.dart';
+import 'package:testable/core/utils/toasts/toasts.dart';
+import 'package:testable/shared/theme/theme_storage.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
-  final ThemeStorage _storage;
 
   ThemeNotifier(this._storage) : super(ThemeMode.system) {
     _load();
   }
+  final ThemeStorage _storage;
 
   Future<void> _load() async {
     final mode = await _storage.loadThemeMode();

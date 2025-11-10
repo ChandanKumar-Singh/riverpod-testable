@@ -6,7 +6,7 @@ void main() {
   group('ErrorBanner', () {
     testWidgets('should display error message', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: ErrorBanner(message: 'Error message')),
         ),
       );
@@ -57,7 +57,7 @@ void main() {
   group('SuccessBanner', () {
     testWidgets('should display success message', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: SuccessBanner(message: 'Success message')),
         ),
       );

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../network/dio/models/api_response.dart';
+import 'package:testable/core/network/dio/models/api_response.dart';
 
 /// Centralized error handler utility
 class ErrorHandler {

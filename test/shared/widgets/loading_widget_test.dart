@@ -36,9 +36,9 @@ void main() {
   group('LoadingOverlay', () {
     testWidgets('should show overlay when isLoading is true', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: LoadingOverlay(isLoading: true, child: const Text('Content')),
+            body: LoadingOverlay(isLoading: true, child: Text('Content')),
           ),
         ),
       );
@@ -51,11 +51,11 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: LoadingOverlay(
               isLoading: false,
-              child: const Text('Content'),
+              child: Text('Content'),
             ),
           ),
         ),
@@ -67,12 +67,12 @@ void main() {
 
     testWidgets('should display message in overlay', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: LoadingOverlay(
               isLoading: true,
               message: 'Loading data...',
-              child: const Text('Content'),
+              child: Text('Content'),
             ),
           ),
         ),

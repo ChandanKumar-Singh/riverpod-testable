@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/user_profile_model.dart';
-import '../repositories/user_repository_impl.dart';
+import 'package:testable/features/user/data/models/user_profile_model.dart';
+import 'package:testable/features/user/data/repositories/user_repository_impl.dart';
 
 final userProfileProvider =
     StateNotifierProvider<UserProfileNotifier, UserProfileState>(
@@ -8,12 +8,12 @@ final userProfileProvider =
     );
 
 class UserProfileNotifier extends StateNotifier<UserProfileState> {
-  final Ref ref;
-  late final UserRepository _repo;
 
   UserProfileNotifier(this.ref) : super(const UserProfileState()) {
     _repo = UserRepository(ref);
   }
+  final Ref ref;
+  late final UserRepository _repo;
 
   Future<void> loadProfile() async {
     try {
@@ -65,15 +65,15 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
 enum UserProfileStatus { initial, loading, loaded, error }
 
 class UserProfileState {
-  final UserProfileStatus status;
-  final UserProfileModel? profile;
-  final String? error;
 
   const UserProfileState({
     this.status = UserProfileStatus.initial,
     this.profile,
     this.error,
   });
+  final UserProfileStatus status;
+  final UserProfileModel? profile;
+  final String? error;
 
   UserProfileState copyWith({
     UserProfileStatus? status,

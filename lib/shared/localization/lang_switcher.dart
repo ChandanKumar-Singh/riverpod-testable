@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/di/providers.dart';
-import 'supported_locales.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/shared/localization/supported_locales.dart';
 
 class LangSwitcher extends ConsumerStatefulWidget {
   const LangSwitcher({super.key});

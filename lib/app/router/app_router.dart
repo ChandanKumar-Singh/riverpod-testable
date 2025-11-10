@@ -4,11 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
-import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/auth/data/providers/auth_provider.dart';
-import '../../features/user/presentation/screens/profile_screen.dart';
-import '../../features/payment/presentation/screens/payment_screen.dart';
-import '../../shared/widgets/sample_screen.dart';
+import 'package:testable/features/auth/presentation/screens/splash_screen.dart';
+import 'package:testable/features/auth/data/providers/auth_provider.dart';
+import 'package:testable/features/user/presentation/screens/profile_screen.dart';
+import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
+import 'package:testable/shared/widgets/sample_screen.dart';
 
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';
@@ -163,8 +163,8 @@ class AboutScreen extends StatelessWidget {
 /// ROUTE OBSERVER (logs navigation actions)
 /// ------------------------------------------------------
 class AppRouteObserver extends AutoRouterObserver {
-  final Ref ref;
   AppRouteObserver(this.ref);
+  final Ref ref;
 
   void _addLog(Route? route, String action) {
     final routeData = (route?.settings is AutoRoutePage)
@@ -253,10 +253,6 @@ class RouteHistoryNotifier extends StateNotifier<List<RouteLogEntry>> {
 }
 
 class RouteLogEntry {
-  final String name;
-  final String path;
-  final String action;
-  final DateTime timestamp;
 
   const RouteLogEntry({
     required this.name,
@@ -264,4 +260,8 @@ class RouteLogEntry {
     required this.action,
     required this.timestamp,
   });
+  final String name;
+  final String path;
+  final String action;
+  final DateTime timestamp;
 }

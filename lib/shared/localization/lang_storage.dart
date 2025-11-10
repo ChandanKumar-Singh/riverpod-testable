@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/di/providers.dart';
-import '../../core/services/storage_adapter.dart';
+import 'package:testable/core/di/providers.dart';
+import 'package:testable/core/services/storage_adapter.dart';
 
 final langStorageProvider = Provider<LangStorage>((ref) {
   final storage = ref.watch(storageProvider);
@@ -10,8 +10,8 @@ final langStorageProvider = Provider<LangStorage>((ref) {
 });
 
 class LangStorage {
-  final StorageAdapter storage;
   LangStorage(this.storage);
+  final StorageAdapter storage;
   static const _key = 'language_code';
 
   Future<void> saveLocale(Locale locale) async {

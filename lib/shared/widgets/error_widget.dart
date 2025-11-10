@@ -19,11 +19,6 @@ import 'package:flutter/material.dart';
 /// }
 
 class ErrorDisplay extends StatelessWidget {
-  final Object error;
-  final StackTrace? stack;
-  final String? title;
-  final VoidCallback? onRetry;
-  final Widget? icon;
 
   const ErrorDisplay({
     super.key,
@@ -33,6 +28,11 @@ class ErrorDisplay extends StatelessWidget {
     this.onRetry,
     this.icon,
   });
+  final Object error;
+  final StackTrace? stack;
+  final String? title;
+  final VoidCallback? onRetry;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +128,6 @@ class ErrorDisplay extends StatelessWidget {
 }
 
 class ErrorScreen extends StatelessWidget {
-  final FlutterErrorDetails? flutterError;
-  final Object? error;
-  final StackTrace? stack;
-  final VoidCallback? onRetry;
 
   const ErrorScreen({
     super.key,
@@ -140,6 +136,10 @@ class ErrorScreen extends StatelessWidget {
     this.stack,
     this.onRetry,
   });
+  final FlutterErrorDetails? flutterError;
+  final Object? error;
+  final StackTrace? stack;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -200,9 +200,9 @@ class ErrorScreen extends StatelessWidget {
 }
 
 class _DebugFlutterError extends StatelessWidget {
-  final FlutterErrorDetails flutterError;
 
   const _DebugFlutterError({required this.flutterError});
+  final FlutterErrorDetails flutterError;
 
   @override
   Widget build(BuildContext context) {

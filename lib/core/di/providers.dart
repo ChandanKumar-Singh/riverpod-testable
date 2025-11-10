@@ -4,19 +4,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
-import '../../app/router/app_router.dart';
-import '../../features/auth/data/repositories/auth_repository_impl.dart';
-import '../../shared/localization/lang_provider.dart';
-import '../../shared/localization/lang_storage.dart';
-import '../../shared/theme/theme_provider.dart';
-import '../../shared/theme/theme_storage.dart';
-import '../config/env.dart';
-import '../utils/logger.dart';
-import '../network/dio/http_client.dart';
-import '../services/api_service.dart';
-import '../services/storage_adapter.dart';
-import '../network/network_info.dart';
-import '../constants/index.dart';
+import 'package:testable/app/router/app_router.dart';
+import 'package:testable/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:testable/shared/localization/lang_provider.dart';
+import 'package:testable/shared/localization/lang_storage.dart';
+import 'package:testable/shared/theme/theme_provider.dart';
+import 'package:testable/shared/theme/theme_storage.dart';
+import 'package:testable/core/config/env.dart';
+import 'package:testable/core/utils/logger.dart';
+import 'package:testable/core/network/dio/http_client.dart';
+import 'package:testable/core/services/api_service.dart';
+import 'package:testable/core/services/storage_adapter.dart';
+import 'package:testable/core/network/network_info.dart';
+import 'package:testable/core/constants/index.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 ////////// APP PROVIDERS ////////////

@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Widget that shows retry button when there's an error
 class RetryWidget extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-  final IconData? icon;
 
   const RetryWidget({
     super.key,
@@ -12,6 +9,9 @@ class RetryWidget extends StatelessWidget {
     required this.onRetry,
     this.icon,
   });
+  final String message;
+  final VoidCallback onRetry;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
