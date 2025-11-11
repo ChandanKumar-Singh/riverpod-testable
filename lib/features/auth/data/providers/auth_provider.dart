@@ -95,7 +95,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> logout() async {
     try {
       state = state.copyWith(status: AuthStatus.loading);
-      await _repo.logout();
+      // await _repo.logout();
       await _repo.clearSession();
       state = const AuthState(status: AuthStatus.unauthenticated);
     } catch (e) {

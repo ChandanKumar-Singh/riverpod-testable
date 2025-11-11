@@ -1,5 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/app/router/app_router.dart';
+import 'package:testable/features/auth/data/providers/auth_provider.dart';
+import 'package:testable/shared/widgets/unfocus_wrapper.dart';
 import 'package:toastification/toastification.dart';
 import 'package:testable/core/di/providers.dart';
 import 'package:testable/l10n/app_localizations.dart';
@@ -19,6 +23,13 @@ class _MyAppState extends ConsumerState<MyApp> {
     final themeMode = ref.watch(themeProvider);
     final locale = ref.watch(langProvider);
     final router = ref.watch(appRouterProvider);
+    ref.listen(authProvider, (prev, next) {
+      if (next.status == AuthStatus.authenticated) {
+        router.replaceAll([const HomeScreenRoute()]);
+      } else if (next.status == AuthStatus.unauthenticated) {
+        router.replaceAll([const LoginScreenRoute()]);
+      }
+    });
     return ToastificationWrapper(
       config: ToastificationConfig(
         maxTitleLines: 2,
@@ -26,32 +37,34 @@ class _MyAppState extends ConsumerState<MyApp> {
         marginBuilder: (context, alignment) =>
             const EdgeInsets.fromLTRB(0, 16, 0, 110),
       ),
-      child: AnimatedTheme(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-        data: themeMode == ThemeMode.dark ? AppTheme.dark : AppTheme.light,
-        child: MaterialApp.router(
-          title: 'Testable App',
-          routerConfig: router.config(
-            navigatorObservers: () => router.observers,
-          ),
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          locale: locale,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: themeMode,
+      child: UnfocusWrapper(
+        child: AnimatedTheme(
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+          data: themeMode == ThemeMode.dark ? AppTheme.dark : AppTheme.light,
+          child: MaterialApp.router(
+            title: 'Testable App',
+            routerConfig: router.config(
+              navigatorObservers: () => router.observers,
+            ),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            locale: locale,
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: themeMode,
 
-          // home: MyHomePage(title: ''),
-          builder: (context, child) {
-            return ConnectivityWatcher(
-              onlineBannerDuration: const Duration(seconds: 3),
-              showTransitionAnimations: true,
-              showDebugPanel: false,
-              child: child!,
-            );
-          },
+            // home: MyHomePage(title: ''),
+            builder: (context, child) {
+              return ConnectivityWatcher(
+                onlineBannerDuration: const Duration(seconds: 3),
+                showTransitionAnimations: true,
+                showDebugPanel: false,
+                child: child!,
+              );
+            },
+          ),
         ),
       ),
     );

@@ -21,14 +21,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(authProvider, (prev, next) {
-      if (next.status == AuthStatus.authenticated) {
-        context.replaceRoute(const HomeScreenRoute());
-      } else if (next.status == AuthStatus.unauthenticated) {
-        context.replaceRoute(const LoginScreenRoute());
-      }
-    });
-
     return Scaffold(
       body: Center(
         child: Column(

@@ -6,7 +6,6 @@ import 'package:testable/core/utils/toasts/toasts.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {
-
   ThemeNotifier(this._storage) : super(ThemeMode.system) {
     _load();
   }

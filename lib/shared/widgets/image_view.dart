@@ -73,6 +73,10 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   int _retryNonce = 0;
+  bool _assetError = false;
+  bool _svgError = false;
+  bool _lottieError = false;
+  bool _fileError = false;
 
   bool get _isEmpty => widget.source == null || widget.source!.trim().isEmpty;
   bool get _isNetwork => !_isEmpty && widget.source!.startsWith('http');
@@ -96,7 +100,11 @@ class _ImageViewState extends State<ImageView> {
         final cacheW = _cacheDimension(constraints.maxWidth);
         final cacheH = _cacheDimension(constraints.maxHeight);
 
-        Widget child = _buildCore(ctx, cacheW, cacheH);
+        Widget child = _buildCore(
+          ctx,
+          cacheW ?? widget.width,
+          cacheH ?? widget.height,
+        );
 
         if (widget.blur != null && widget.blur! > 0) {
           child = ClipRRect(
@@ -150,7 +158,7 @@ class _ImageViewState extends State<ImageView> {
     return size.toInt();
   }
 
-  Widget _buildCore(BuildContext ctx, int? cw, int? ch) {
+  Widget _buildCore(BuildContext ctx, num? cw, num? ch) {
     return Container(
       width: widget.width,
       height: widget.height,
@@ -160,47 +168,85 @@ class _ImageViewState extends State<ImageView> {
         boxShadow: widget.shadow,
       ),
       clipBehavior: Clip.hardEdge,
-      child: _buildType(ctx, cw, ch),
+      child: _buildType(ctx, cw?.toInt(), ch?.toInt()),
     );
   }
 
   Widget _buildType(BuildContext ctx, int? cw, int? ch) {
-    if (_isEmpty) return _errorBox(ctx, 'Image source empty');
+    if (_isEmpty) return _errorBox(ctx, 'Invalid Image');
+
+    // Handle errors first
+    if (_assetError && _isAsset) return _errorBox(ctx, 'Asset not found');
+    if (_svgError && _isSvg) return _errorBox(ctx, 'SVG load failed');
+    if (_lottieError && _isLottie) return _errorBox(ctx, 'Lottie load failed');
+    if (_fileError && !_isAsset && !_isNetwork && !_isSvg && !_isLottie) {
+      return _errorBox(ctx, 'File not found');
+    }
 
     if (_isLottie) {
-      return Lottie.asset(widget.source!, fit: widget.fit);
+      return _buildLottie();
     }
 
     if (_isSvg) {
-      return SvgPicture.asset(
-        widget.source!,
-        width: widget.width,
-        height: widget.height,
-        fit: widget.fit,
-        colorFilter: widget.color != null
-            ? ColorFilter.mode(widget.color!, BlendMode.srcIn)
-            : null,
-      );
+      return _buildSvg(cw, ch);
     }
 
     if (_isAsset) {
-      return _fadeWrap(
-        Image.asset(
-          widget.source!,
-          width: widget.width,
-          height: widget.height,
-          fit: widget.fit,
-          color: widget.color,
-          cacheWidth: cw,
-          cacheHeight: ch,
-        ),
-      );
+      return _buildAsset(cw, ch);
     }
 
     if (_isNetwork) {
       return _networkImage(ctx, cw, ch);
     }
 
+    return _buildFile(cw, ch);
+  }
+
+  Widget _buildLottie() {
+    return Lottie.asset(
+      widget.source!,
+      width: widget.width,
+      height: widget.height,
+      fit: widget.fit,
+      errorBuilder: (context, error, stackTrace) {
+        _lottieError = true;
+        return _errorBox(context, 'Lottie Error: ${error.toString()}');
+      },
+    );
+  }
+
+  Widget _buildSvg(int? cw, int? ch) {
+    return SvgPicture.asset(
+      widget.source!,
+      width: widget.width,
+      height: widget.height,
+      fit: widget.fit,
+      colorFilter: widget.color != null
+          ? ColorFilter.mode(widget.color!, BlendMode.srcIn)
+          : null,
+      placeholderBuilder: (context) => _placeholder(),
+    );
+  }
+
+  Widget _buildAsset(int? cw, int? ch) {
+    return _fadeWrap(
+      Image.asset(
+        widget.source!,
+        width: widget.width,
+        height: widget.height,
+        fit: widget.fit,
+        color: widget.color,
+        cacheWidth: cw,
+        cacheHeight: ch,
+        errorBuilder: (context, error, stackTrace) {
+          _assetError = true;
+          return _errorBox(context, 'Asset Error: ${error.toString()}');
+        },
+      ),
+    );
+  }
+
+  Widget _buildFile(int? cw, int? ch) {
     return _fadeWrap(
       Image.file(
         File(widget.source!),
@@ -210,6 +256,10 @@ class _ImageViewState extends State<ImageView> {
         color: widget.color,
         cacheWidth: cw,
         cacheHeight: ch,
+        errorBuilder: (context, error, stackTrace) {
+          _fileError = true;
+          return _errorBox(context, 'File Error: ${error.toString()}');
+        },
       ),
     );
   }
@@ -227,6 +277,9 @@ class _ImageViewState extends State<ImageView> {
             width: widget.width,
             height: widget.height,
             fit: widget.fit,
+            errorBuilder: (context, error, stackTrace) {
+              return _retryBox(ctx, url, 'Network Error: ${error.toString()}');
+            },
           ),
         );
       },
@@ -235,15 +288,10 @@ class _ImageViewState extends State<ImageView> {
         if (widget.showShimmer) return _shimmer();
         return _placeholder();
       },
-      // progressIndicatorBuilder: (_, __, progress) {
-      //   return Center(
-      //     child: CircularProgressIndicator(
-      //       strokeWidth: 2,
-      //       value: progress.progress,
-      //     ),
-      //   );
-      // },
-      errorWidget: (_, __, err) => widget.errorWidget ?? _retryBox(ctx, url),
+      errorWidget: (_, url, error) {
+        return widget.errorWidget ??
+            _retryBox(ctx, url, 'Network Error: ${error.toString()}');
+      },
     );
   }
 
@@ -275,31 +323,82 @@ class _ImageViewState extends State<ImageView> {
       widget.placeholder ??
       ColoredBox(
         color: Colors.grey.shade200,
-        child: const Center(child: Icon(Icons.image)),
+        child: const Center(child: Icon(Icons.image, color: Colors.grey)),
       );
 
-  Widget _errorBox(BuildContext ctx, String message) =>
-      widget.errorWidget ??
-      ColoredBox(
-        color: Colors.grey.shade300,
-        child: Center(child: Text(message)),
-      );
+  Widget _errorBox(BuildContext ctx, String message) {
+    // Use custom error widget if provided
+    if (widget.errorWidget != null) return widget.errorWidget!;
 
-  Widget _retryBox(BuildContext ctx, String url) {
+    return ColoredBox(
+      color: Colors.grey.shade300,
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 32),
+            SizedBox(height: 8),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'message',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.red, fontSize: 12),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _retryBox(BuildContext ctx, String url, String message) {
+    if (!widget.retryOnError) {
+      return _errorBox(ctx, message);
+    }
+
     return InkWell(
       onTap: () async {
-        await CachedNetworkImage.evictFromCache(url);
+        // Reset error states
+        _assetError = false;
+        _svgError = false;
+        _lottieError = false;
+        _fileError = false;
+
+        // Clear network cache
+        if (_isNetwork) {
+          await CachedNetworkImage.evictFromCache(url);
+        }
+
         if (mounted) setState(() => _retryNonce++);
       },
       child: ColoredBox(
         color: Colors.grey.shade200,
-        child: const Center(
+        child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.refresh, color: Colors.red),
-              SizedBox(height: 6),
-              Text('Tap to retry'),
+              const Icon(Icons.refresh, color: Colors.red, size: 32),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'Tap to retry',
+                style: TextStyle(color: Colors.blue, fontSize: 10),
+              ),
             ],
           ),
         ),
@@ -346,10 +445,50 @@ class _ImageViewState extends State<ImageView> {
   }
 
   Widget _zoomImage() {
-    if (_isNetwork) return CachedNetworkImage(imageUrl: widget.source!);
-    if (_isSvg) return SvgPicture.asset(widget.source!);
-    if (_isLottie) return Lottie.asset(widget.source!);
-    if (_isAsset) return Image.asset(widget.source!);
-    return Image.file(File(widget.source!));
+    if (_isNetwork) {
+      return CachedNetworkImage(
+        imageUrl: widget.source!,
+        errorWidget: (context, url, error) =>
+            _errorBox(context, 'Zoom: $error'),
+      );
+    }
+    if (_isSvg) {
+      return SvgPicture.asset(
+        widget.source!,
+        placeholderBuilder: (context) => _placeholder(),
+      );
+    }
+    if (_isLottie) {
+      return Lottie.asset(
+        widget.source!,
+        errorBuilder: (context, error, stackTrace) =>
+            _errorBox(context, 'Zoom: $error'),
+      );
+    }
+    if (_isAsset) {
+      return Image.asset(
+        widget.source!,
+        errorBuilder: (context, error, stackTrace) =>
+            _errorBox(context, 'Zoom: $error'),
+      );
+    }
+    return Image.file(
+      File(widget.source!),
+      errorBuilder: (context, error, stackTrace) =>
+          _errorBox(context, 'Zoom: $error'),
+    );
+  }
+
+  @override
+  void didUpdateWidget(ImageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Reset error states when source changes
+    if (widget.source != oldWidget.source) {
+      _assetError = false;
+      _svgError = false;
+      _lottieError = false;
+      _fileError = false;
+    }
   }
 }

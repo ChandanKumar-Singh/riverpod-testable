@@ -70,7 +70,11 @@ class AppHttpClient {
             logger.d(
               'HTTP ▶ ${options.method} ${options.uri}',
               tag: 'AppHttpClient',
-              e: {'headers': options.headers, 'extra': options.extra},
+              e: {
+                'headers': options.headers,
+                'data': options.data,
+                'extra': options.extra,
+              },
             );
           }
 

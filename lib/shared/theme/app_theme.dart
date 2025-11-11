@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 
+part 'theme_builder.dart';
+// Usage examples:
 class AppTheme {
-  static final light = ThemeData(
+  static final light = AppThemeBuilder(
+    seedColor: Colors.indigo,
     brightness: Brightness.light,
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-    scaffoldBackgroundColor: Colors.grey[50],
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      foregroundColor: Colors.black87,
-    ),
-    cardTheme: CardThemeData(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    ),
-    useMaterial3: true,
-  );
+  ).build();
 
-  static final dark = ThemeData(
+  static final dark = AppThemeBuilder(
+    seedColor: Colors.indigo,
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.indigo,
-      brightness: Brightness.dark,
-    ),
-    scaffoldBackgroundColor: Colors.black,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
-      elevation: 0,
-      foregroundColor: Colors.white,
-    ),
-    cardTheme: CardThemeData(
-      color: Colors.grey[900],
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    ),
-    useMaterial3: true,
-  );
+  ).build();
+
+  // Custom themes
+  static final blueLight = AppThemeBuilder(
+    seedColor: Colors.blue,
+    brightness: Brightness.light,
+  ).build();
+
+  static final purpleDark = AppThemeBuilder(
+    seedColor: Colors.purple,
+    brightness: Brightness.dark,
+  ).build();
+
+  static final tealLight = AppThemeBuilder(
+    seedColor: Colors.teal,
+    brightness: Brightness.light,
+    fontFamily: 'Inter',
+  ).build();
 }

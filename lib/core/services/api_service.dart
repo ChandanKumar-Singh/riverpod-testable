@@ -188,7 +188,7 @@ class ApiService {
     final responseData = e.response?.data;
 
     if (responseData is Map<String, dynamic>) {
-      return responseData['message']?.toString() ??
+      return responseData['response_message']?.toString() ??
           responseData['error']?.toString() ??
           responseData['detail']?.toString() ??
           responseData['description']?.toString() ??
