@@ -27,6 +27,38 @@ class AboutScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [AlertCardsDemoScreen]
+class AlertCardsDemoScreenRoute extends PageRouteInfo<void> {
+  const AlertCardsDemoScreenRoute({List<PageRouteInfo>? children})
+    : super(AlertCardsDemoScreenRoute.name, initialChildren: children);
+
+  static const String name = 'AlertCardsDemoScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AlertCardsDemoScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [EditProfileScreen]
+class EditProfileScreenRoute extends PageRouteInfo<void> {
+  const EditProfileScreenRoute({List<PageRouteInfo>? children})
+    : super(EditProfileScreenRoute.name, initialChildren: children);
+
+  static const String name = 'EditProfileScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const EditProfileScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeScreenRoute extends PageRouteInfo<void> {
   const HomeScreenRoute({List<PageRouteInfo>? children})
@@ -59,6 +91,22 @@ class LoginScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NotificationsScreen]
+class NotificationsScreenRoute extends PageRouteInfo<void> {
+  const NotificationsScreenRoute({List<PageRouteInfo>? children})
+    : super(NotificationsScreenRoute.name, initialChildren: children);
+
+  static const String name = 'NotificationsScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NotificationsScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [PaymentScreen]
 class PaymentScreenRoute extends PageRouteInfo<void> {
   const PaymentScreenRoute({List<PageRouteInfo>? children})
@@ -86,6 +134,22 @@ class ProfileScreenRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const ProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SecurityScreen]
+class SecurityScreenRoute extends PageRouteInfo<void> {
+  const SecurityScreenRoute({List<PageRouteInfo>? children})
+    : super(SecurityScreenRoute.name, initialChildren: children);
+
+  static const String name = 'SecurityScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SecurityScreen();
     },
   );
 }

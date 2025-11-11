@@ -163,6 +163,7 @@ class AppToastification {
     String message, {
     String? title,
     List<ToastAction>? actions,
+    EdgeInsetsGeometry? margin
   }) => show(
     title: title ?? 'Success',
     message: message,
@@ -170,6 +171,7 @@ class AppToastification {
     primaryColor: Colors.green,
     actions: actions,
     showIcon: true,
+    margin: margin,
   );
 
   static ToastificationItem error(

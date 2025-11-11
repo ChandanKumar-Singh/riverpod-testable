@@ -27,6 +27,6 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else {
       await setTheme(ThemeMode.light);
     }
-    AppToastification.success('Theme changed to ${state.name}');
+    AppToastification.success('Switched to ${state.name} mode.', title: 'Theme Changed',margin: const EdgeInsetsDirectional.symmetric(horizontal: 40));
   }
 }

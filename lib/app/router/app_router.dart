@@ -3,13 +3,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/features/auth/presentation/screens/splash_screen.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
+import 'package:testable/features/home/home_screen_test.dart';
 import 'package:testable/features/user/presentation/screens/profile_screen.dart';
 import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
-import 'package:testable/shared/widgets/samples/sample_screen.dart';
-
+import 'package:testable/shared/theme/theme_switcher.dart';
+import 'package:testable/shared/widgets/alert_cards.dart';
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';
 
@@ -33,127 +35,166 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: UserProfileScreenRoute.page),
     AutoRoute(page: PaymentScreenRoute.page),
     AutoRoute(page: ProfileScreenRoute.page),
+    AutoRoute(page: EditProfileScreenRoute.page),
+    AutoRoute(page: SecurityScreenRoute.page),
+    AutoRoute(page: NotificationsScreenRoute.page),
     AutoRoute(page: SettingsScreenRoute.page),
     AutoRoute(page: AboutScreenRoute.page),
     AutoRoute(page: LoginScreenRoute.page),
+
+    /// Tests
+    ///
+    AutoRoute(page: AlertCardsDemoScreenRoute.page),
   ];
 
   /// Attach a custom observer for logging or breadcrumb
   List<NavigatorObserver> get observers => [AppRouteObserver(ref)];
 }
 
-/// Home screen with navigation to main features
-@RoutePage()
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              context.pushRoute(const UserProfileScreenRoute());
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (authState.user != null)
-            Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  child: Text(authState.user!.name[0].toUpperCase()),
-                ),
-                title: Text('Welcome, ${authState.user!.name}'),
-                subtitle: Text(authState.user!.email ?? ''),
-              ),
-            ),
-          const SizedBox(height: 16),
-          _buildFeatureCard(
-            context,
-            title: 'Profile',
-            icon: Icons.person,
-            color: Colors.blue,
-            onTap: () => context.pushRoute(const UserProfileScreenRoute()),
-          ),
-          _buildFeatureCard(
-            context,
-            title: 'Payments',
-            icon: Icons.payment,
-            color: Colors.green,
-            onTap: () => context.pushRoute(const PaymentScreenRoute()),
-          ),
-          _buildFeatureCard(
-            context,
-            title: 'Settings',
-            icon: Icons.settings,
-            color: Colors.orange,
-            onTap: () => context.pushRoute(const SettingsScreenRoute()),
-          ),
-          _buildFeatureCard(
-            context,
-            title: 'About',
-            icon: Icons.info,
-            color: Colors.purple,
-            onTap: () => context.pushRoute(const AboutScreenRoute()),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withAlpha(51),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(title),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: onTap,
-      ),
-    );
-  }
-}
-
+// Enhanced sample screens with proper theming
 @RoutePage()
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const SampleScreen(title: 'Profile', color: Colors.greenAccent);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: const SampleScreen(title: 'Profile', icon: Icons.person_2_outlined),
+    );
+  }
 }
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const SampleScreen(title: 'Settings', color: Colors.deepOrangeAccent);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: const SampleScreen(
+        title: 'Settings',
+        icon: Icons.settings_outlined,
+      ),
+    );
+  }
 }
 
 @RoutePage()
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const SampleScreen(title: 'About', color: Colors.purpleAccent);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('About')),
+      body: const SampleScreen(title: 'About', icon: Icons.info_outline),
+    );
+  }
+}
+
+// Enhanced SampleScreen to use theme colors
+class SampleScreen extends StatelessWidget {
+  const SampleScreen({super.key, required this.title, required this.icon});
+
+  final String title;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 48, color: colorScheme.onPrimaryContainer),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            title,
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onBackground,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'This is the $title screen',
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 32),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Go Back'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Additional screens for quick actions
+@RoutePage()
+class EditProfileScreen extends StatelessWidget {
+  const EditProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Edit Profile')),
+      body: const SampleScreen(
+        title: 'Edit Profile',
+        icon: Icons.edit_outlined,
+      ),
+    );
+  }
+}
+
+@RoutePage()
+class SecurityScreen extends StatelessWidget {
+  const SecurityScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Security')),
+      body: const SampleScreen(
+        title: 'Security',
+        icon: Icons.security_outlined,
+      ),
+    );
+  }
+}
+
+@RoutePage()
+class NotificationsScreen extends StatelessWidget {
+  const NotificationsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Notifications')),
+      body: const SampleScreen(
+        title: 'Notifications',
+        icon: Icons.notifications_outlined,
+      ),
+    );
+  }
 }
 
 /// ------------------------------------------------------
