@@ -7,7 +7,7 @@ import 'package:testable/shared/components/button/index.dart';
 /// Base alert card with common properties
 class BaseAlertCard extends StatelessWidget {
   const BaseAlertCard({
-    required this.title,
+    this.title,
     super.key,
     this.message,
     this.icon,
@@ -17,10 +17,23 @@ class BaseAlertCard extends StatelessWidget {
     this.actions = const [],
     this.onDismiss,
     this.dismissible = false,
+    this.glowIcon = true,
+    this.showBorder = false,
     this.padding = const EdgeInsets.all(10),
+    this.titleStyle,
+    this.messageStyle,
+    this.iconSize = 20,
+    this.borderRadius = 12,
+    this.elevation = 0,
+    this.maxLines = 2,
+    this.actionAlignment = WrapAlignment.start,
+    this.showIcon = true,
+    this.customIcon,
+    this.animationDuration = const Duration(milliseconds: 300),
+    this.animateEntrance = false,
   });
 
-  final String title;
+  final String? title;
   final String? message;
   final IconData? icon;
   final Color? iconColor;
@@ -30,19 +43,33 @@ class BaseAlertCard extends StatelessWidget {
   final VoidCallback? onDismiss;
   final bool dismissible;
   final EdgeInsetsGeometry padding;
+  final bool glowIcon;
+  final bool showBorder;
+  final TextStyle? titleStyle;
+  final TextStyle? messageStyle;
+  final double iconSize;
+  final double borderRadius;
+  final double elevation;
+  final int maxLines;
+  final WrapAlignment actionAlignment;
+  final bool showIcon;
+  final Widget? customIcon;
+  final Duration animationDuration;
+  final bool animateEntrance;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Card(
+    final Widget card = Card(
       color: backgroundColor,
       surfaceTintColor: backgroundColor,
-      elevation: 0,
+      elevation: elevation,
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: borderColor != null
+        borderRadius: BorderRadius.circular(borderRadius),
+        side: borderColor != null && showBorder
             ? BorderSide(color: borderColor!)
             : BorderSide.none,
       ),
@@ -53,36 +80,43 @@ class BaseAlertCard extends StatelessWidget {
           children: [
             // Header row with icon and title
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: title != null
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: [
-                if (icon != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: iconColor?.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(icon, color: iconColor, size: 20),
-                  ),
-                  const SizedBox(width: 10),
+                if (showIcon && (icon != null || customIcon != null)) ...[
+                  _buildIcon(context),
+                  const SizedBox(width: 12),
                 ],
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        title,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                      if (title != null) ...[
+                        Text(
+                          title!,
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.onSurface,
+                              )
+                              .merge(titleStyle),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
+                        const SizedBox(height: 5),
+                      ],
                       if (message != null) ...[
-                        const SizedBox(height: 4),
                         Text(
                           message!,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              )
+                              .merge(messageStyle),
+                          maxLines: maxLines,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ],
@@ -91,14 +125,22 @@ class BaseAlertCard extends StatelessWidget {
                 if (dismissible) ...[
                   const SizedBox(width: 8),
                   OnTapScaler(
+                    scale: 0.8,
                     child: InkWell(
-                      child: Icon(
-                        Icons.close,
-                        size: 18,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      // padding: EdgeInsets.zero,
+                      borderRadius: BorderRadius.circular(20),
                       onTap: onDismiss,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.onSurface.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 16,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -107,11 +149,53 @@ class BaseAlertCard extends StatelessWidget {
             // Actions row
             if (actions.isNotEmpty) ...[
               const SizedBox(height: 12),
-              Wrap(spacing: 8, runSpacing: 8, children: actions),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                alignment: actionAlignment,
+                children: actions,
+              ),
             ],
           ],
         ),
       ),
+    );
+
+    if (animateEntrance) {
+      return TweenAnimationBuilder(
+        duration: animationDuration,
+        tween: Tween<double>(begin: 0, end: 1),
+        builder: (context, value, child) {
+          return Transform.scale(
+            scale: 0.95 + (value * 0.05),
+            child: Opacity(opacity: value, child: child),
+          );
+        },
+        child: card,
+      );
+    }
+
+    return card;
+  }
+
+  Widget _buildIcon(BuildContext context) {
+    if (customIcon != null) return customIcon!;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: glowIcon ? iconColor?.withOpacity(0.5) : null,
+        shape: BoxShape.circle,
+        gradient: glowIcon
+            ? LinearGradient(
+                colors: [
+                  iconColor?.withOpacity(0.2) ?? Colors.transparent,
+                  iconColor?.withOpacity(0.1) ?? Colors.transparent,
+                ],
+              )
+            : null,
+      ),
+      child: Icon(icon, color: iconColor, size: iconSize),
     );
   }
 }
@@ -119,35 +203,48 @@ class BaseAlertCard extends StatelessWidget {
 /// Error alert card for showing errors
 class ErrorAlertCard extends StatelessWidget {
   const ErrorAlertCard({
-    required this.title,
+    this.title,
     super.key,
     this.message,
     this.actions = const [],
     this.onDismiss,
     this.dismissible = true,
+    this.showBorder = false,
+    this.glowIcon = true,
   });
 
-  final String title;
+  final String? title;
   final String? message;
   final List<Widget> actions;
   final VoidCallback? onDismiss;
   final bool dismissible;
+  final bool showBorder;
+  final bool glowIcon;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return BaseAlertCard(
-      title: title,
-      message: message,
-      icon: Iconsax.warning_2,
-      iconColor: colorScheme.error,
-      backgroundColor: colorScheme.errorContainer,
-      borderColor: colorScheme.error.withOpacity(0.3),
-      actions: actions,
-      onDismiss: onDismiss,
-      dismissible: dismissible,
+    return Builder(
+      builder: (context) {
+        return BaseAlertCard(
+          title: title,
+          message: message,
+          icon: Iconsax.warning_24,
+          iconColor: colorScheme.onErrorContainer,
+          backgroundColor: colorScheme.errorContainer,
+          borderColor: colorScheme.error.withOpacity(showBorder ? 0.4 : 0.2),
+          actions: actions,
+          onDismiss: onDismiss,
+          dismissible: dismissible,
+          glowIcon: glowIcon,
+          showBorder: showBorder,
+          messageStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onErrorContainer,
+          ),
+        );
+      },
     );
   }
 }
@@ -155,19 +252,23 @@ class ErrorAlertCard extends StatelessWidget {
 /// Success alert card for positive feedback
 class SuccessAlertCard extends StatelessWidget {
   const SuccessAlertCard({
-    required this.title,
+    this.title = 'Success',
     super.key,
     this.message,
     this.actions = const [],
     this.onDismiss,
     this.dismissible = true,
+    this.showBorder = false,
+    this.glowIcon = true,
   });
 
-  final String title;
+  final String? title;
   final String? message;
   final List<Widget> actions;
   final VoidCallback? onDismiss;
   final bool dismissible;
+  final bool showBorder;
+  final bool glowIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -180,10 +281,12 @@ class SuccessAlertCard extends StatelessWidget {
       icon: Iconsax.tick_circle,
       iconColor: colorScheme.primary,
       backgroundColor: colorScheme.primaryContainer,
-      borderColor: colorScheme.primary.withOpacity(0.3),
+      borderColor: colorScheme.primary.withOpacity(showBorder ? 0.4 : 0.2),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
+      glowIcon: glowIcon,
+      showBorder: showBorder,
     );
   }
 }
@@ -191,19 +294,23 @@ class SuccessAlertCard extends StatelessWidget {
 /// Info alert card for general information
 class InfoAlertCard extends StatelessWidget {
   const InfoAlertCard({
-    required this.title,
+    this.title = 'Information',
     super.key,
     this.message,
     this.actions = const [],
     this.onDismiss,
     this.dismissible = true,
+    this.showBorder = false,
+    this.glowIcon = true,
   });
 
-  final String title;
+  final String? title;
   final String? message;
   final List<Widget> actions;
   final VoidCallback? onDismiss;
   final bool dismissible;
+  final bool showBorder;
+  final bool glowIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -215,11 +322,13 @@ class InfoAlertCard extends StatelessWidget {
       message: message,
       icon: Iconsax.info_circle,
       iconColor: colorScheme.primary,
-      backgroundColor: colorScheme.primaryContainer.withOpacity(0.2),
-      borderColor: colorScheme.outline.withOpacity(0.3),
+      backgroundColor: colorScheme.primaryContainer.withOpacity(0.15),
+      borderColor: colorScheme.outline.withOpacity(showBorder ? 0.3 : 0.1),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
+      glowIcon: glowIcon,
+      showBorder: showBorder,
     );
   }
 }
@@ -227,15 +336,60 @@ class InfoAlertCard extends StatelessWidget {
 /// Warning alert card for cautionary messages
 class WarningAlertCard extends StatelessWidget {
   const WarningAlertCard({
-    required this.title,
+    this.title = 'Warning',
     super.key,
     this.message,
     this.actions = const [],
     this.onDismiss,
     this.dismissible = true,
+    this.showBorder = false,
+    this.glowIcon = true,
   });
 
-  final String title;
+  final String? title;
+  final String? message;
+  final List<Widget> actions;
+  final VoidCallback? onDismiss;
+  final bool dismissible;
+  final bool showBorder;
+  final bool glowIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // Use tertiary color for warnings, fallback to orange
+    final warningColor = colorScheme.tertiary ?? const Color(0xFFFF9800);
+
+    return BaseAlertCard(
+      title: title,
+      message: message,
+      icon: Iconsax.warning_2,
+      iconColor: warningColor,
+      backgroundColor: warningColor.withOpacity(0.1),
+      borderColor: warningColor.withOpacity(showBorder ? 0.4 : 0.2),
+      actions: actions,
+      onDismiss: onDismiss,
+      dismissible: dismissible,
+      glowIcon: glowIcon,
+      showBorder: showBorder,
+    );
+  }
+}
+
+/// Loading alert card for progress indications
+class LoadingAlertCard extends StatelessWidget {
+  const LoadingAlertCard({
+    this.title = 'Loading',
+    super.key,
+    this.message,
+    this.actions = const [],
+    this.onDismiss,
+    this.dismissible = false,
+  });
+
+  final String? title;
   final String? message;
   final List<Widget> actions;
   final VoidCallback? onDismiss;
@@ -246,19 +400,114 @@ class WarningAlertCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Use tertiary color for warnings, fallback to orange
-    final warningColor = colorScheme.tertiary ?? Colors.orange;
+    return BaseAlertCard(
+      title: title,
+      message: message,
+      customIcon: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+        ),
+      ),
+      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.3),
+      borderColor: colorScheme.outline.withOpacity(0.2),
+      actions: actions,
+      onDismiss: onDismiss,
+      dismissible: dismissible,
+      glowIcon: false,
+    );
+  }
+}
+
+/// Premium feature card for upgrade prompts
+class PremiumFeatureCard extends StatelessWidget {
+  const PremiumFeatureCard({
+    this.title = 'Premium Feature',
+    super.key,
+    this.message,
+    this.onUpgrade,
+    this.onDismiss,
+    this.featureName,
+  });
+
+  final String? title;
+  final String? message;
+  final VoidCallback? onUpgrade;
+  final VoidCallback? onDismiss;
+  final String? featureName;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return BaseAlertCard(
+      title: title,
+      message:
+          message ??
+          'Upgrade to premium to access ${featureName ?? 'this feature'}',
+      icon: Iconsax.crown_1,
+      iconColor: const Color(0xFFFFD700),
+      backgroundColor: const Color(0xFFFFF8E1),
+      borderColor: const Color(0xFFFFD700).withOpacity(0.3),
+      actions: [
+        if (onUpgrade != null)
+          FilledButton(
+            onPressed: onUpgrade,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFFFD700),
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('Upgrade Now'),
+          ),
+        if (onDismiss != null)
+          TextButton(onPressed: onDismiss, child: const Text('Maybe Later')),
+      ],
+      onDismiss: onDismiss,
+      dismissible: true,
+      glowIcon: true,
+    );
+  }
+}
+
+/// Empty state card for when no data is available
+class EmptyStateCard extends StatelessWidget {
+  const EmptyStateCard({
+    this.title = 'No Data',
+    super.key,
+    this.message = 'There is nothing to display here yet.',
+    this.icon = Iconsax.box_1,
+    this.actionText,
+    this.onAction,
+  });
+
+  final String? title;
+  final String message;
+  final IconData icon;
+  final String? actionText;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return BaseAlertCard(
       title: title,
       message: message,
-      icon: Iconsax.danger,
-      iconColor: warningColor,
-      backgroundColor: warningColor.withOpacity(0.1),
-      borderColor: warningColor.withOpacity(0.3),
-      actions: actions,
-      onDismiss: onDismiss,
-      dismissible: dismissible,
+      icon: icon,
+      iconColor: colorScheme.onSurfaceVariant,
+      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.3),
+      borderColor: colorScheme.outline.withOpacity(0.2),
+      actions: [
+        if (onAction != null && actionText != null)
+          OutlinedButton(onPressed: onAction, child: Text(actionText!)),
+      ],
+      dismissible: false,
+      glowIcon: false,
+      actionAlignment: WrapAlignment.center,
     );
   }
 }
@@ -270,19 +519,18 @@ class LoginErrorCard extends StatelessWidget {
     super.key,
     this.onRetry,
     this.onDismiss,
+    this.title = 'Login Failed',
   });
 
   final String message;
   final VoidCallback? onRetry;
   final VoidCallback? onDismiss;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return ErrorAlertCard(
-      title: 'Login Failed',
+      title: title,
       message: message,
       dismissible: true,
       onDismiss: onDismiss,
@@ -290,10 +538,6 @@ class LoginErrorCard extends StatelessWidget {
         if (onRetry != null)
           FilledButton.tonal(
             onPressed: onRetry,
-            style: FilledButton.styleFrom(
-              backgroundColor: colorScheme.onErrorContainer,
-              foregroundColor: colorScheme.errorContainer,
-            ),
             child: const Text('Try Again'),
           ),
       ],
@@ -303,10 +547,16 @@ class LoginErrorCard extends StatelessWidget {
 
 /// Network error card for connectivity issues
 class NetworkErrorCard extends StatelessWidget {
-  const NetworkErrorCard({super.key, this.onRetry, this.onDismiss});
+  const NetworkErrorCard({
+    super.key,
+    this.onRetry,
+    this.onDismiss,
+    this.showBorder = true,
+  });
 
   final VoidCallback? onRetry;
   final VoidCallback? onDismiss;
+  final bool showBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -315,6 +565,7 @@ class NetworkErrorCard extends StatelessWidget {
       message: 'Please check your internet connection and try again.',
       dismissible: true,
       onDismiss: onDismiss,
+      showBorder: showBorder,
       actions: [
         if (onRetry != null)
           FilledButton.tonal(onPressed: onRetry, child: const Text('Retry')),
@@ -325,27 +576,38 @@ class NetworkErrorCard extends StatelessWidget {
 
 /// Coming soon feature card
 class ComingSoonCard extends StatelessWidget {
-  const ComingSoonCard({super.key, this.featureName, this.onDismiss});
+  const ComingSoonCard({
+    super.key,
+    this.featureName,
+    this.onDismiss,
+    this.expectedDate,
+  });
 
   final String? featureName;
   final VoidCallback? onDismiss;
+  final String? expectedDate;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
+    String message =
+        '${featureName ?? 'This feature'} is currently in development';
+    if (expectedDate != null) {
+      message += '. Expected: $expectedDate';
+    }
+
     return BaseAlertCard(
-      title: 'Coming Soon',
-      message: featureName != null
-          ? '$featureName is currently in development'
-          : 'This feature is currently in development',
+      title: 'Coming Soon 🚀',
+      message: message,
       icon: Iconsax.clock,
       iconColor: colorScheme.primary,
-      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.5),
-      borderColor: colorScheme.outline.withOpacity(0.3),
+      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.4),
+      borderColor: colorScheme.primary.withOpacity(0.3),
       dismissible: true,
       onDismiss: onDismiss,
+      glowIcon: true,
     );
   }
 }
@@ -357,11 +619,13 @@ class MaintenanceCard extends StatelessWidget {
     this.scheduledTime,
     this.estimatedDuration,
     this.onDismiss,
+    this.showCountdown = false,
   });
 
   final String? scheduledTime;
   final String? estimatedDuration;
   final VoidCallback? onDismiss;
+  final bool showCountdown;
 
   @override
   Widget build(BuildContext context) {
@@ -375,8 +639,10 @@ class MaintenanceCard extends StatelessWidget {
 
     return WarningAlertCard(
       title: 'Scheduled Maintenance',
-      message: '$message.',
-      dismissible: false,
+      message: message,
+      dismissible: onDismiss != null,
+      onDismiss: onDismiss,
+      showBorder: true,
     );
   }
 }
@@ -388,30 +654,42 @@ class UpdateAvailableCard extends StatelessWidget {
     super.key,
     this.onUpdate,
     this.onDismiss,
+    this.releaseNotes,
   });
 
   final String version;
   final VoidCallback? onUpdate;
   final VoidCallback? onDismiss;
+  final String? releaseNotes;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    String message =
+        'Version $version is available with new features and improvements.';
+    if (releaseNotes != null) {
+      message += '\n\n$releaseNotes';
+    }
 
     return BaseAlertCard(
-      title: 'Update Available',
-      message:
-          'Version $version is available with new features and improvements.',
+      title: 'Update Available 📱',
+      message: message,
       icon: Iconsax.arrow_circle_up,
-      iconColor: colorScheme.primary,
-      backgroundColor: colorScheme.primaryContainer.withOpacity(0.2),
-      borderColor: colorScheme.primary.withOpacity(0.3),
+      iconColor: Colors.green,
+      backgroundColor: Colors.green.withOpacity(0.1),
+      borderColor: Colors.green.withOpacity(0.3),
       dismissible: onUpdate == null,
       onDismiss: onDismiss,
+      maxLines: 4,
       actions: [
         if (onUpdate != null)
-          FilledButton(onPressed: onUpdate, child: const Text('Update Now')),
+          FilledButton(
+            onPressed: onUpdate,
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Update Now'),
+          ),
         if (onDismiss != null)
           TextButton(onPressed: onDismiss, child: const Text('Later')),
       ],
@@ -427,30 +705,18 @@ class AlertCardsDemoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Alert Cards')),
+      appBar: AppBar(title: const Text('Alert Cards Gallery')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Error Cards
-            _buildSectionTitle('Error Cards'),
+            _buildSectionTitle('Basic Alert Cards'),
             const ErrorAlertCard(
               title: 'Operation Failed',
               message:
                   'The requested operation could not be completed. Please try again.',
             ),
             const SizedBox(height: 12),
-            const LoginErrorCard(
-              message:
-                  'Invalid email or password. Please check your credentials.',
-            ),
-            const SizedBox(height: 12),
-            const NetworkErrorCard(),
-
-            const SizedBox(height: 24),
-
-            // Success & Info Cards
-            _buildSectionTitle('Success & Info Cards'),
             const SuccessAlertCard(
               title: 'Profile Updated',
               message: 'Your profile has been successfully updated.',
@@ -461,24 +727,61 @@ class AlertCardsDemoScreen extends StatelessWidget {
               message: 'Check out the new dashboard with enhanced analytics.',
             ),
             const SizedBox(height: 12),
-            const ComingSoonCard(featureName: 'Advanced Analytics'),
-
-            const SizedBox(height: 24),
-
-            // Warning Cards
-            _buildSectionTitle('Warning Cards'),
             const WarningAlertCard(
               title: 'Action Required',
               message:
                   'Your subscription will expire in 3 days. Please renew to continue.',
             ),
+
+            const SizedBox(height: 24),
+
+            _buildSectionTitle('Specialized Cards'),
+            const LoadingAlertCard(
+              title: 'Processing Payment',
+              message: 'Please wait while we process your transaction...',
+            ),
+            const SizedBox(height: 12),
+            const PremiumFeatureCard(
+              featureName: 'Advanced Analytics',
+              message:
+                  'Get detailed insights and reports with our premium plan.',
+            ),
+            const SizedBox(height: 12),
+            const EmptyStateCard(
+              title: 'No Projects Yet',
+              message:
+                  'Create your first project to get started with our platform.',
+              actionText: 'Create Project',
+            ),
+
+            const SizedBox(height: 24),
+
+            _buildSectionTitle('Error Scenarios'),
+            const LoginErrorCard(
+              message:
+                  'Invalid email or password. Please check your credentials.',
+            ),
+            const SizedBox(height: 12),
+            const NetworkErrorCard(showBorder: true),
             const SizedBox(height: 12),
             const MaintenanceCard(
               scheduledTime: '2:00 AM - 4:00 AM',
               estimatedDuration: '2 hours',
             ),
+
+            const SizedBox(height: 24),
+
+            _buildSectionTitle('Informational Cards'),
+            const ComingSoonCard(
+              featureName: 'Team Collaboration',
+              expectedDate: 'Q1 2024',
+            ),
             const SizedBox(height: 12),
-            const UpdateAvailableCard(version: '2.1.0'),
+            const UpdateAvailableCard(
+              version: '2.1.0',
+              releaseNotes:
+                  '• Dark mode improvements\n• Performance optimizations\n• Bug fixes',
+            ),
           ],
         ),
       ),
@@ -487,10 +790,19 @@ class AlertCardsDemoScreen extends StatelessWidget {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.only(bottom: 16, top: 8),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          const Text(
+            'Tap to dismiss',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+        ],
       ),
     );
   }

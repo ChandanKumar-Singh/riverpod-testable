@@ -6,6 +6,7 @@ import 'package:testable/shared/components/index.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:testable/shared/widgets/alert_cards.dart';
 import 'package:testable/shared/widgets/image_view.dart';
 
 @RoutePage()
@@ -153,35 +154,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       child: authState.error != null
-                          ? Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.errorContainer,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Iconsax.warning_2,
-                                    color: theme.colorScheme.onErrorContainer,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      authState.error!,
-                                      style: theme.textTheme.bodyMedium
-                                          ?.copyWith(
-                                            color: theme
-                                                .colorScheme
-                                                .onErrorContainer,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
+                          ? ErrorAlertCard(
+                            message: authState.error,
+                            dismissible: false,
+                            glowIcon: false,
+                          )
                           : const SizedBox.shrink(),
                     ),
 
