@@ -61,11 +61,73 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () {
                     UltraSheet.show(
                       context: context,
-                      child: const Text('Hello UltraSheet ✨'),
+                      // ignore: prefer_const_constructors
+                      child: Column(
+                        children: const [
+                          ThemeSwitcher(),
+                          Text('Hello UltraSheet ✨'),
+                        ],
+                      ),
                     );
-
-                  }
-                      ,
+                  },
+                ),
+                _buildFeatureCard(
+                  context,
+                  title: 'Sheet2',
+                  icon: Icons.person_2_outlined,
+                  color: colorScheme.primary,
+                  onTap: () {
+                    // Advanced usage with all features
+                    UltraSheet.show(
+                      context: context,
+                      child: const Text('Hello UltraSheet ✨'),
+                      snapPoints: const [0.4, 0.7, 0.9],
+                      initialSnap: 0.4,
+                      showHandle: true,
+                      enableSpringPhysics: true,
+                      stickyHeader: const SheetStickyHeader(
+                        child: Text(
+                          'Settings',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      floatingActionButton: FloatingActionButton(
+                        onPressed: () {},
+                        child: const Icon(Icons.add),
+                      ),
+                      onSnapChanged: (snap) {
+                        print('Sheet snapped to: $snap');
+                      },
+                    );
+                  },
+                ),
+                _buildFeatureCard(
+                  context,
+                  title: 'Sheet3',
+                  icon: Icons.person_2_outlined,
+                  color: colorScheme.primary,
+                  onTap: () {
+                    // Quick action sheet
+                    QuickActionSheet.show(
+                      context: context,
+                      title: 'Choose Option',
+                      actions: [
+                        SheetAction(
+                          title: 'Edit',
+                          icon: Icon(Icons.edit),
+                          // onTap: () => editItem(),
+                        ),
+                        SheetAction(
+                          title: 'Delete',
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          // onTap: () => deleteItem(),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 _buildFeatureCard(
                   context,
