@@ -15,14 +15,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
   late final AuthRepository _repo;
 
   Future<void> _initialize() async {
-    state = state.copyWith(status: AuthStatus.loading, error: '');
+    state = state.copyWith(status: AuthStatus.loading);
     final user = await _repo.loadSession();
     if (user != null && user.id.isNotEmpty) {
-      state = AuthState(
-        status: AuthStatus.authenticated,
-        user: user,
-        error: '',
-      );
+      state = AuthState(status: AuthStatus.authenticated, user: user);
     } else {
       state = const AuthState(status: AuthStatus.unauthenticated);
     }
@@ -30,18 +26,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> login(String email, String password) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading, error: '');
+      state = state.copyWith(status: AuthStatus.loading);
       final res = await _repo.login(email, password);
       if (res.isSuccess && res.data != null) {
         final user = res.data!;
         // Extract token from response or user model
         final token = user.token;
         await _repo.saveSession(user, token: token);
-        state = AuthState(
-          status: AuthStatus.authenticated,
-          user: user,
-          error: '',
-        );
+        state = AuthState(status: AuthStatus.authenticated, user: user);
       } else {
         state = AuthState(
           status: AuthStatus.unauthenticated,
@@ -58,17 +50,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> loginWithOtp(String contact, String otp) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading, error: '');
+      state = state.copyWith(status: AuthStatus.loading);
       final res = await _repo.verifyOTP(contact, otp);
       if (res.isSuccess && res.data != null) {
         final user = res.data!;
         final token = user.token;
         await _repo.saveSession(user, token: token);
-        state = AuthState(
-          status: AuthStatus.authenticated,
-          user: user,
-          error: '',
-        );
+        state = AuthState(status: AuthStatus.authenticated, user: user);
       } else {
         state = AuthState(
           status: AuthStatus.unauthenticated,
@@ -85,11 +73,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> sendOtp(String contact) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading, error: '');
+      state = state.copyWith(status: AuthStatus.loading);
       final res = await _repo.sendOtp(contact);
       if (res.isSuccess && res.data == true) {
         // OTP sent successfully
-        state = state.copyWith(status: AuthStatus.initial, error: '');
+        state = state.copyWith(status: AuthStatus.initial);
       } else {
         state = AuthState(
           status: AuthStatus.unauthenticated,
@@ -106,7 +94,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     try {
-      state = state.copyWith(status: AuthStatus.loading, error: '');
+      state = state.copyWith(status: AuthStatus.loading);
       await _repo.logout();
       await _repo.clearSession();
       state = const AuthState(status: AuthStatus.unauthenticated);
@@ -130,7 +118,7 @@ class AuthState {
     return AuthState(
       status: status ?? this.status,
       user: user ?? this.user,
-      error: error ?? this.error,
+      error: (error == null || error.isEmpty) ? error : this.error,
     );
   }
 }

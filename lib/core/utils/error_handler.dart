@@ -4,7 +4,7 @@ import 'package:testable/core/network/dio/models/api_response.dart';
 /// Centralized error handler utility
 class ErrorHandler {
   /// Convert DioException to user-friendly message
-  static String getErrorMessage(dynamic error) {
+  static String? getErrorMessage(dynamic error) {
     if (error is DioException) {
       return _getDioErrorMessage(error);
     } else if (error is ApiResponseError) {

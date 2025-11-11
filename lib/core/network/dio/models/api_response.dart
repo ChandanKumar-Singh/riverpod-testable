@@ -18,7 +18,7 @@ sealed class ApiResponse<T> {
   }) = ApiResponseSuccess<T>;
 
   const factory ApiResponse.error({
-    required String message,
+    String? message,
     Object? error,
     int? statusCode,
     StackTrace? stackTrace,
@@ -88,14 +88,14 @@ final class ApiResponseSuccess<T> extends ApiResponse<T> {
 final class ApiResponseError<T> extends ApiResponse<T> {
 
   const ApiResponseError({
-    required this.message,
+    this.message,
     this.error,
     this.statusCode,
     this.stackTrace,
     this.data,
   });
   @override
-  final String message;
+  final String? message;
   final Object? error;
   @override
   final int? statusCode;

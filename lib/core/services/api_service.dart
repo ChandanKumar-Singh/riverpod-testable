@@ -471,7 +471,7 @@ class ApiService {
     }
 
     return ApiResponse<R>.error(
-      message: message ?? '',
+      message: message,
       statusCode: status,
       error: errorData,
       // data: errorData,

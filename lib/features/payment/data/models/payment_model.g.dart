@@ -9,10 +9,10 @@ part of 'payment_model.dart';
 PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
   id: json['id'] as String,
   amount: (json['amount'] as num).toDouble(),
-  currency: json['currency'] as String? ?? 'USD',
   status: json['status'] as String,
-  description: json['description'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
+  currency: json['currency'] as String? ?? 'USD',
+  description: json['description'] as String?,
   updatedAt: json['updatedAt'] == null
       ? null
       : DateTime.parse(json['updatedAt'] as String),

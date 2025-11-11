@@ -54,7 +54,7 @@ class AuthRepository extends ApiService {
       final user = verifyOTP(email, password);
       return user;
     }
-    return ApiResponse.error(message: 'message');
+    return ApiResponse.error(message: res0.message);
     // return;
 
     final res = await request<UserModel?>(
