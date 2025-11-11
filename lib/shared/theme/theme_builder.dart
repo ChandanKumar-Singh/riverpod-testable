@@ -28,7 +28,7 @@ class AppThemeBuilder {
       fontFamilyFallback: fontFamilyFallback,
 
       // Color overrides
-      scaffoldBackgroundColor: isDark ? Colors.grey[900] : Colors.grey[50],
+      scaffoldBackgroundColor: isDark ? const Color.fromARGB(255, 11, 11, 11) : Colors.grey[50],
       canvasColor: isDark ? Colors.grey[850] : Colors.grey[100],
       cardColor: isDark ? Colors.grey[800] : Colors.white,
       // dialogBackgroundColor: isDark ? Colors.grey[800] : Colors.white,
@@ -88,8 +88,8 @@ class AppThemeBuilder {
   // Card Theme
   CardThemeData _buildCardTheme(bool isDark) {
     return CardThemeData(
-      color: isDark ? Colors.grey[800] : Colors.white,
-      elevation: 2,
+      color: isDark ? Colors.grey[900] : Colors.white,
+      elevation: 1,
       shadowColor: isDark ? Colors.black : Colors.grey[400],
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

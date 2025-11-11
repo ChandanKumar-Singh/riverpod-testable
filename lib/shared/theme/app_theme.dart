@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 part 'theme_builder.dart';
 // Usage examples:
 class AppTheme {
-  static final light = AppThemeBuilder(
-    seedColor: Colors.indigo,
+   final light = AppThemeBuilder(
+    seedColor: const Color.fromARGB(255, 47, 76, 239),
     brightness: Brightness.light,
   ).build();
 
-  static final dark = AppThemeBuilder(
-    seedColor: Colors.indigo,
+   final dark = AppThemeBuilder(
+    seedColor: const Color.fromARGB(255, 2, 87, 113),
     brightness: Brightness.dark,
   ).build();
 
   // Custom themes
-  static final blueLight = AppThemeBuilder(
+   final blueLight = AppThemeBuilder(
     seedColor: Colors.blue,
     brightness: Brightness.light,
   ).build();
 
-  static final purpleDark = AppThemeBuilder(
+   final purpleDark = AppThemeBuilder(
     seedColor: Colors.purple,
     brightness: Brightness.dark,
   ).build();
 
-  static final tealLight = AppThemeBuilder(
+   final tealLight = AppThemeBuilder(
     seedColor: Colors.teal,
     brightness: Brightness.light,
     fontFamily: 'Inter',

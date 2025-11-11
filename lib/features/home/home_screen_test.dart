@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/app/localization/locale.dart';
 import 'package:testable/app/router/app_router.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
+import 'package:testable/shared/components/index.dart';
+import 'package:testable/shared/localization/lang_switcher.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 
 /// Home screen with navigation to main features
@@ -27,6 +30,7 @@ class HomeScreen extends ConsumerWidget {
               context.pushRoute(const UserProfileScreenRoute());
             },
           ),
+          const LangSwitcher(),
           const ThemeSwitcher(),
         ],
       ),
@@ -49,6 +53,20 @@ class HomeScreen extends ConsumerWidget {
                 mainAxisSpacing: 10,
               ),
               delegate: SliverChildListDelegate([
+                _buildFeatureCard(
+                  context,
+                  title: 'Sheet',
+                  icon: Icons.person_2_outlined,
+                  color: colorScheme.primary,
+                  onTap: () {
+                    UltraSheet.show(
+                      context: context,
+                      child: const Text('Hello UltraSheet ✨'),
+                    );
+
+                  }
+                      ,
+                ),
                 _buildFeatureCard(
                   context,
                   title: 'Profile',
@@ -165,7 +183,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome back,',
+                  context.lang.welcomeBack,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

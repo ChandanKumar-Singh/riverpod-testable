@@ -68,6 +68,7 @@ class AppToastification {
       foregroundColor: effectiveForeground,
       borderRadius: borderRadius ?? BorderRadius.circular(10),
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding:  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       boxShadow:
           boxShadow ??
           [

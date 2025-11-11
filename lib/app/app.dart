@@ -30,6 +30,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         router.replaceAll([const LoginScreenRoute()]);
       }
     });
+    final appTheme = AppTheme();
     return ToastificationWrapper(
       config: ToastificationConfig(
         maxTitleLines: 2,
@@ -41,7 +42,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         child: AnimatedTheme(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeInOut,
-          data: themeMode == ThemeMode.dark ? AppTheme.dark : AppTheme.light,
+          data: themeMode == ThemeMode.dark ? appTheme.dark : appTheme.light,
           child: MaterialApp.router(
             title: 'Testable App',
             routerConfig: router.config(
@@ -51,8 +52,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             locale: locale,
             supportedLocales: AppLocalizations.supportedLocales,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
+            theme: appTheme.light,
+            darkTheme: appTheme.dark,
             themeMode: themeMode,
 
             // home: MyHomePage(title: ''),
