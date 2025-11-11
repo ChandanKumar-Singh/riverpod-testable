@@ -67,7 +67,7 @@ class AppHttpClient {
           }
 
           if (env.enableLogging) {
-            logger.i(
+            logger.d(
               'HTTP ▶ ${options.method} ${options.uri}',
               tag: 'AppHttpClient',
               e: {'headers': options.headers, 'extra': options.extra},

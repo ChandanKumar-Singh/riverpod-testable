@@ -8,7 +8,7 @@ import 'package:testable/features/auth/presentation/screens/splash_screen.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/user/presentation/screens/profile_screen.dart';
 import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
-import 'package:testable/shared/widgets/sample_screen.dart';
+import 'package:testable/shared/widgets/samples/sample_screen.dart';
 
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';

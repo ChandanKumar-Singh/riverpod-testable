@@ -18,7 +18,6 @@ Future<LocalStorage> loadStorage() async {
 }
 
 class LocalStorage implements StorageAdapter {
-
   LocalStorage({
     required this.sharedPreferencesAdapter,
     required this.secureStorageAdapter,
@@ -122,12 +121,12 @@ class SharedPreferencesStorageAdapter implements StorageAdapter {
     // In production, you might want to use a proper logger
     // For now, using print but you can replace with your logger
     if (error != null) {
-      _print('🔄 SharedPreferencesStorage: $message - Error: $error');
+      print('🔄 SharedPreferencesStorage: $message - Error: $error');
       if (stackTrace != null) {
-        _print('Stack Trace: $stackTrace');
+        print('Stack Trace: $stackTrace');
       }
     } else {
-      _print('🔄 SharedPreferencesStorage: $message');
+      print('🔄 SharedPreferencesStorage: $message');
     }
   }
 
@@ -358,12 +357,12 @@ class SecureStorageAdapter implements StorageAdapter {
   // Private method for logging
   void _print(String message, {Object? error, StackTrace? stackTrace}) {
     if (error != null) {
-      _print('🔒 SecureStorageAdapter: $message - Error: $error');
+      print('🔒 SecureStorageAdapter: $message - Error: $error');
       if (stackTrace != null) {
-        _print('Stack Trace: $stackTrace');
+        print('Stack Trace: $stackTrace');
       }
     } else {
-      _print('🔒 SecureStorageAdapter: $message');
+      print('🔒 SecureStorageAdapter: $message');
     }
   }
 
@@ -626,7 +625,6 @@ class SecureStorageAdapter implements StorageAdapter {
 
 /// Storage Exception class
 class StorageException implements Exception {
-
   const StorageException(this.message, {this.error, this.stackTrace});
   final String message;
   final Object? error;

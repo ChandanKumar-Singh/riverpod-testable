@@ -7,7 +7,6 @@ import 'package:testable/core/di/providers.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 
 class AuthRepository extends ApiService {
-
   AuthRepository(this.ref)
     : super(
         env: ref.read(envProvider),
@@ -50,6 +49,14 @@ class AuthRepository extends ApiService {
   }
 
   Future<ApiResponse<UserModel?>> login(String email, String password) async {
+    final res0 = await sendOtp(email);
+    if (res0.isSuccess) {
+      final user = verifyOTP(email, password);
+      return user;
+    }
+    return ApiResponse.error(message: 'message');
+    // return;
+
     final res = await request<UserModel?>(
       ApiConstants.authLogin,
       method: ApiMethod.post,

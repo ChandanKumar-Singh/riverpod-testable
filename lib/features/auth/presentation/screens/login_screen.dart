@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/shared/components/button/index.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 
@@ -28,7 +29,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login'), actions: const [ThemeSwitcher()]),
+      appBar: AppBar(
+        title: const Text('Login'),
+        actions: const [ThemeSwitcher(), CustomBackButton()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -51,28 +55,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               ),
-            ElevatedButton(
-              onPressed: authState.status == AuthStatus.loading
-                  ? null
-                  : () {
-                      ref
-                          .read(authProvider.notifier)
-                          .login(
-                            emailController.text.trim(),
-                            passwordController.text,
-                          );
-                    },
-              child: authState.status == AuthStatus.loading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Login'),
+            OnTapScaler(
+              enabled: authState.status != AuthStatus.loading,
+              child: ElevatedButton(
+                onPressed: authState.status == AuthStatus.loading
+                    ? null
+                    : login,
+
+                child: authState.status == AuthStatus.loading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Login'),
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void login() {
+    ref
+        .read(authProvider.notifier)
+        .login(emailController.text.trim(), passwordController.text);
   }
 }

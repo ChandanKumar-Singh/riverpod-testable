@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:testable/app/router/app_router.dart';
+import 'package:testable/shared/widgets/image_view.dart';
 
 /// A reusable sample screen used across projects for testing routes.
 /// It shows current route info, and allows navigating to all defined routes.
@@ -88,6 +89,8 @@ class SampleScreen extends ConsumerWidget {
               _navButton('About', () => router.push(const AboutScreenRoute())),
             ],
           ),
+
+          _images(),
         ],
       ),
     );
@@ -103,6 +106,60 @@ class SampleScreen extends ConsumerWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
       ),
+    );
+  }
+
+  Widget _images() {
+    return Column(
+      children: [
+        // 1) Network with radius + overlay badge
+        ImageView(
+          'https://picsum.photos/400',
+          width: 140,
+          height: 140,
+          radius: 16,
+          overlay: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              margin: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: Colors.black54,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.verified, color: Colors.white, size: 14),
+            ),
+          ),
+        ),
+
+        // 2) Circular avatar
+        const ImageView(
+          'https://picsum.photos/200',
+          width: 72,
+          height: 72,
+          shape: BoxShape.circle,
+        ),
+
+        // 3) SVG icon
+        const ImageView(
+          'assets/icons/heart.svg',
+          width: 28,
+          height: 28,
+          color: Colors.pink,
+        ),
+
+        // 4) Lottie
+        const ImageView('assets/anim/success.json', width: 80, height: 80),
+
+        // 5) Zoom viewer + hero
+        const ImageView(
+          'https://picsum.photos/800',
+          width: 180,
+          height: 120,
+          heroTag: 'img-1',
+          enableZoomViewer: true,
+        ),
+      ],
     );
   }
 }
