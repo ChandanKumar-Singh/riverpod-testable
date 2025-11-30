@@ -47,22 +47,20 @@ class AppHttpClient {
           // if (extraHeaders != null) {
           //   options.headers.addAll(extraHeaders);
           // }
-
           // Token injection if required (we let ApiService decide per-request whether to use auth)
           if (options.extra['requiresAuth'] == true && tokenGetter != null) {
             try {
               final token = await tokenGetter!();
               if (token != null && token.isNotEmpty) {
-                options.headers['Authorization'] = 'Bearer $token';
+                options.headers['Authorization'] = token;
               }
             } catch (e, st) {
               logger.e(
-                'TokenGetter failed',
+                'Unable to find session',
                 e: e,
                 st: st,
                 tag: 'AppHttpClient',
               );
-              // continue without token; service-level error handling will handle auth errors
             }
           }
 

@@ -71,13 +71,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> sendOtp(String contact) async {
+  Future<String?> sendOtp(String contact) async {
     try {
       state = state.copyWith(status: AuthStatus.loading);
       final res = await _repo.sendOtp(contact);
-      if (res.isSuccess && res.data == true) {
+      if (res.isSuccess && res.data?.$1 == true && res.data!.$2.isNotEmpty) {
         // OTP sent successfully
         state = state.copyWith(status: AuthStatus.initial);
+        return res.data!.$2['contact'] as String;
       } else {
         state = AuthState(
           status: AuthStatus.unauthenticated,
@@ -90,6 +91,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         error: e.toString(),
       );
     }
+    return null;
   }
 
   Future<void> logout() async {

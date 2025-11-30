@@ -18,9 +18,10 @@ class UserRepository extends ApiService {
   Future<ApiResponse<UserProfileModel?>> getProfile() async {
     final res = await request<UserProfileModel?>(
       ApiConstants.userProfile,
-      method: ApiMethod.get,
       requiresAuth: true,
       fromJson: (data) {
+        //
+        //
         if (data.containsKey('user')) {
           return UserProfileModel.fromJson(
             data['user'] as Map<String, dynamic>,

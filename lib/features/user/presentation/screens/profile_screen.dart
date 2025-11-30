@@ -96,7 +96,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     subtitle: Text(profileState.profile!.id),
                   ),
                 ),
-                if (authState.user != null)
+                if (authState.user != null) ...[
+                  const SizedBox(height: 10),
                   Card(
                     child: ListTile(
                       leading: const Icon(Icons.email),
@@ -104,6 +105,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       subtitle: Text(authState.user!.email ?? 'N/A'),
                     ),
                   ),
+                ],
               ],
             )
           : const EmptyStateWidget(

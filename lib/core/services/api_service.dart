@@ -298,7 +298,9 @@ class ApiService {
       if (hasResponseCode) {
         final bool success =
             (raw['response_code'] == 1) || (raw['success'] == true);
-        final message = (raw['response_message'] ?? raw['message']) as String?;
+        final message = _extractMessage(
+          raw['response_message'] ?? raw['message'],
+        );
         final obj = raw['response_obj'] ?? raw['data'] ?? raw['payload'];
 
         if (success) {
@@ -328,6 +330,12 @@ class ApiService {
       fromJson: fromJson,
       fromJsonList: fromJsonList,
     );
+  }
+
+  String? _extractMessage(dynamic raw) {
+    if (raw is String) return raw;
+    if (raw is Map) return raw['message'] as String?;
+    return null;
   }
 
   /// Parse successful response data

@@ -144,47 +144,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     // Login button
                     OnTapScaler(
                       enabled: authState.status != AuthStatus.loading,
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: authState.status == AuthStatus.loading
-                              ? null
-                              : _login,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: theme.colorScheme.onPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                            shadowColor: Colors.transparent,
+                      child: ElevatedButton(
+                        onPressed: authState.status == AuthStatus.loading
+                            ? null
+                            : _login,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: authState.status == AuthStatus.loading
-                              ? SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: theme.colorScheme.onPrimary,
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Sign In',
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            color: theme.colorScheme.onPrimary,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    const Icon(Iconsax.arrow_right_3, size: 20),
-                                  ],
-                                ),
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
                         ),
+                        child: authState.status == AuthStatus.loading
+                            ? SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Sign In',
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          color: theme.colorScheme.onPrimary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(Iconsax.arrow_right_3, size: 20),
+                                ],
+                              ),
                       ),
                     ),
 
@@ -281,11 +277,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  void _login() {
+  void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      ref
-          .read(authProvider.notifier)
-          .login(emailController.text.trim(), passwordController.text);
+      final res = await ref.read(authProvider.notifier).sendOtp('2503');
+      if (res != null) {
+        //
+        await ref.read(authProvider.notifier).loginWithOtp(res, '7777');
+      }
     }
   }
 }

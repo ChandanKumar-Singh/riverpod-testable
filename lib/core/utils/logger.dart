@@ -43,7 +43,8 @@ class AppLogger {
   }
 
   bool _shouldLog(LogLevel level) {
-    return _enabled && level.i >= _minLevel.i;
+    return _enabled && true;
+    // level.i >= _minLevel.i;
   }
 
   // Public logging methods

@@ -17,12 +17,15 @@ class AuthRepository extends ApiService {
 
   StorageAdapter get storage => ref.read(storageProvider);
 
-  Future<ApiResponse<bool>> sendOtp(String contact) async {
-    final res = await request<bool>(
+  Future<ApiResponse<(bool, Map<String, dynamic>)>> sendOtp(
+    String contact,
+  ) async {
+    final res = await request<(bool, Map<String, dynamic>)>(
       ApiConstants.authSendOtp,
-      body: {'code':'2503'?? contact},
+      body: {'code': contact},
       requiresAuth: false,
-      fromJson: (data) => data['otp_sent'] == true || data['success'] == true,
+      fromJson: (data) =>
+          (data['otp_sent'] == true || data['success'] == true, data),
     );
     return res;
   }
@@ -30,7 +33,7 @@ class AuthRepository extends ApiService {
   Future<ApiResponse<UserModel?>> verifyOTP(String contact, String otp) async {
     final res = await request<UserModel?>(
       ApiConstants.authVerifyOTP,
-      body: {"contact": "91 8368312660", 'otp': '777777'?? otp},
+      body: {'contact': contact, 'otp': otp},
       requiresAuth: false,
       fromJson: (data) {
         // Handle response structure - might have user in data.user or data.data
