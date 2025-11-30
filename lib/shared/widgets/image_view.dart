@@ -218,7 +218,7 @@ class _ImageViewState extends State<ImageView> {
   Widget _buildSvg(int? cw, int? ch) {
     return Builder(
       builder: (context) {
-        bool isDark = Theme.brightnessOf(context) == Brightness.dark;
+        final isDark = Theme.brightnessOf(context) == Brightness.dark;
         return SvgPicture.asset(
           widget.source!,
           width: widget.width,
