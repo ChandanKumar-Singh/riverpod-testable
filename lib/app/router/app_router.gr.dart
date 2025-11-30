@@ -139,6 +139,22 @@ class ProfileScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SampleDialogScreen]
+class SampleDialogScreenRoute extends PageRouteInfo<void> {
+  const SampleDialogScreenRoute({List<PageRouteInfo>? children})
+    : super(SampleDialogScreenRoute.name, initialChildren: children);
+
+  static const String name = 'SampleDialogScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SampleDialogScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [SecurityScreen]
 class SecurityScreenRoute extends PageRouteInfo<void> {
   const SecurityScreenRoute({List<PageRouteInfo>? children})

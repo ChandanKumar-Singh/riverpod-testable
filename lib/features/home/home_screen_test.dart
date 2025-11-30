@@ -115,12 +115,12 @@ class HomeScreen extends ConsumerWidget {
                       context: context,
                       title: 'Choose Option',
                       actions: [
-                        SheetAction(
+                        const SheetAction(
                           title: 'Edit',
                           icon: Icon(Icons.edit),
                           // onTap: () => editItem(),
                         ),
-                        SheetAction(
+                        const SheetAction(
                           title: 'Delete',
                           icon: Icon(Icons.delete, color: Colors.red),
                           // onTap: () => deleteItem(),
@@ -206,9 +206,17 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () =>
                       context.pushRoute(const AlertCardsDemoScreenRoute()),
                 ),
+                _buildQuickActionTile(
+                  context,
+                  title: 'Dialogs',
+                  icon: Icons.notifications_outlined,
+                  onTap: () =>
+                      context.pushRoute(const SampleDialogScreenRoute()),
+                ),
               ]),
             ),
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 50)),
         ],
       ),
     );

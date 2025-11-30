@@ -282,7 +282,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final res = await ref.read(authProvider.notifier).sendOtp('2503');
       if (res != null) {
         //
-        await ref.read(authProvider.notifier).loginWithOtp(res, '7777');
+        await ref.read(authProvider.notifier).loginWithOtp(res, '777777');
       }
     }
   }

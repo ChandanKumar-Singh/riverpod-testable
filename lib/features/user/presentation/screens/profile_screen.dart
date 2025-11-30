@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/shared/components/index.dart';
 import 'package:testable/shared/widgets/loading_widget.dart';
 import 'package:testable/shared/widgets/empty_state_widget.dart';
 import 'package:testable/shared/widgets/retry_widget.dart';
@@ -36,7 +37,8 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              ref.read(authProvider.notifier).logout();
+              UltraDialog.confirm(context: context, title: 'Loggut',);
+              // ref.read(authProvider.notifier).logout();
             },
           ),
         ],

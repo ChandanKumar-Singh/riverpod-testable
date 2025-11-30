@@ -9,6 +9,7 @@ import 'package:testable/features/home/home_screen_test.dart';
 import 'package:testable/features/user/presentation/screens/profile_screen.dart';
 import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
 import 'package:testable/shared/widgets/samples/alert_cards_screen.dart';
+import 'package:testable/shared/widgets/samples/sample_dialog_screen.dart';
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';
 
@@ -42,6 +43,7 @@ class AppRouter extends RootStackRouter {
     /// Tests
     ///
     AutoRoute(page: AlertCardsDemoScreenRoute.page),
+    AutoRoute(page: SampleDialogScreenRoute.page),
   ];
 
   /// Attach a custom observer for logging or breadcrumb
