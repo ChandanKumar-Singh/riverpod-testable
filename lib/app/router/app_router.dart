@@ -3,15 +3,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/features/auth/presentation/screens/splash_screen.dart';
-import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/home/home_screen_test.dart';
 import 'package:testable/features/user/presentation/screens/profile_screen.dart';
 import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
-import 'package:testable/shared/theme/theme_switcher.dart';
-import 'package:testable/shared/widgets/alert_cards.dart';
+import 'package:testable/shared/widgets/samples/alert_cards_screen.dart';
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';
 

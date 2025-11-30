@@ -55,3 +55,9 @@ flutter:
     - .env
     - assets/svgs/
   #   - images/a_dot_ham.jpeg
+
+# Watch mode (what you're trying to run)
+# fvm flutter pub run build_runner watch
+
+# Clean build (if you have issues)
+# fvm flutter pub run build_runner watch --delete-conflicting-outputs
