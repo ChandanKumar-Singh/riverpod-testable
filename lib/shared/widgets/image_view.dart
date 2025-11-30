@@ -216,15 +216,22 @@ class _ImageViewState extends State<ImageView> {
   }
 
   Widget _buildSvg(int? cw, int? ch) {
-    return SvgPicture.asset(
-      widget.source!,
-      width: widget.width,
-      height: widget.height,
-      fit: widget.fit,
-      colorFilter: widget.color != null
-          ? ColorFilter.mode(widget.color!, BlendMode.srcIn)
-          : null,
-      placeholderBuilder: (context) => _placeholder(),
+    return Builder(
+      builder: (context) {
+        bool isDark = Theme.brightnessOf(context) == Brightness.dark;
+        return SvgPicture.asset(
+          widget.source!,
+          width: widget.width,
+          height: widget.height,
+          fit: widget.fit,
+          colorFilter: widget.color != null
+              ? ColorFilter.mode(widget.color!, BlendMode.srcIn)
+              : isDark
+              ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+              : null,
+          placeholderBuilder: (context) => _placeholder(),
+        );
+      },
     );
   }
 

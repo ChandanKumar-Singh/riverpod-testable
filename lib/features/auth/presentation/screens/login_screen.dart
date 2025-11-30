@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/core/constants/index.dart';
 import 'package:testable/shared/components/button/index.dart';
 import 'package:testable/shared/components/index.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
@@ -21,7 +22,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -41,30 +41,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with back button
-              Row(
-                children: [
-                  /* IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceVariant.withOpacity(
-                          0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 20,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ), */
-                  const Spacer(),
-                  const ThemeSwitcher(),
-                ],
-              ),
+              const Row(children: [Spacer(), ThemeSwitcher()]),
 
               const SizedBox(height: 40),
 
@@ -155,10 +132,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       duration: const Duration(milliseconds: 300),
                       child: authState.error != null
                           ? ErrorAlertCard(
-                            message: authState.error,
-                            dismissible: false,
-                            glowIcon: false,
-                          )
+                              message: authState.error,
+                              dismissible: false,
+                              glowIcon: false,
+                            )
                           : const SizedBox.shrink(),
                     ),
 
@@ -216,25 +193,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     // Divider
                     Row(
                       children: [
-                        Expanded(
-                          child: Divider(
-                            color: theme.colorScheme.outline.withOpacity(0.3),
-                          ),
-                        ),
+                        const Expanded(child: Divider()),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             'Or continue with',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                              color: theme.dividerColor,
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Divider(
-                            color: theme.colorScheme.outline.withOpacity(0.3),
-                          ),
-                        ),
+                        const Expanded(child: Divider()),
                       ],
                     ),
 
@@ -248,26 +217,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: () {
                               // Google sign in
                             },
-                            icon: const ImageView(
-                              'assets/images/google.png',
-                              height: 20,
-                              width: 20,
-                            ),
-                            label: Text(
-                              'Google',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            icon: const ImageView(Svgs.apple, width: 25),
+                            label: const Text('Google'),
                             style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
                               side: BorderSide(
-                                color: theme.colorScheme.outline.withOpacity(
-                                  0.3,
-                                ),
+                                color: theme.colorScheme.outline,
                               ),
                             ),
                           ),
@@ -278,28 +232,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: () {
                               // Apple sign in
                             },
-                            icon: const ImageView(
-                              'assets/images/apple.png',
-                              height: 20,
-                              width: 20,
-                            ),
-                            label: Text(
-                              'Apple',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                             style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
                               side: BorderSide(
-                                color: theme.colorScheme.outline.withOpacity(
-                                  0.3,
-                                ),
+                                color: theme.colorScheme.outline,
                               ),
                             ),
+                            icon: const ImageView(Svgs.apple, width: 25),
+                            label: const Text('Apple'),
                           ),
                         ),
                       ],
