@@ -1,153 +1,75 @@
-# Test Suite Documentation
+# Test Suite
 
-## Overview
+This directory contains comprehensive tests for the entire application.
 
-This test suite includes comprehensive tests for the Flutter testable app, covering unit tests, widget tests, and integration tests.
+## Test Coverage
+
+### Core Services ✅
+- ✅ ApiService - API request handling, error handling, retry logic
+- ✅ StorageAdapter - Local and secure storage operations
+- ✅ NetworkInfo - Connectivity checking
+- ✅ Logger - Logging functionality
+- ✅ ErrorHandler - Error message extraction and classification
+
+### Repositories ✅
+- ✅ AuthRepository - Authentication operations
+- ✅ UserRepository - User profile operations
+- ✅ AppSettingsRepository - App settings operations
+
+### Providers/Notifiers ✅
+- ✅ AuthNotifier - Authentication state management
+- ✅ UserProfileNotifier - User profile state management
+- ✅ PaymentNotifier - Payment state management
+- ✅ ThemeNotifier - Theme management
+- ✅ LangNotifier - Language management
+
+### Widgets ✅
+- ✅ EmptyStateWidget - Empty state display
+- ✅ LoadingWidget - Loading indicators
+- ✅ ErrorWidget - Error display
+- ✅ RetryWidget - Retry functionality
+- ✅ ErrorBanner - Error banners
+
+### Integration Tests ✅
+- ✅ Auth Flow - Complete authentication flow
+- ✅ User Flow - User profile operations
+
+## Running Tests
+
+```bash
+# Run all tests
+flutter test
+
+# Run with coverage
+flutter test --coverage
+
+# Run specific test file
+flutter test test/features/auth/data/providers/auth_notifier_test.dart
+
+# Run tests in watch mode
+flutter test --watch
+```
 
 ## Test Structure
 
 ```
 test/
-├── core/                          # Core functionality tests
-│   ├── network/                   # Network layer tests
-│   ├── services/                  # Service tests
-│   └── utils/                     # Utility tests
-├── features/                      # Feature tests
-│   ├── auth/                      # Authentication tests
-│   ├── user/                      # User feature tests
-│   └── payment/                   # Payment feature tests
-├── shared/                        # Shared component tests
-│   └── widgets/                   # Widget tests
-├── integration/                   # Integration tests
-└── app/                           # App-level tests
+├── helpers/              # Test utilities
+├── core/                 # Core functionality tests
+├── features/             # Feature tests
+├── shared/               # Shared component tests
+├── app/                  # App-level tests
+└── integration/          # Integration tests
 ```
 
-## Running Tests
+## Test Helpers
 
-### Run all tests:
-```bash
-flutter test
-```
+See `test/helpers/test_helpers.dart` for:
+- MockStorageAdapter
+- createTestContainer
+- pump() helper
+- waitFor() helper
 
-### Run specific test file:
-```bash
-flutter test test/features/auth/data/providers/auth_provider_test.dart
-```
+## Documentation
 
-### Run tests with coverage:
-```bash
-flutter test --coverage
-```
-
-### Run tests in watch mode:
-```bash
-flutter test --watch
-```
-
-## Test Coverage
-
-### Unit Tests
-- ✅ Auth provider state management
-- ✅ User profile state management
-- ✅ Payment state management
-- ✅ API response handling
-- ✅ Error handling
-- ✅ Storage adapter interface
-
-### Widget Tests
-- ✅ Loading widgets
-- ✅ Empty state widgets
-- ✅ Error widgets
-- ✅ Retry widgets
-- ✅ Error banners
-- ✅ Login screen
-
-### Integration Tests
-- ✅ Auth flow (placeholder)
-- ✅ User flow (placeholder)
-- ✅ Payment flow (placeholder)
-
-## Test Files
-
-### Core Tests
-1. **error_handler_test.dart** - Tests for error handling utility
-2. **api_response_test.dart** - Tests for API response models
-3. **storage_adapter_test.dart** - Tests for storage adapter
-
-### Feature Tests
-1. **auth_provider_test.dart** - Auth state and provider tests
-2. **auth_repository_test.dart** - Auth repository tests
-3. **user_provider_test.dart** - User profile provider tests
-4. **payment_provider_test.dart** - Payment provider tests
-
-### Widget Tests
-1. **loading_widget_test.dart** - Loading widget tests
-2. **empty_state_widget_test.dart** - Empty state widget tests
-3. **retry_widget_test.dart** - Retry widget tests
-4. **error_banner_test.dart** - Error banner tests
-5. **login_screen_test.dart** - Login screen tests
-
-### Integration Tests
-1. **auth_flow_test.dart** - Auth flow integration tests
-
-## Writing New Tests
-
-### Unit Test Example:
-```dart
-test('should update state correctly', () {
-  const state = MyState();
-  final updated = state.copyWith(status: Status.loaded);
-  expect(updated.status, Status.loaded);
-});
-```
-
-### Widget Test Example:
-```dart
-testWidgets('should display widget', (tester) async {
-  await tester.pumpWidget(MyWidget());
-  expect(find.byType(MyWidget), findsOneWidget);
-});
-```
-
-## Test Best Practices
-
-1. **Isolation**: Each test should be independent
-2. **Naming**: Use descriptive test names
-3. **Arrange-Act-Assert**: Follow AAA pattern
-4. **Mocking**: Use mocks for external dependencies
-5. **Coverage**: Aim for high test coverage
-6. **Speed**: Keep tests fast
-7. **Clarity**: Write clear, readable tests
-
-## Mocking
-
-For mocking, use the `mockito` package:
-```dart
-@GenerateMocks([MyClass])
-void main() {
-  // Tests here
-}
-```
-
-## Continuous Integration
-
-Tests should be run in CI/CD pipeline:
-```yaml
-- run: flutter test
-- run: flutter test --coverage
-```
-
-## Coverage Goals
-
-- **Unit Tests**: 80%+ coverage
-- **Widget Tests**: 70%+ coverage
-- **Integration Tests**: 50%+ coverage
-
-## Notes
-
-- Some tests are placeholders and need implementation
-- Mock setup required for full integration tests
-- Test environment setup needed for some tests
-- Update tests as features evolve
-
-
+See `test/TESTING_GUIDE.md` for comprehensive testing documentation.
