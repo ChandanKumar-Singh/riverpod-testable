@@ -139,3 +139,13 @@ Future<void> pump() async {
 Future<void> waitFor(Duration duration) async {
   await Future<void>.delayed(duration);
 }
+
+/// Test environment configuration
+class TestEnv extends Env {
+  TestEnv()
+    : super(
+        baseUrl: 'http://localhost:3000',
+        enableLogging: false,
+        isTestMode: true,
+      );
+}

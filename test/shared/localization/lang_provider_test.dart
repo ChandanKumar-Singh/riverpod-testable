@@ -16,8 +16,9 @@ void main() {
 
     setUp(() {
       mockStorage = MockLangStorage();
-      when(mockStorage.loadLocale())
-          .thenAnswer((_) async => SupportedLocales.en);
+      when(
+        mockStorage.loadLocale(),
+      ).thenAnswer((_) async => SupportedLocales.en);
       container = ProviderContainer(
         overrides: [
           langProvider.overrideWith((ref) => LangNotifier(mockStorage)),
@@ -37,7 +38,10 @@ void main() {
 
     test('setLocale updates locale and saves to storage', () async {
       when(mockStorage.saveLocale(any)).thenAnswer((_) async {});
-      
+
+      // Wait for initial load to complete
+      await Future.delayed(const Duration(milliseconds: 50));
+
       final notifier = container.read(langProvider.notifier);
       await notifier.setLocale(SupportedLocales.hi);
 
@@ -48,9 +52,12 @@ void main() {
 
     test('nextLocale cycles through all locales', () async {
       when(mockStorage.saveLocale(any)).thenAnswer((_) async {});
-      
+
+      // Wait for initial load to complete
+      await Future.delayed(const Duration(milliseconds: 50));
+
       final notifier = container.read(langProvider.notifier);
-      
+
       // Start with English
       await notifier.setLocale(SupportedLocales.en);
       expect(container.read(langProvider), SupportedLocales.en);
@@ -59,10 +66,13 @@ void main() {
       await notifier.nextLocale();
       expect(container.read(langProvider), SupportedLocales.hi);
 
+      // Next should be Spanish
+      await notifier.nextLocale();
+      expect(container.read(langProvider), SupportedLocales.es);
+
       // Next should cycle back to English
       await notifier.nextLocale();
       expect(container.read(langProvider), SupportedLocales.en);
     });
   });
 }
-
