@@ -3,6 +3,8 @@ import 'package:testable/core/services/local_storage_adapter.dart';
 import '../../helpers/test_helpers.dart';
 
 void main() {
+  // Initialize Flutter binding for secure storage tests
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('LocalStorage', () {
     late LocalStorage storage;
     late MockStorageAdapter mockSharedPrefs;

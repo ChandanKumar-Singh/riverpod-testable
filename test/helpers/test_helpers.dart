@@ -146,5 +146,6 @@ class TestEnv extends Env {
     : super(
         baseUrl: 'http://localhost:3000',
         enableLogging: false,
+        isTest: true,
       );
 }

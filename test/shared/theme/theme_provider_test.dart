@@ -42,11 +42,19 @@ void main() {
       // Wait for initial load to complete
       await Future.delayed(const Duration(milliseconds: 50));
 
+      // Get the notifier and verify initial state
       final notifier = container.read(themeProvider.notifier);
-      await notifier.setTheme(ThemeMode.dark);
+      expect(notifier.state, ThemeMode.system);
 
-      final state = container.read(themeProvider);
-      expect(state, ThemeMode.dark);
+      // Set theme and wait for completion
+      await notifier.setTheme(ThemeMode.dark);
+      await Future.delayed(
+        const Duration(milliseconds: 10),
+      ); // Ensure state update completes
+
+      // State should be updated
+      expect(notifier.state, ThemeMode.dark);
+      expect(container.read(themeProvider), ThemeMode.dark);
       verify(mockStorage.saveThemeMode(ThemeMode.dark)).called(1);
     });
 
@@ -58,19 +66,22 @@ void main() {
 
       final notifier = container.read(themeProvider.notifier);
       await notifier.setTheme(ThemeMode.light);
+      await Future.delayed(const Duration(milliseconds: 10));
 
       // Verify it's set to light
+      expect(notifier.state, ThemeMode.light);
       expect(container.read(themeProvider), ThemeMode.light);
 
       // Mock toastification to avoid initialization errors
       try {
         await notifier.toggle();
+        await Future.delayed(const Duration(milliseconds: 10));
       } catch (e) {
         // Ignore toastification errors in tests
       }
 
-      final state = container.read(themeProvider);
-      expect(state, ThemeMode.dark);
+      expect(notifier.state, ThemeMode.dark);
+      expect(container.read(themeProvider), ThemeMode.dark);
     });
 
     test('toggle switches from dark to light', () async {
@@ -81,19 +92,22 @@ void main() {
 
       final notifier = container.read(themeProvider.notifier);
       await notifier.setTheme(ThemeMode.dark);
+      await Future.delayed(const Duration(milliseconds: 10));
 
       // Verify it's set to dark
+      expect(notifier.state, ThemeMode.dark);
       expect(container.read(themeProvider), ThemeMode.dark);
 
       // Mock toastification to avoid initialization errors
       try {
         await notifier.toggle();
+        await Future.delayed(const Duration(milliseconds: 10));
       } catch (e) {
         // Ignore toastification errors in tests
       }
 
-      final state = container.read(themeProvider);
-      expect(state, ThemeMode.light);
+      expect(notifier.state, ThemeMode.light);
+      expect(container.read(themeProvider), ThemeMode.light);
     });
   });
 }

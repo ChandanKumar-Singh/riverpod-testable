@@ -39,12 +39,26 @@ void main() {
     test('setLocale updates locale and saves to storage', () async {
       when(mockStorage.saveLocale(any)).thenAnswer((_) async {});
 
-      // Wait for initial load to complete
-      await Future.delayed(const Duration(milliseconds: 50));
+      // Wait for initial load to complete by polling the provider state
+      int attempts = 0;
+      while (container.read(langProvider) != SupportedLocales.en &&
+          attempts < 20) {
+        await Future.delayed(const Duration(milliseconds: 10));
+        attempts++;
+      }
 
       final notifier = container.read(langProvider.notifier);
-      await notifier.setLocale(SupportedLocales.hi);
+      // Verify initial state
+      expect(notifier.state, SupportedLocales.en);
+      expect(container.read(langProvider), SupportedLocales.en);
 
+      // Now set the new locale
+      await notifier.setLocale(SupportedLocales.hi);
+      // Wait to ensure state update completes and _load() doesn't overwrite it
+      await Future.delayed(const Duration(milliseconds: 50));
+
+      // Check both notifier state and provider state
+      expect(notifier.state, SupportedLocales.hi);
       final state = container.read(langProvider);
       expect(state, SupportedLocales.hi);
       verify(mockStorage.saveLocale(SupportedLocales.hi)).called(1);
@@ -60,18 +74,26 @@ void main() {
 
       // Start with English
       await notifier.setLocale(SupportedLocales.en);
+      await Future.delayed(const Duration(milliseconds: 10));
+      expect(notifier.state, SupportedLocales.en);
       expect(container.read(langProvider), SupportedLocales.en);
 
       // Next should be Hindi
       await notifier.nextLocale();
+      await Future.delayed(const Duration(milliseconds: 10));
+      expect(notifier.state, SupportedLocales.hi);
       expect(container.read(langProvider), SupportedLocales.hi);
 
       // Next should be Spanish
       await notifier.nextLocale();
+      await Future.delayed(const Duration(milliseconds: 10));
+      expect(notifier.state, SupportedLocales.es);
       expect(container.read(langProvider), SupportedLocales.es);
 
       // Next should cycle back to English
       await notifier.nextLocale();
+      await Future.delayed(const Duration(milliseconds: 10));
+      expect(notifier.state, SupportedLocales.en);
       expect(container.read(langProvider), SupportedLocales.en);
     });
   });

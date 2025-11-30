@@ -6,6 +6,7 @@ import 'package:testable/features/user/data/providers/user_provider.dart';
 import 'package:testable/features/user/data/repositories/user_repository_impl.dart';
 import 'package:testable/features/user/data/models/user_profile_model.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
+import 'package:testable/core/di/providers.dart';
 import '../../../../helpers/test_helpers.dart';
 import 'user_provider_test.mocks.dart';
 
@@ -19,7 +20,9 @@ void main() {
       mockRepo = MockUserRepository();
       // Note: This test requires accessing private _repo field
       // In production, you might want to make repo injectable or use a different approach
-      container = ProviderContainer();
+      container = ProviderContainer(
+        overrides: [envProvider.overrideWithValue(TestEnv())],
+      );
     });
 
     tearDown(() {
@@ -31,10 +34,10 @@ void main() {
         // Note: This test verifies the provider structure
         // Full testing would require repository mocking at the provider level
         final notifier = container.read(userProfileProvider.notifier);
-        
+
         // Test that the method exists and can be called
         expect(() => notifier.loadProfile(), returnsNormally);
-        
+
         // Note: Actual state verification would require proper repository setup
       });
 
@@ -69,9 +72,7 @@ void main() {
         when(mockRepo.getProfile()).thenAnswer(
           (_) async => Future.delayed(
             const Duration(milliseconds: 100),
-            () => const ApiResponse<UserProfileModel?>.error(
-              message: 'Error',
-            ),
+            () => const ApiResponse<UserProfileModel?>.error(message: 'Error'),
           ),
         );
 
@@ -95,9 +96,8 @@ void main() {
         );
 
         when(mockRepo.updateProfile(any)).thenAnswer(
-          (_) async => ApiResponse<UserProfileModel?>.success(
-            data: updatedProfile,
-          ),
+          (_) async =>
+              ApiResponse<UserProfileModel?>.success(data: updatedProfile),
         );
 
         final notifier = container.read(userProfileProvider.notifier);
@@ -148,10 +148,7 @@ void main() {
 
       test('copyWith updates profile', () {
         const state = UserProfileState();
-        final profile = UserProfileModel(
-          id: 'user-1',
-          name: 'Test User',
-        );
+        final profile = UserProfileModel(id: 'user-1', name: 'Test User');
         final updated = state.copyWith(profile: profile);
         expect(updated.profile, profile);
         expect(updated.status, UserProfileStatus.initial);
@@ -165,10 +162,7 @@ void main() {
       });
 
       test('copyWith preserves other fields', () {
-        final profile = UserProfileModel(
-          id: 'user-1',
-          name: 'Test User',
-        );
+        final profile = UserProfileModel(id: 'user-1', name: 'Test User');
         final state = UserProfileState(profile: profile);
         final updated = state.copyWith(status: UserProfileStatus.loading);
         expect(updated.status, UserProfileStatus.loading);

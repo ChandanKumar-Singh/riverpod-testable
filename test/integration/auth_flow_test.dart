@@ -4,6 +4,7 @@ import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
+import 'package:testable/core/di/providers.dart';
 import '../helpers/test_helpers.dart';
 import 'auth_flow_test.mocks.dart';
 import 'package:mockito/annotations.dart';
@@ -20,7 +21,12 @@ void main() {
     setUp(() {
       mockRepo = MockAuthRepository();
       mockStorage = MockStorageAdapter();
-      container = createTestContainer(storage: mockStorage);
+      container = ProviderContainer(
+        overrides: [
+          storageProvider.overrideWithValue(mockStorage),
+          envProvider.overrideWithValue(TestEnv()),
+        ],
+      );
     });
 
     tearDown(() {

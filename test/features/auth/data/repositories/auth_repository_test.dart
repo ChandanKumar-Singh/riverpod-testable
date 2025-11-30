@@ -8,6 +8,7 @@ import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/di/providers.dart';
+import '../../../../helpers/test_helpers.dart' hide MockStorageAdapter;
 import 'auth_repository_test.mocks.dart' show MockStorageAdapter;
 
 // Test Ref implementation for repository tests
@@ -49,7 +50,8 @@ class TestRef implements Ref {
   void onRemoveListener(void Function() callback) {}
 
   @override
-  bool exists(ProviderOrFamily provider) => _container.exists(provider as ProviderBase<Object?>);
+  bool exists(ProviderOrFamily provider) =>
+      _container.exists(provider as ProviderBase<Object?>);
 
   @override
   KeepAliveLink keepAlive() => _NoOpKeepAliveLink();
@@ -86,14 +88,15 @@ class _NoOpProviderSubscription<T> implements ProviderSubscription<T> {
   void close() {}
 
   @override
-  T read() => throw UnimplementedError('read not implemented in test subscription');
+  T read() =>
+      throw UnimplementedError('read not implemented in test subscription');
 
   @override
   bool get closed => false;
 
   @override
   Node get source => throw UnimplementedError();
-  
+
   // Note: source getter type mismatch is acceptable for test purposes
   // The actual implementation won't be called in these tests
 }
@@ -107,7 +110,10 @@ void main() {
     setUp(() {
       mockStorage = MockStorageAdapter();
       container = ProviderContainer(
-        overrides: [storageProvider.overrideWithValue(mockStorage)],
+        overrides: [
+          storageProvider.overrideWithValue(mockStorage),
+          envProvider.overrideWithValue(TestEnv()),
+        ],
       );
     });
 

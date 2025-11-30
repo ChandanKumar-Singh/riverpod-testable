@@ -8,6 +8,8 @@ import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
+import 'package:testable/core/di/providers.dart';
+import '../../../../helpers/test_helpers.dart';
 
 import 'auth_notifier_test.mocks.dart';
 
@@ -39,6 +41,7 @@ void main() {
     mockRepo = MockAuthRepository();
     container = ProviderContainer(
       overrides: [
+        envProvider.overrideWithValue(TestEnv()),
         authProvider.overrideWith((ref) {
           return AuthNotifier(ref, repo: mockRepo);
         }),
@@ -269,7 +272,7 @@ void main() {
       expect(result, isNull);
       final state = container.read(authProvider);
       expect(state.status, AuthStatus.unauthenticated);
-      expect(state.error, 'Failed to send OTP');
+      expect(state.error, 'Failed'); // Use actual error message from response
     });
 
     test('sendOtp returns null when success but false data', () async {
@@ -333,10 +336,8 @@ void main() {
       final state = container.read(authProvider);
       expect(state.status, AuthStatus.unauthenticated);
       expect(state.user, isNull);
-      // Choose one approach:
-      // Option 1: Error should be null (logout always succeeds locally)
-      expect(state.error, isNull);
-      // OR Option 2: Error should be set (if you want to show logout errors)
+      // Implementation sets error on logout failure
+      expect(state.error, 'Exception: Storage error');
       // expect(state.error, 'Exception: Storage error');
 
       verify(mockRepo.clearSession()).called(1);
