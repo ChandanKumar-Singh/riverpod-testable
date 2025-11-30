@@ -1,3 +1,4 @@
+// presentation/auth_notifier.dart (FIXED VERSION)
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/data/repositories/auth_repository_impl.dart';
@@ -7,30 +8,41 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
 );
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this.ref) : super(const AuthState()) {
-    _repo = AuthRepository(ref);
+  AuthNotifier(this.ref, {AuthRepository? repo})
+    : _repo = repo ?? AuthRepository(ref),
+      super(const AuthState()) {
     _initialize();
   }
+
   final Ref ref;
-  late final AuthRepository _repo;
+  final AuthRepository _repo;
 
   Future<void> _initialize() async {
     state = state.copyWith(status: AuthStatus.loading);
-    final user = await _repo.loadSession();
-    if (user != null && user.id.isNotEmpty) {
-      state = AuthState(status: AuthStatus.authenticated, user: user);
-    } else {
-      state = const AuthState(status: AuthStatus.unauthenticated);
+    try {
+      final user = await _repo.loadSession();
+      if (user != null && user.id.isNotEmpty) {
+        state = AuthState(status: AuthStatus.authenticated, user: user);
+      } else {
+        state = const AuthState(status: AuthStatus.unauthenticated);
+      }
+    } catch (e) {
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        error: e.toString(), // FIX: Set error on initialization failure
+      );
     }
   }
 
   Future<void> login(String email, String password) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading);
+      state = state.copyWith(
+        status: AuthStatus.loading,
+        error: null,
+      ); // FIX: Clear previous error
       final res = await _repo.login(email, password);
       if (res.isSuccess && res.data != null) {
         final user = res.data!;
-        // Extract token from response or user model
         final token = user.token;
         await _repo.saveSession(user, token: token);
         state = AuthState(status: AuthStatus.authenticated, user: user);
@@ -43,14 +55,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
-        error: e.toString(),
+        error: e.toString(), // FIX: Ensure error is set
       );
     }
   }
 
   Future<void> loginWithOtp(String contact, String otp) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading);
+      state = state.copyWith(
+        status: AuthStatus.loading,
+        error: null,
+      ); // FIX: Clear previous error
       final res = await _repo.verifyOTP(contact, otp);
       if (res.isSuccess && res.data != null) {
         final user = res.data!;
@@ -66,17 +81,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
-        error: e.toString(),
+        error: e.toString(), // FIX: Ensure error is set
       );
     }
   }
 
   Future<String?> sendOtp(String contact) async {
     try {
-      state = state.copyWith(status: AuthStatus.loading);
+      state = state.copyWith(
+        status: AuthStatus.loading,
+        error: null,
+      ); // FIX: Clear previous error
       final res = await _repo.sendOtp(contact);
       if (res.isSuccess && res.data?.$1 == true && res.data!.$2.isNotEmpty) {
-        // OTP sent successfully
         state = state.copyWith(status: AuthStatus.initial);
         return res.data!.$2['contact'] as String;
       } else {
@@ -88,7 +105,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
-        error: e.toString(),
+        error: e.toString(), // FIX: Ensure error is set
       );
     }
     return null;
@@ -96,14 +113,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     try {
-      state = state.copyWith(status: AuthStatus.loading);
-      // await _repo.logout();
+      state = state.copyWith(status: AuthStatus.loading, error: null);
       await _repo.clearSession();
       state = const AuthState(status: AuthStatus.unauthenticated);
     } catch (e) {
-      // Even if logout fails, clear local session
-      await _repo.clearSession();
-      state = const AuthState(status: AuthStatus.unauthenticated);
+      // Even if clearing session fails, we should clear local state
+      await _repo.clearSession().catchError(
+        (_) {},
+      ); // Try to clear again, but ignore errors
+      state = AuthState(
+        status: AuthStatus.unauthenticated,
+        error: e.toString(), // SET THE ERROR HERE
+      );
     }
   }
 }
@@ -120,7 +141,7 @@ class AuthState {
     return AuthState(
       status: status ?? this.status,
       user: user ?? this.user,
-      error: (error == null || error.isEmpty) ? error : this.error,
+      error: error, // FIX: Allow clearing error by passing null
     );
   }
 }

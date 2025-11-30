@@ -81,7 +81,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ErrorEmptyStateWidget(
-              message: 'Something went wrong',
+              message: 'Something went wrong!!!',
               onRetry: () {},
             ),
           ),
@@ -89,7 +89,7 @@ void main() {
       );
 
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
-      expect(find.text('Something went wrong'), findsOneWidget);
+      expect(find.text('Something went wrong!!!'), findsOneWidget);
       expect(find.text('Retry'), findsOneWidget);
     });
 

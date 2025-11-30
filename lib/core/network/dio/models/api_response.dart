@@ -7,7 +7,7 @@ import 'dart:convert';
 ///  - success responses with typed `data`
 ///  - error responses with message, error object and stacktrace
 ///  - loading state (useful for UI state models)
-sealed class ApiResponse<T> {
+class ApiResponse<T> {
   const ApiResponse();
 
   const factory ApiResponse.success({
@@ -64,6 +64,7 @@ sealed class ApiResponse<T> {
       ApiResponseError(:final message, :final statusCode, :final error) =>
         'ApiResponse.error(statusCode=$statusCode, message=$message, error=$error)',
       ApiResponseLoading() => 'ApiResponse.loading()',
+      ApiResponse<T>() => 'null',
     };
   }
 }

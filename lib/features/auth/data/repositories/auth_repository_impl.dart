@@ -1,3 +1,4 @@
+// features/auth/data/repositories/auth_repository_impl.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/services/storage_adapter.dart';
@@ -52,14 +53,7 @@ class AuthRepository extends ApiService {
   }
 
   Future<ApiResponse<UserModel?>> login(String email, String password) async {
-    final res0 = await sendOtp(email);
-    if (res0.isSuccess) {
-      final user = verifyOTP(email, password);
-      return user;
-    }
-    return ApiResponse.error(message: res0.message);
-    // return;
-
+    // REMOVED THE INCORRECT OTP FLOW - only regular login logic remains
     final res = await request<UserModel?>(
       ApiConstants.authLogin,
       method: ApiMethod.post,
