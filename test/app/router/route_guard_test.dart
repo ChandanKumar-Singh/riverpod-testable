@@ -61,7 +61,8 @@ class TestRef implements Ref {
   }
 
   @override
-  bool exists(ProviderOrFamily provider) => _container.exists(provider as ProviderBase<Object?>);
+  bool exists(ProviderOrFamily provider) =>
+      _container.exists(provider as ProviderBase<Object?>);
 
   @override
   KeepAliveLink keepAlive() {
@@ -108,7 +109,8 @@ class _NoOpProviderSubscription<T> implements ProviderSubscription<T> {
   void close() {}
 
   @override
-  T read() => throw UnimplementedError('read not implemented in test subscription');
+  T read() =>
+      throw UnimplementedError('read not implemented in test subscription');
 
   @override
   bool get closed => false;
@@ -116,7 +118,6 @@ class _NoOpProviderSubscription<T> implements ProviderSubscription<T> {
   @override
   Node get source => throw UnimplementedError();
 
-  
   // Note: source getter type mismatch is acceptable for test purposes
   // The actual implementation won't be called in these tests
 }

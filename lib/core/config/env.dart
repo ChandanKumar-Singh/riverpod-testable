@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 /// In production you may load from --dart-define, separate files, or CI secrets.
 class Env {
 
-  const Env._({
+  const Env({
     required this.baseUrl,
     required this.enableLogging,
     this.isTest = false,
@@ -25,19 +25,19 @@ class Env {
   }
 
   // default dev config
-  static final dev = Env._(
+  static final dev = Env(
     baseUrl: dotenv.env['BASE_URL'] ?? 'https://dev.example.com',
     enableLogging: true,
   );
 
   // production (override via --dart-define or CI)
-  static final prod = Env._(
+  static final prod = Env(
     baseUrl: dotenv.env['BASE_URL'] ?? 'https://api.example.com',
     enableLogging: false,
   );
 
   // production (override via --dart-define or CI)
-  static final test = Env._(
+  static final test = Env(
     baseUrl: dotenv.env['BASE_URL'] ?? 'https://api.example.com',
     enableLogging: true,
     isTest: true,
