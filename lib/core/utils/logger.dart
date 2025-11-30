@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 /// Simple, configurable logger wrapper using the logger package
 class AppLogger {
   AppLogger({
-    String name = 'AppLogger',
     bool enabled = true,
     LogLevel minLevel = LogLevel.info,
     bool showEmojis = true,
