@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
-import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
 import 'package:testable/core/di/providers.dart';
 import '../helpers/test_helpers.dart';
@@ -16,11 +16,14 @@ void main() {
   group('Auth Flow Integration Tests', () {
     late ProviderContainer container;
     late MockAuthRepository mockRepo;
-    late MockStorageAdapter mockStorage;
+    late LocalStorage mockStorage;
 
     setUp(() {
       mockRepo = MockAuthRepository();
-      mockStorage = MockStorageAdapter();
+      mockStorage = LocalStorage(
+        sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
+        secureStorageAdapter: MockSecureStorageAdapter(),
+      );
       container = ProviderContainer(
         overrides: [
           storageProvider.overrideWithValue(mockStorage),
@@ -36,7 +39,7 @@ void main() {
     test('complete login flow', () async {
       // Setup: No existing session
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
-      
+
       // Setup: Successful login
       final user = UserModel(
         id: 'user-1',
@@ -44,12 +47,13 @@ void main() {
         email: 'test@example.com',
         token: 'test-token',
       );
-      
-      when(mockRepo.login('test@example.com', 'password')).thenAnswer(
-        (_) async => ApiResponse<UserModel?>.success(data: user),
-      );
-      when(mockRepo.saveSession(user, token: 'test-token'))
-          .thenAnswer((_) async {});
+
+      when(
+        mockRepo.login('test@example.com', 'password'),
+      ).thenAnswer((_) async => ApiResponse<UserModel?>.success(data: user));
+      when(
+        mockRepo.saveSession(user, token: 'test-token'),
+      ).thenAnswer((_) async {});
 
       // Initialize auth provider
       container.read(authProvider);
@@ -74,12 +78,11 @@ void main() {
     test('login failure flow', () async {
       // Setup: No existing session
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
-      
+
       // Setup: Failed login
       when(mockRepo.login('test@example.com', 'wrong')).thenAnswer(
-        (_) async => const ApiResponse<UserModel?>.error(
-          message: 'Invalid credentials',
-        ),
+        (_) async =>
+            const ApiResponse<UserModel?>.error(message: 'Invalid credentials'),
       );
 
       // Initialize auth provider
@@ -108,7 +111,7 @@ void main() {
         email: 'test@example.com',
         token: 'test-token',
       );
-      
+
       when(mockRepo.loadSession()).thenAnswer((_) async => user);
       when(mockRepo.clearSession()).thenAnswer((_) async {});
 
@@ -136,14 +139,14 @@ void main() {
     test('OTP login flow', () async {
       // Setup: No existing session
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
-      
+
       // Setup: Successful OTP send
       when(mockRepo.sendOtp('9999999999')).thenAnswer(
         (_) async => ApiResponse<(bool, Map<String, dynamic>)>.success(
           data: (true, {'contact': '9999999999'}),
         ),
       );
-      
+
       // Setup: Successful OTP verification
       final user = UserModel(
         id: 'user-1',
@@ -151,12 +154,13 @@ void main() {
         email: 'test@example.com',
         token: 'test-token',
       );
-      
-      when(mockRepo.verifyOTP('9999999999', '123456')).thenAnswer(
-        (_) async => ApiResponse<UserModel?>.success(data: user),
-      );
-      when(mockRepo.saveSession(user, token: 'test-token'))
-          .thenAnswer((_) async {});
+
+      when(
+        mockRepo.verifyOTP('9999999999', '123456'),
+      ).thenAnswer((_) async => ApiResponse<UserModel?>.success(data: user));
+      when(
+        mockRepo.saveSession(user, token: 'test-token'),
+      ).thenAnswer((_) async {});
 
       // Initialize auth provider
       container.read(authProvider);
@@ -165,7 +169,7 @@ void main() {
       // Send OTP
       final notifier = container.read(authProvider.notifier);
       final contact = await notifier.sendOtp('9999999999');
-      
+
       expect(contact, '9999999999');
       verify(mockRepo.sendOtp('9999999999')).called(1);
 
@@ -190,7 +194,7 @@ void main() {
         email: 'test@example.com',
         token: 'test-token',
       );
-      
+
       when(mockRepo.loadSession()).thenAnswer((_) async => user);
 
       // Initialize auth provider

@@ -53,6 +53,7 @@ flutter:
 
   assets:
     - .env
+    - .env.test
     - assets/svgs/
   #   - images/a_dot_ham.jpeg
 

@@ -86,28 +86,36 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<String?> sendOtp(String contact) async {
+Future<String?> sendOtp(String contact) async {
     try {
-      state = state.copyWith(
-        status: AuthStatus.loading,
-        error: null,
-      ); // FIX: Clear previous error
+      print('sendOtp: Starting with contact $contact');
+      state = state.copyWith(status: AuthStatus.loading, error: null);
+      print('sendOtp: Set loading state, error cleared');
+
       final res = await _repo.sendOtp(contact);
+      print('sendOtp: Repository returned: $res');
+
       if (res.isSuccess && res.data?.$1 == true && res.data!.$2.isNotEmpty) {
+        print('sendOtp: Success, returning contact');
         state = state.copyWith(status: AuthStatus.initial);
         return res.data!.$2['contact'] as String;
       } else {
+        print('sendOtp: API failure, setting error: ${res.message}');
         state = AuthState(
           status: AuthStatus.unauthenticated,
           error: res.message ?? 'Failed to send OTP',
         );
       }
-    } catch (e) {
+    } catch (e, stack) {
+      print('sendOtp: CAUGHT EXCEPTION: $e');
+      print('sendOtp: Stack trace: $stack');
       state = AuthState(
         status: AuthStatus.unauthenticated,
-        error: e.toString(), // FIX: Ensure error is set
+        error: e.toString(),
       );
+      print('sendOtp: Set error state with error: ${e.toString()}');
     }
+    print('sendOtp: Returning null');
     return null;
   }
 

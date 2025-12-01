@@ -6,6 +6,7 @@ import 'package:testable/core/di/providers.dart';
 import 'package:testable/shared/localization/lang_provider.dart';
 import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/supported_locales.dart';
+import '../../helpers/test_helpers.dart';
 import 'lang_provider_test.mocks.dart';
 
 @GenerateMocks([LangStorage])
@@ -21,6 +22,7 @@ void main() {
       ).thenAnswer((_) async => SupportedLocales.en);
       container = ProviderContainer(
         overrides: [
+          storageProvider.overrideWithValue(testLocaloStorage),
           langProvider.overrideWith((ref) => LangNotifier(mockStorage)),
         ],
       );

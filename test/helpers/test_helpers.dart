@@ -5,6 +5,8 @@ import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/config/env.dart';
 
+LocalStorage get testLocaloStorage => LocalStorage(sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(), secureStorageAdapter: MockSecureStorageAdapter());
+
 /// Mock storage adapter for testing
 class MockSharedPreferencesStorageAdapter implements SharedPreferencesStorageAdapter {
   final Map<String, dynamic> _storage = {};

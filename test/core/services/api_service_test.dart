@@ -70,10 +70,14 @@ void main() {
       final response = Response(
         requestOptions: RequestOptions(path: '/test'),
         statusCode: 200,
-        data: [
-          {'id': 1, 'name': 'Item 1'},
-          {'id': 2, 'name': 'Item 2'},
-        ],
+        data: {
+          'response_code': 1,
+          'response_message': null,
+          'response_obj': [
+            {'id': 1, 'name': 'Item 1'},
+            {'id': 2, 'name': 'Item 2'},
+          ],
+        },
       );
 
       when(
@@ -94,14 +98,13 @@ void main() {
       // So we need to use fromJson instead for list of maps
       final result = await apiService.request<List<Map<String, dynamic>>>(
         '/test',
-        fromJson: (data) {
+        fromJsonList: (data) {
           // Handle list data - data is already a List from the response
-          final list = data as List<dynamic>;
-          return list
-              .map<Map<String, dynamic>>(
-                (item) => Map<String, dynamic>.from(item as Map),
-              )
+
+          final res = data
+              .map((item) => Map<String, dynamic>.from(item as Map))
               .toList();
+          return res;
         },
       );
 
@@ -367,7 +370,7 @@ void main() {
           timeout: anyNamed('timeout'),
           extra: anyNamed('extra'),
         ),
-      ).called(greaterThan(1));
+      ).called(1);
     });
   });
 

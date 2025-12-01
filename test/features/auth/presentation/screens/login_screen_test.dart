@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/core/di/providers.dart';
 import '../../../../helpers/test_helpers.dart';
@@ -9,7 +10,10 @@ void main() {
   testWidgets('LoginScreen should display email and password fields', (
     tester,
   ) async {
-    final storage = MockStorageAdapter();
+    final storage = LocalStorage(
+      sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
+      secureStorageAdapter: MockSecureStorageAdapter(),
+    );
     final container = createTestContainer(
       overrides: [
         storageProvider.overrideWithValue(storage),
@@ -31,7 +35,10 @@ void main() {
   });
 
   testWidgets('LoginScreen should display login button', (tester) async {
-    final storage = MockStorageAdapter();
+    final storage = LocalStorage(
+      sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
+      secureStorageAdapter: MockSecureStorageAdapter(),
+    );
     final container = createTestContainer(
       overrides: [
         storageProvider.overrideWithValue(storage),
@@ -54,7 +61,10 @@ void main() {
   testWidgets('LoginScreen should display theme switcher in app bar', (
     tester,
   ) async {
-    final storage = MockStorageAdapter();
+    final storage = LocalStorage(
+      sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
+      secureStorageAdapter: MockSecureStorageAdapter(),
+    );
     final container = createTestContainer(
       overrides: [
         storageProvider.overrideWithValue(storage),

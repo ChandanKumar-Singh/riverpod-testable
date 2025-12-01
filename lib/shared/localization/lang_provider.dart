@@ -18,8 +18,8 @@ class LangNotifier extends StateNotifier<Locale> {
   }
 
   Future<void> setLocale(Locale locale) async {
-    state = locale;
     await _storage.saveLocale(locale);
+    state = locale;
   }
 
   Future<void> nextLocale() async {

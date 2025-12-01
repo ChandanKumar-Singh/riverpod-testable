@@ -19,7 +19,7 @@ class Env {
   final bool refreshTokenEnabled;
 
   static Env get current {
-    const bool isProd =
+     const bool isProd =
         String.fromEnvironment('ENV', defaultValue: 'dev') == 'prod';
     return isProd ? Env.prod : Env.dev;
   }

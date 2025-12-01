@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:testable/core/di/providers.dart';
 import 'package:testable/shared/theme/theme_provider.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
+import '../../helpers/test_helpers.dart';
 import 'theme_provider_test.mocks.dart';
 
 @GenerateMocks([ThemeStorage])
@@ -16,11 +17,10 @@ void main() {
 
     setUp(() {
       mockStorage = MockThemeStorage();
-      when(
-        mockStorage.loadThemeMode(),
-      ).thenAnswer((_) async => ThemeMode.system);
+      when(mockStorage.loadThemeMode()).thenAnswer((_) async => ThemeMode.dark);
       container = ProviderContainer(
         overrides: [
+          storageProvider.overrideWithValue(testLocaloStorage),
           themeProvider.overrideWith((ref) => ThemeNotifier(mockStorage)),
         ],
       );

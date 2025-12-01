@@ -13,7 +13,7 @@ class AppErrorHandler {
   AppErrorHandler._internal();
   static final AppErrorHandler _instance = AppErrorHandler._internal();
 
-  late final AppLogger _logger;
+   AppLogger? _logger;
 
   void initialize(AppLogger logger) {
     _logger = logger;
@@ -26,7 +26,7 @@ class AppErrorHandler {
         return;
       }
 
-      _logger.e(
+      _logger?.e(
         'FlutterError ${details.exception}',
         e: details.exception,
         st: details.stack,
@@ -41,7 +41,7 @@ class AppErrorHandler {
     // Catch Dart async zone errors
     runZonedGuarded(
       () async {
-        _logger.i('Global error zone initialized ✅');
+        _logger?.i('Global error zone initialized ✅');
       },
       (error, stack) {
         // Check if this is an asset loading error
@@ -99,7 +99,7 @@ class AppErrorHandler {
       return; // Silently ignore
     }
 
-    _logger.e('Unhandled exception', e: error, st: stack);
+    _logger?.e('Unhandled exception', e: error, st: stack);
 
     // Show feedback in release mode only
     if (!kDebugMode) {

@@ -127,7 +127,7 @@ class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
     _i10.CancelToken? cancelToken,
     Duration? timeout,
     R Function(Map<String, dynamic>)? fromJson,
-    List<R> Function(List<dynamic>)? fromJsonList,
+    R Function(List<dynamic>)? fromJsonList,
     int? maxRetries = 0,
     Duration? retryDelay = const Duration(milliseconds: 300),
     Map<String, dynamic>? extra,

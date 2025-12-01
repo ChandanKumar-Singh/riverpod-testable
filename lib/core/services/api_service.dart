@@ -31,7 +31,7 @@ class ApiService {
     CancelToken? cancelToken,
     Duration? timeout,
     R Function(Map<String, dynamic>)? fromJson,
-    List<R> Function(List<dynamic>)? fromJsonList,
+    R Function(List<dynamic>)? fromJsonList,
     int maxRetries = 0,
     Duration retryDelay = const Duration(milliseconds: 300),
     Map<String, dynamic>? extra,
@@ -264,7 +264,7 @@ class ApiService {
   ApiResponse<R> _mapResponse<R>(
     Response<dynamic> resp, {
     R Function(Map<String, dynamic>)? fromJson,
-    List<R> Function(List<dynamic>)? fromJsonList,
+    R Function(List<dynamic>)? fromJsonList,
   }) {
     final status = resp.statusCode ?? 500;
     final raw = resp.data;
@@ -288,7 +288,7 @@ class ApiService {
     dynamic raw, {
     required int status,
     R Function(Map<String, dynamic>)? fromJson,
-    List<R> Function(List<dynamic>)? fromJsonList,
+    R Function(List<dynamic>)? fromJsonList,
   }) {
     // If the backend uses a standardized wrapper
     if (raw is Map<String, dynamic>) {
@@ -344,7 +344,7 @@ class ApiService {
     required int status,
     String? message,
     R Function(Map<String, dynamic>)? fromJson,
-    List<R> Function(List<dynamic>)? fromJsonList,
+    R Function(List<dynamic>)? fromJsonList,
   }) {
     try {
       // Handle null data

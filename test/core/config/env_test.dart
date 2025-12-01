@@ -1,7 +1,13 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:testable/core/config/env.dart';
 
 void main() {
+  // Setup dotenv before running tests
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load(fileName: '.env.test');
+  });
   group('Env', () {
     test('current returns dev by default', () {
       final env = Env.current;
@@ -30,4 +36,3 @@ void main() {
     });
   });
 }
-
