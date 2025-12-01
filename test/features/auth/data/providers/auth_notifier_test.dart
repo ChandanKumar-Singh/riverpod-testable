@@ -164,7 +164,7 @@ void main() {
       final notifier = container.read(authProvider.notifier);
 
       when(
-        mockRepo.login('test@example.com', 'password'),
+       await mockRepo.login('test@example.com', 'password'),
       ).thenThrow(Exception('Network error'));
 
       await notifier.login('test@example.com', 'password');
@@ -217,7 +217,7 @@ void main() {
       final notifier = container.read(authProvider.notifier);
 
       when(
-        mockRepo.verifyOTP('9999999999', '123456'),
+       await mockRepo.verifyOTP('9999999999', '123456'),
       ).thenThrow(Exception('Network error'));
 
       await notifier.loginWithOtp('9999999999', '123456');
