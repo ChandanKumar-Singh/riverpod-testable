@@ -7,15 +7,15 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('LocalStorage', () {
     late LocalStorage storage;
-    late MockStorageAdapter mockSharedPrefs;
-    late MockStorageAdapter mockSecureStorage;
+    late MockSharedPreferencesStorageAdapter mockSharedPrefs;
+    late MockSecureStorageAdapter mockSecureStorage;
 
     setUp(() {
-      mockSharedPrefs = MockStorageAdapter();
-      mockSecureStorage = MockStorageAdapter();
+      mockSharedPrefs = MockSharedPreferencesStorageAdapter();
+      mockSecureStorage = MockSecureStorageAdapter();
       storage = LocalStorage(
-        sharedPreferencesAdapter: mockSharedPrefs as SharedPreferencesStorageAdapter,
-        secureStorageAdapter: mockSecureStorage as SecureStorageAdapter,
+        sharedPreferencesAdapter: mockSharedPrefs ,
+        secureStorageAdapter: mockSecureStorage ,
       );
     });
 
@@ -48,8 +48,8 @@ void main() {
       await storage.delete('regular_key');
       await storage.delete('secure_key', secure: true);
 
-      expect(mockSharedPrefs.containsKey('regular_key'), isFalse);
-      expect(mockSecureStorage.containsKey('secure_key'), isFalse);
+      expect(await mockSharedPrefs.containsKey('regular_key'), isFalse);
+      expect(await mockSecureStorage.containsKey('secure_key'), isFalse);
     });
 
     test('clear clears both adapters', () async {
@@ -106,10 +106,10 @@ void main() {
   });
 
   group('SharedPreferencesStorageAdapter', () {
-    late SharedPreferencesStorageAdapter adapter;
+    late MockSharedPreferencesStorageAdapter adapter;
 
     setUp(() {
-      adapter = SharedPreferencesStorageAdapter();
+      adapter = MockSharedPreferencesStorageAdapter();
     });
 
     test('init can be called multiple times safely', () async {
@@ -138,10 +138,10 @@ void main() {
   });
 
   group('SecureStorageAdapter', () {
-    late SecureStorageAdapter adapter;
+    late MockSecureStorageAdapter adapter;
 
     setUp(() {
-      adapter = SecureStorageAdapter();
+      adapter = MockSecureStorageAdapter();
     });
 
     test('init can be called multiple times safely', () async {

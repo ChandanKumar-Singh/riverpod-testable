@@ -14,3 +14,16 @@ abstract class StorageAdapter {
   Future<void> delete(String key, {bool secure = false});
   Future<void> clear();
 }
+
+abstract class MStorageAdapter {
+  Future<void> init();
+  Future<void> save(String key, dynamic value);
+  Future<String?> getString(String key);
+  Future<int?> getInt(String key);
+  Future<bool?> getBool(String key);
+  Future<double?> getDouble(String key);
+  Future<List<String>?> getStringList(String key);
+  Future<Map<String, dynamic>?> getMap(String key);
+  Future<void> delete(String key);
+  Future<void> clear();
+}
