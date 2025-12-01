@@ -309,10 +309,11 @@ void main() {
       when(mockRepo.loadSession()).thenAnswer((_) async => dummyUser());
       final notifier = container.read(authProvider.notifier);
 
-      when(mockRepo.clearSession()).thenThrow(Exception('Storage error'));
+      when(
+        mockRepo.clearSession(),
+      ).thenAnswer((_) async => throw Exception('Storage error'));
 
       await notifier.logout();
-
       final state = container.read(authProvider);
       expect(state.status, AuthStatus.unauthenticated);
       expect(state.user, isNull);
