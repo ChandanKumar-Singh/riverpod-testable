@@ -4,6 +4,7 @@ import 'package:testable/core/di/providers.dart';
 
 class ThemeSwitcher extends ConsumerWidget {
   const ThemeSwitcher({super.key});
+  static const buttonKey = 'global_theme_switcher';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +19,7 @@ class ThemeSwitcher extends ConsumerWidget {
         child: FadeTransition(opacity: animation, child: child),
       ),
       child: IconButton(
-        key: ValueKey(isDark),
+        key: const Key(buttonKey),
         icon: Icon(isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
         onPressed: () => ref.read(themeProvider.notifier).toggle(),
         tooltip: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',

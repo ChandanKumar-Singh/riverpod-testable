@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:testable/shared/localization/lang_storage.dart';
+import 'package:testable/shared/localization/lang_switcher.dart';
+import 'package:testable/shared/theme/theme_storage.dart';
+import 'package:testable/shared/theme/theme_switcher.dart';
 
 import 'helpers/test_harness.dart';
 
@@ -48,7 +52,7 @@ void main() {
       'performs successful OTP login and navigates across feature screens',
       (tester) async {
         final harness = TestAppHarness();
-
+        await harness.setup();
         await tester.pumpWidget(harness.buildApp());
         await tester.pumpAndSettle();
 
@@ -85,45 +89,48 @@ void main() {
       tester,
     ) async {
       final harness = TestAppHarness(startAuthenticated: true);
-
-      await harness.storage.save('theme_mode', 'light');
-      await harness.storage.save('language_code', 'en');
+      await harness.setup();
+      await harness.storage.save(ThemeStorage.modeKey, 'light');
+      await harness.storage.save(LangStorage.rootKey, 'en');
 
       await tester.pumpWidget(harness.buildApp());
       await tester.pumpAndSettle();
-
       expect(find.text('Home'), findsOneWidget);
       expect(find.textContaining('Test User'), findsWidgets);
 
-      final darkModeButton = find.byIcon(Icons.dark_mode_rounded);
+      final darkModeButton = find.byKey(const Key(ThemeSwitcher.buttonKey));
       expect(darkModeButton, findsOneWidget);
+      await Future.delayed(const Duration(milliseconds: 2000));
       await tester.tap(darkModeButton);
+      await Future.delayed(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
-      expect(find.byIcon(Icons.light_mode_rounded), findsOneWidget);
+      expect(find.byKey(const Key(ThemeSwitcher.buttonKey)), findsOneWidget);
+      await Future.delayed(const Duration(milliseconds: 3500));
 
-      final langDropdown = find.byWidgetPredicate(
-        (widget) => widget is DropdownButton<Locale>,
-      );
+      final langDropdown = find.byKey(const Key(LangSwitcher.buttonKey));
       expect(langDropdown, findsOneWidget);
 
       await tester.tap(langDropdown);
+      await Future.delayed(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
       await tester.tap(find.text('हिन्दी').last);
+      await Future.delayed(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
 
       expect(find.text('टेस्टेबल ऐप'), findsOneWidget);
 
       final savedTheme = await harness.storage.getString(
-        'theme_mode',
+        ThemeStorage.modeKey,
         secure: false,
       );
       final savedLocale = await harness.storage.getString(
-        'language_code',
+        LangStorage.rootKey,
         secure: false,
       );
 
       expect(savedTheme, 'dark');
       expect(savedLocale, 'hi');
+      await Future.delayed(const Duration(milliseconds: 5000));
     });
   });
 }

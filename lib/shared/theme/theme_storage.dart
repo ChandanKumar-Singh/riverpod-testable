@@ -12,14 +12,15 @@ class ThemeStorage {
   const ThemeStorage(this.storage);
   final StorageAdapter storage;
 
-  static const _key = 'theme_mode';
+  static const rootKey = 'theme';
+  static const modeKey = '$rootKey.mode';
 
   Future<void> saveThemeMode(ThemeMode mode) async {
-    await storage.save(_key, mode.name);
+    await storage.save(modeKey, mode.name);
   }
 
   Future<ThemeMode> loadThemeMode() async {
-    final saved = await storage.getString(_key);
+    final saved = await storage.getString(modeKey);
     switch (saved) {
       case 'dark':
         return ThemeMode.dark;

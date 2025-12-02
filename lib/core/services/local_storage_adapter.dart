@@ -33,8 +33,8 @@ class LocalStorage implements StorageAdapter {
   }
 
   @override
-  Future<void> clear() async {
-    await sharedPreferencesAdapter.clear();
+  Future<void> clear({List<String> exceptKeys = const []}) async {
+    await sharedPreferencesAdapter.clear(exceptKeys: exceptKeys);
     await secureStorageAdapter.clear();
   }
 
@@ -294,11 +294,19 @@ class SharedPreferencesStorageAdapter implements MStorageAdapter {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clear({List<String> exceptKeys = const []}) async {
     try {
       await init();
       _print('Clearing all data');
-      await _prefs!.clear();
+      final allKeys = _prefs!.getKeys();
+      final keysToDelete = allKeys
+          .where(
+            (key) => !exceptKeys.contains(key.split('.').firstOrNull ?? ''),
+          )
+          .toList();
+      for (final key in keysToDelete) {
+        await delete(key);
+      }
     } catch (error, stackTrace) {
       _print('Failed to clear all data', error: error, stackTrace: stackTrace);
     }
@@ -578,7 +586,7 @@ class SecureStorageAdapter implements MStorageAdapter {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clear({List<String> exceptKeys = const []}) async {
     try {
       await init();
       _print('Clearing all secure data');

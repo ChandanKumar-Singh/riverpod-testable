@@ -5,10 +5,14 @@ import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/config/env.dart';
 
-LocalStorage get testLocaloStorage => LocalStorage(sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(), secureStorageAdapter: MockSecureStorageAdapter());
+LocalStorage get testLocaloStorage => LocalStorage(
+  sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
+  secureStorageAdapter: MockSecureStorageAdapter(),
+);
 
 /// Mock storage adapter for testing
-class MockSharedPreferencesStorageAdapter implements SharedPreferencesStorageAdapter {
+class MockSharedPreferencesStorageAdapter
+    implements SharedPreferencesStorageAdapter {
   final Map<String, dynamic> _storage = {};
 
   @override
@@ -63,8 +67,14 @@ class MockSharedPreferencesStorageAdapter implements SharedPreferencesStorageAda
   }
 
   @override
-  Future<void> clear() async {
-    _storage.clear();
+  Future<void> clear({List<String> exceptKeys = const []}) async {
+    final allKeys = _storage.keys;
+    final keysToDelete = allKeys
+        .where((key) => !exceptKeys.contains(key.split('.').firstOrNull ?? ''))
+        .toList();
+    for (final key in keysToDelete) {
+      await delete(key);
+    }
   }
 
   // Helper methods for testing
@@ -139,7 +149,7 @@ class MockSecureStorageAdapter implements SecureStorageAdapter {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clear({List<String> exceptKeys = const []}) async {
     _storage.clear();
   }
 

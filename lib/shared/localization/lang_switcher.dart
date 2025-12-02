@@ -5,7 +5,7 @@ import 'package:testable/shared/localization/supported_locales.dart';
 
 class LangSwitcher extends ConsumerStatefulWidget {
   const LangSwitcher({super.key});
-
+  static const buttonKey = 'global_lang_switcher';
   @override
   ConsumerState<LangSwitcher> createState() => _LangSwitcherState();
 }
@@ -37,6 +37,7 @@ class _LangSwitcherState extends ConsumerState<LangSwitcher>
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<Locale>(
+          key: const Key(LangSwitcher.buttonKey),
           value: locale,
           isDense: true,
           borderRadius: BorderRadius.circular(12),

@@ -12,14 +12,14 @@ final langStorageProvider = Provider<LangStorage>((ref) {
 class LangStorage {
   LangStorage(this.storage);
   final StorageAdapter storage;
-  static const _key = 'language_code';
+  static const rootKey = 'language_code';
 
   Future<void> saveLocale(Locale locale) async {
-    await storage.save(_key, locale.languageCode);
+    await storage.save(rootKey, locale.languageCode);
   }
 
   Future<Locale> loadLocale() async {
-    final code = await storage.getString(_key);
+    final code = await storage.getString(rootKey);
     if (code == null) return const Locale('en');
     return Locale(code);
   }

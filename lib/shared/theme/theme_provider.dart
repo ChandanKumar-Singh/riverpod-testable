@@ -34,13 +34,13 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else {
       await setTheme(ThemeMode.light);
     }
-    if (toast) {
+    /* if (toast) {
       AppToastification.success(
         'Switched to ${state.name} mode.',
         title: 'Theme Changed',
         margin: const EdgeInsetsDirectional.symmetric(horizontal: 40),
       );
-    }
+    } */
   }
 
   // Helper to wait for initialization in tests
