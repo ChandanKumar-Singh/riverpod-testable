@@ -21,7 +21,10 @@ void main() {
       // Note: This test requires accessing private _repo field
       // In production, you might want to make repo injectable or use a different approach
       container = ProviderContainer(
-        overrides: [envProvider.overrideWithValue(TestEnv())],
+        overrides: [
+          envProvider.overrideWithValue(TestEnv()),
+          userRepoProvider.overrideWithValue(mockRepo),
+        ],
       );
     });
 

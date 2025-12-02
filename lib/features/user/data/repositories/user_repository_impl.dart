@@ -5,8 +5,9 @@ import 'package:testable/core/network/dio/models/api_response.dart';
 import 'package:testable/core/di/providers.dart';
 import 'package:testable/features/user/data/models/user_profile_model.dart';
 
-class UserRepository extends ApiService {
+final userRepoProvider = Provider<UserRepository>((ref) => UserRepository(ref));
 
+class UserRepository extends ApiService {
   UserRepository(this.ref)
     : super(
         env: ref.read(envProvider),

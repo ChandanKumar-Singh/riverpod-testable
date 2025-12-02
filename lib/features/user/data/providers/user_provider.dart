@@ -8,9 +8,8 @@ final userProfileProvider =
     );
 
 class UserProfileNotifier extends StateNotifier<UserProfileState> {
-
   UserProfileNotifier(this.ref) : super(const UserProfileState()) {
-    _repo = UserRepository(ref);
+    _repo = ref.read(userRepoProvider);
   }
   final Ref ref;
   late final UserRepository _repo;
@@ -65,7 +64,6 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
 enum UserProfileStatus { initial, loading, loaded, error }
 
 class UserProfileState {
-
   const UserProfileState({
     this.status = UserProfileStatus.initial,
     this.profile,
