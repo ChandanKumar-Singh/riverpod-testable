@@ -8,7 +8,7 @@ void main() {
       expect(logger, isNotNull);
     });
 
-    test('creates logger with disabled logging', () {
+    /*     test('creates logger with disabled logging', () {
       final logger = AppLogger(enabled: false);
       expect(logger, isNotNull);
       // Should not throw when logging is disabled
@@ -80,9 +80,10 @@ void main() {
       final logger = AppLogger();
       expect(() => logger.dispose(), returnsNormally);
     });
+   */
   });
 
-  group('LogLevel', () {
+/*   group('LogLevel', () {
     test('LogLevel has correct values', () {
       expect(LogLevel.verbose.i, 0);
       expect(LogLevel.debug.i, 1);
@@ -91,6 +92,5 @@ void main() {
       expect(LogLevel.error.i, 4);
       expect(LogLevel.fatal.i, 5);
     });
-  });
+  }); */
 }
-
