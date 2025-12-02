@@ -63,33 +63,39 @@ final connectivityProvider =
     );
 
 class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
-  ConnectivityNotifier()
-    : super(
-        ConnectivityState(
-          status: ConnectivityStatus.online,
-          lastChanged: DateTime.now(),
-          isSimulated: false,
-        ),
-      ) {
-    _init();
+  ConnectivityNotifier({
+    Connectivity? connectivity,
+    bool enableMonitoring = true,
+  })  : _connectivity = connectivity ?? Connectivity(),
+        _enableMonitoring = enableMonitoring,
+        super(
+          ConnectivityState(
+            status: ConnectivityStatus.online,
+            lastChanged: DateTime.now(),
+            isSimulated: false,
+          ),
+        ) {
+    if (_enableMonitoring) {
+      _init();
+    }
   }
+
+  final Connectivity _connectivity;
+  final bool _enableMonitoring;
   StreamSubscription<List<ConnectivityResult>>? _subscription;
-  bool _isSimulating = false;
   bool showInitial = false;
 
   Future<void> _init() async {
-    final connectivity = Connectivity();
-
     try {
       // Initial check
-      final initialResult = await connectivity.checkConnectivity();
+      final initialResult = await _connectivity.checkConnectivity();
       if (!showInitial && initialResult.contains(ConnectivityResult.none)) {
         _updateState(initialResult, isSimulated: false);
         return;
       }
 
       // Listen for changes
-      _subscription = connectivity.onConnectivityChanged.listen(
+      _subscription = _connectivity.onConnectivityChanged.listen(
         (results) => _updateState(results, isSimulated: false),
       );
     } catch (error) {
@@ -106,8 +112,6 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
     List<ConnectivityResult> results, {
     required bool isSimulated,
   }) {
-    // if (_isSimulating && !isSimulated) return;
-
     // DEBUG: Print the raw results
     _print('🔌 Connectivity results: $results');
 
@@ -139,7 +143,6 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
 
   // Simulation methods
   void simulateOnline() {
-    _isSimulating = true;
     state = ConnectivityState(
       status: ConnectivityStatus.online,
       lastResult: ConnectivityResult.wifi,
@@ -150,7 +153,6 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
   }
 
   void simulateOffline() {
-    _isSimulating = true;
     state = ConnectivityState(
       status: ConnectivityStatus.offline,
       lastResult: null,
@@ -161,11 +163,11 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
   }
 
   void stopSimulation() {
-    _isSimulating = false;
-    final connectivity = Connectivity();
-    connectivity.checkConnectivity().then((results) {
-      _updateState(results, isSimulated: false);
-    });
+    if (_enableMonitoring) {
+      _connectivity.checkConnectivity().then((results) {
+        _updateState(results, isSimulated: false);
+      });
+    }
     _print('🎭 Stopping simulation, returning to real state');
   }
 

@@ -26,7 +26,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     await _storage.saveThemeMode(mode);
   }
 
-  Future<void> toggle() async {
+  Future<void> toggle({bool toast = true}) async {
     await _initialization; // Wait for initialization to complete
 
     if (state == ThemeMode.light) {
@@ -34,11 +34,13 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else {
       await setTheme(ThemeMode.light);
     }
-    AppToastification.success(
-      'Switched to ${state.name} mode.',
-      title: 'Theme Changed',
-      margin: const EdgeInsetsDirectional.symmetric(horizontal: 40),
-    );
+    if (toast) {
+      AppToastification.success(
+        'Switched to ${state.name} mode.',
+        title: 'Theme Changed',
+        margin: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+      );
+    }
   }
 
   // Helper to wait for initialization in tests
