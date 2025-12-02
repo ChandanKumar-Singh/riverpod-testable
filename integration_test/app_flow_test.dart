@@ -54,35 +54,124 @@ void main() {
         final harness = TestAppHarness();
         await harness.setup();
         await tester.pumpWidget(harness.buildApp());
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'Email Address'),
-          'test@example.com',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'Password'),
-          'superSecret',
-        );
-        await tester.tap(find.text('Sign In'));
-        await tester.pumpAndSettle(const Duration(milliseconds: 600));
+        print('🔄 App started. Looking for login screen...');
+        expect(find.text('Sign In'), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 500));
 
+        // Step 1: Enter email
+        print('📧 Entering email...');
+        final emailField = find.widgetWithText(TextFormField, 'Email Address');
+        expect(emailField, findsOneWidget);
+        await tester.enterText(emailField, 'test@example.com');
+        await tester.pump(const Duration(milliseconds: 300));
+
+        // Verify email entered
+        expect(find.text('test@example.com'), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 200));
+
+        // Step 2: Enter password
+        print('🔑 Entering password...');
+        final passwordField = find.widgetWithText(TextFormField, 'Password');
+        expect(passwordField, findsOneWidget);
+        await tester.enterText(passwordField, 'superSecret');
+        await tester.pump(const Duration(milliseconds: 1000));
+        // Step 2: Enter password
+        print('🔑 Show Password...');
+        final obsecureButton = find.byKey(const Key('obscure_field_key'));
+        expect(obsecureButton, findsOneWidget);
+        await tester.tap(obsecureButton);
+        await tester.pump(const Duration(milliseconds: 1000));
+
+        // Mask password verification (show asterisks)
+        expect(find.text('superSecret'), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 1000));
+
+        // Step 3: Tap Sign In button
+        print('👉 Tapping Sign In button...');
+        final signInButton = find.text('Sign In');
+        expect(signInButton, findsOneWidget);
+        await tester.tap(signInButton);
+
+        // Show loading state
+   /*      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 3000));
+
+        // Wait for API call and navigation
+        print('⏳ Waiting for authentication...');
+         */
+        await tester.pumpAndSettle(const Duration(seconds: 2));
+
+        // Step 4: Verify successful login
+        print('✅ Checking home screen...');
         expect(find.text('Home'), findsOneWidget);
         expect(find.textContaining('Test User'), findsWidgets);
+        await tester.pump(
+          const Duration(milliseconds: 1000)
+        ); // Pause to see home screen
 
-        await tester.tap(find.text('Payments').first);
-        await tester.pumpAndSettle();
+        // Step 5: Navigate to Payments
+        print('💳 Navigating to Payments...');
+        final paymentsButton = find.text('Payments').first;
+        expect(paymentsButton, findsOneWidget);
+        await tester.tap(paymentsButton);
+
+        // Show loading animation
+        await tester.pump(const Duration(milliseconds: 500));
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+        // Wait for payments to load
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        print('✅ Checking payments screen...');
         expect(find.text('Payments'), findsWidgets);
         expect(find.text('Loading payments...'), findsOneWidget);
+        await tester.pump(
+          const Duration(milliseconds: 1500),
+        ); // Pause to see payments
 
+        // Step 6: Go back to Home
+        print('↩️ Going back to Home...');
         await tester.pageBack();
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(milliseconds: 800));
+        expect(find.text('Home'), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 1000)); // Pause on home
 
-        await tester.tap(find.text('Profile').first);
-        await tester.pumpAndSettle();
+        // Step 7: Navigate to Profile
+        print('👤 Navigating to Profile...');
+        final profileButton = find.text('Profile').first;
+        expect(profileButton, findsOneWidget);
+        await tester.tap(profileButton);
+
+        // Show profile loading
+        await tester.pump(const Duration(milliseconds: 500));
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+        // Wait for profile to load
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        print('✅ Checking profile screen...');
         expect(find.text('Profile'), findsWidgets);
         expect(find.text('Test User'), findsWidgets);
+        await tester.pump(
+          const Duration(milliseconds: 1500),
+        ); // Pause to see profile
+
+        // Step 8: Summary
+        print('🎉 Test completed successfully!');
+        print('├── ✅ Login successful');
+        print('├── ✅ Home screen loaded');
+        print('├── ✅ Payments navigation worked');
+        print('├── ✅ Back navigation worked');
+        print('└── ✅ Profile navigation worked');
+
+        // Final pause
+        await tester.pump(const Duration(seconds: 1));
       },
+      timeout: const Timeout(
+        Duration(seconds: 60),
+      ), // Extended timeout for visual tests
     );
 
     testWidgets('restores persisted session and keeps theme + locale changes', (

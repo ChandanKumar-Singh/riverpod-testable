@@ -120,7 +120,7 @@ class ObscureTextField2 extends StatefulWidget {
     this.autofillHints,
     this.focusNode,
     this.style,
-    this.obscuringCharacter = '•',
+    this.obscuringCharacter = '*',
     this.onVisibilityChanged,
   });
 
@@ -213,6 +213,7 @@ class _ObscureTextFieldState extends State<ObscureTextField2> {
         border: widget.border ?? InputBorder.none,
         prefixIcon: widget.prefixIcon ?? const Icon(Iconsax.lock),
         suffixIcon: IconButton(
+          key: const Key('obscure_field_key'),
           icon: Icon(
             _obscured ? Iconsax.eye_slash : Iconsax.eye,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
