@@ -9,7 +9,7 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
 
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this.ref, {AuthRepository? repo})
-    : _repo = repo ?? AuthRepository(ref),
+    : _repo = repo ?? ref.read(authRepositoryProvider),
       super(const AuthState()) {
     _initialize();
   }
@@ -29,7 +29,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
-        error: e.toString(), // FIX: Set error on initialization failure
+        error: e.toString(),
       );
     }
   }
@@ -86,7 +86,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-Future<String?> sendOtp(String contact) async {
+  Future<String?> sendOtp(String contact) async {
     try {
       state = state.copyWith(status: AuthStatus.loading, error: null);
       final res = await _repo.sendOtp(contact);
@@ -113,7 +113,7 @@ Future<String?> sendOtp(String contact) async {
       state = state.copyWith(status: AuthStatus.loading, error: null);
       await _repo.clearSession();
       state = const AuthState(status: AuthStatus.unauthenticated);
-    } catch (e,st) {
+    } catch (e, st) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
         error: e.toString(),

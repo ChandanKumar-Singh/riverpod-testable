@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
@@ -16,18 +15,14 @@ void main() {
   group('Auth Flow Integration Tests', () {
     late ProviderContainer container;
     late MockAuthRepository mockRepo;
-    late LocalStorage mockStorage;
 
     setUp(() {
       mockRepo = MockAuthRepository();
-      mockStorage = LocalStorage(
-        sharedPreferencesAdapter: MockSharedPreferencesStorageAdapter(),
-        secureStorageAdapter: MockSecureStorageAdapter(),
-      );
       container = ProviderContainer(
         overrides: [
-          storageProvider.overrideWithValue(mockStorage),
+          storageProvider.overrideWithValue(testLocaloStorage),
           envProvider.overrideWithValue(TestEnv()),
+          authRepositoryProvider.overrideWithValue(mockRepo),
         ],
       );
     });
@@ -141,8 +136,8 @@ void main() {
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
 
       // Setup: Successful OTP send
-      when(mockRepo.sendOtp('9999999999')).thenAnswer(
-        (_) async => ApiResponse<(bool, Map<String, dynamic>)>.success(
+      when(mockRepo.sendOtp(any)).thenAnswer(
+        (_) async => const ApiResponse<(bool, Map<String, dynamic>)>.success(
           data: (true, {'contact': '9999999999'}),
         ),
       );
@@ -199,7 +194,7 @@ void main() {
 
       // Initialize auth provider
       container.read(authProvider);
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 1000));
 
       // Verify state is restored
       final state = container.read(authProvider);

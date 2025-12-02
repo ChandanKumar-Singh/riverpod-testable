@@ -7,6 +7,10 @@ import 'package:testable/core/network/dio/models/api_response.dart';
 import 'package:testable/core/di/providers.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepository(ref);
+});
+
 class AuthRepository extends ApiService {
   AuthRepository(this.ref)
     : super(
