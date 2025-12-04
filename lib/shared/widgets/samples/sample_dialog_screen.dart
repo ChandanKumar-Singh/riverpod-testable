@@ -13,31 +13,39 @@ class SampleDialogScreen extends StatefulWidget {
 class _SampleDialogScreenState extends State<SampleDialogScreen> {
   String _selectedOption = 'None';
   String _inputResult = 'None';
-  bool _formResult = false;
 
   void _showBasicDialog() {
     UltraDialog.show(
       context: context,
-      header: DialogHeader(
-        title: 'Styled Dialog',
-        subtitle: 'With custom styling and animations',
-        leading: Icon(
-          Icons.palette,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
-      child: Column(
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Custom Styled Dialog',
-            style: Theme.of(context).textTheme.titleMedium,
+          Icon(
+            Icons.palette,
+            color: Theme.of(context).colorScheme.primary,
+            size: 48,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
-            'This dialog has custom background, animations, and layout.',
+            'Basic Dialog',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'This is a simple dialog using the new UltraDialog API',
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
           ),
         ],
       ),
@@ -54,34 +62,23 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
       borderRadius: 24,
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
       showCloseButton: true,
-      header: DialogHeader(
-        title: 'Styled Dialog',
-        subtitle: 'With custom styling and animations',
-        leading: Icon(
-          Icons.palette,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
-      footer: DialogFooter(
-        children: [
-          OutlinedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Confirm'),
-          ),
-        ],
-      ),
-      child: Column(
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Custom Styled Dialog',
-            style: Theme.of(context).textTheme.titleMedium,
+          Icon(
+            Icons.palette,
+            color: Theme.of(context).colorScheme.primary,
+            size: 48,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
+          Text(
+            'Styled Dialog',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
           Text(
             'This dialog has custom background, animations, and layout.',
             style: Theme.of(context).textTheme.bodyMedium,
@@ -110,6 +107,27 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
               ],
             ),
           ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _showSuccessDialog('Action confirmed!');
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -119,14 +137,14 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
     final confirmed = await UltraDialog.confirm(
       context: context,
       title: 'Delete Item?',
-      description:
+      message:
           'This action cannot be undone. All data will be permanently removed from our servers.',
       destructive: true,
     );
 
-    if (confirmed == true) {
+    if (confirmed) {
       _showSuccessDialog('Item deleted successfully!');
-    } else if (confirmed == false) {
+    } else {
       _showSuccessDialog('Deletion cancelled.');
     }
   }
@@ -135,7 +153,7 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
     final result = await UltraDialog.input(
       context: context,
       title: 'Enter Your Name',
-      hintText: 'John Doe',
+      hint: 'John Doe',
       validator: (value) {
         if (value?.isEmpty ?? true) return 'Please enter your name';
         if (value!.length < 2) return 'Name must be at least 2 characters';
@@ -150,35 +168,44 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
 
   Future<void> _showSelectionDialog() async {
     final options = [
-      const DialogOption<String>(
+      UltraDialogOption<String>(
         label: 'Flutter Development',
         value: 'flutter',
         subtitle: 'Cross-platform mobile apps',
-        icon: Icon(Icons.developer_mode),
+        icon: Icon(
+          Icons.developer_mode,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
-      const DialogOption<String>(
+      UltraDialogOption<String>(
         label: 'UI/UX Design',
         value: 'design',
         subtitle: 'Beautiful user interfaces',
-        icon: Icon(Icons.design_services),
+        icon: Icon(
+          Icons.design_services,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
-      const DialogOption<String>(
+      UltraDialogOption<String>(
         label: 'Backend Development',
         value: 'backend',
         subtitle: 'Server-side programming',
-        icon: Icon(Icons.storage),
+        icon: Icon(Icons.storage, color: Theme.of(context).colorScheme.primary),
       ),
-      const DialogOption<String>(
+      UltraDialogOption<String>(
         label: 'DevOps',
         value: 'devops',
         subtitle: 'Infrastructure and deployment',
-        icon: Icon(Icons.cloud),
+        icon: Icon(Icons.cloud, color: Theme.of(context).colorScheme.primary),
       ),
-      const DialogOption<String>(
+      UltraDialogOption<String>(
         label: 'Data Science',
         value: 'data',
         subtitle: 'Machine learning and analytics',
-        icon: Icon(Icons.analytics),
+        icon: Icon(
+          Icons.analytics,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     ];
 
@@ -198,32 +225,21 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
     UltraDialog.loading(
       context: context,
       message: 'Processing your request...',
+      duration: const Duration(seconds: 3),
     );
-
-    // Auto-close after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.of(context).pop();
-        _showSuccessDialog('Operation completed!');
-      }
-    });
   }
 
   void _showSuccessDialog(String message) {
-    UltraDialog.success(
-      context: context,
-      title: 'Success!',
-      description: message,
-    );
+    UltraDialog.success(context: context, title: 'Success!', message: message);
   }
 
   void _showErrorDialog() {
     UltraDialog.error(
       context: context,
       title: 'Connection Error',
-      description:
+      message:
           'Unable to connect to the server. Please check your internet connection and try again.',
-      errorDetails:
+      details:
           'Error Code: 503\nService Unavailable\nTimeout after 30 seconds\nEndpoint: https://api.example.com/data',
     );
   }
@@ -234,125 +250,137 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
       type: DialogType.fullScreen,
       backgroundColor: Theme.of(context).colorScheme.surface,
       showCloseButton: true,
-      child: Column(
-        children: [
-          // Header
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(20),
+      headerPadding: EdgeInsets.zero,
+      header: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.settings,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              size: 32,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                'Full Screen Dialog',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.settings,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Full Screen Dialog',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ],
+        ),
+      ),
+      builder: (context) => Column(
+        children: [
           // Content
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(24),
-              children: [
-                _buildFeatureItem(
-                  'Advanced Settings',
-                  Icons.tune,
-                  'Configure all application settings',
-                ),
-                _buildFeatureItem(
-                  'User Management',
-                  Icons.people,
-                  'Manage users and permissions',
-                ),
-                _buildFeatureItem(
-                  'Data Export',
-                  Icons.download,
-                  'Export your data in multiple formats',
-                ),
-                _buildFeatureItem(
-                  'Notifications',
-                  Icons.notifications,
-                  'Configure push notifications',
-                ),
-                _buildFeatureItem(
-                  'Security',
-                  Icons.security,
-                  'Security and privacy settings',
-                ),
-                _buildFeatureItem(
-                  'Backup & Restore',
-                  Icons.backup,
-                  'Backup and restore your data',
-                ),
-                _buildFeatureItem(
-                  'Appearance',
-                  Icons.palette,
-                  'Customize the app look and feel',
-                ),
-                _buildFeatureItem(
-                  'About',
-                  Icons.info,
-                  'App version and information',
-                ),
-              ],
-            ),
-          ),
-          // Footer
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Theme.of(context).dividerColor),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Column(
+                children: [
+                  _buildFeatureItem(
+                    'Advanced Settings',
+                    Icons.tune,
+                    'Configure all application settings',
+                  ),
+                  _buildFeatureItem(
+                    'User Management',
+                    Icons.people,
+                    'Manage users and permissions',
+                  ),
+                  _buildFeatureItem(
+                    'Data Export',
+                    Icons.download,
+                    'Export your data in multiple formats',
+                  ),
+                  _buildFeatureItem(
+                    'Notifications',
+                    Icons.notifications,
+                    'Configure push notifications',
+                  ),
+                  _buildFeatureItem(
+                    'Security',
+                    Icons.security,
+                    'Security and privacy settings',
+                  ),
+                  _buildFeatureItem(
+                    'Backup & Restore',
+                    Icons.backup,
+                    'Backup and restore your data',
+                  ),
+                  _buildFeatureItem(
+                    'Appearance',
+                    Icons.palette,
+                    'Customize the app look and feel',
+                  ),
+                  _buildFeatureItem(
+                    'About',
+                    Icons.info,
+                    'App version and information',
+                  ),
+                ],
               ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Save Changes'),
-                  ),
-                ),
-              ],
             ),
           ),
         ],
+      ),
+      // Footer
+      footer: Container(
+        padding: const EdgeInsets.only(top: 16),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Theme.of(context).dividerColor),
+          ),
+        ),
+        child: Row(
+          children: [
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _showSuccessDialog('Changes saved successfully!');
+                },
+                child: const Text('Save Changes'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildFeatureItem(String title, IconData icon, String subtitle) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16),
       child: ListTile(
         leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
-        title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+        title: Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+        ),
         subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
         trailing: Icon(
           Icons.chevron_right,
           color: Theme.of(context).colorScheme.outline,
         ),
         onTap: () {
+          Navigator.of(context).pop();
           _showSuccessDialog('$title selected');
         },
       ),
@@ -364,9 +392,9 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
       context: context,
       type: DialogType.bottomSheet,
       borderRadius: 24,
-      enableSwipeToDismiss: true,
+      swipeToDismiss: true,
       swipeDirection: SwipeDirection.down,
-      child: Column(
+      builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Handle
@@ -398,15 +426,24 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
             runSpacing: 12,
             children: [
               FilledButton.tonal(
-                onPressed: () => _showSuccessDialog('Option 1 selected'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _showSuccessDialog('Option 1 selected');
+                },
                 child: const Text('Option 1'),
               ),
               FilledButton.tonal(
-                onPressed: () => _showSuccessDialog('Option 2 selected'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _showSuccessDialog('Option 2 selected');
+                },
                 child: const Text('Option 2'),
               ),
               FilledButton.tonal(
-                onPressed: () => _showSuccessDialog('Option 3 selected'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _showSuccessDialog('Option 3 selected');
+                },
                 child: const Text('Option 3'),
               ),
             ],
@@ -418,116 +455,123 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
   }
 
   void _showComplexFormDialog() {
+    String? projectName;
+    String? description;
+    String? projectType;
+
     UltraDialog.show(
       context: context,
       type: DialogType.alert,
       size: DialogSize.large,
-      scrollable: true,
-      header: DialogHeader(
-        title: 'Create New Project',
-        subtitle: 'Fill in the details for your new project',
-        leading: Icon(
-          Icons.create_new_folder,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
-      footer: DialogFooter(
-        children: [
-          OutlinedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _showSuccessDialog('Project created successfully!');
-            },
-            child: const Text('Create Project'),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Project Name',
-              hintText: 'Enter project name',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              hintText: 'Describe your project',
-              border: OutlineInputBorder(),
-            ),
-            maxLines: 3,
-          ),
-          const SizedBox(height: 16),
-          DropdownButtonFormField(
-            decoration: const InputDecoration(
-              labelText: 'Project Type',
-              border: OutlineInputBorder(),
-            ),
-            items: ['Web App', 'Mobile App', 'Desktop App', 'API', 'Library']
-                .map((type) => DropdownMenuItem(value: type, child: Text(type)))
-                .toList(),
-            onChanged: (value) {},
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
+      showCloseButton: true,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.create_new_folder,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 32,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Create New Project',
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Fill in the details for your new project',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.7),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Start Date',
-                    hintText: 'DD/MM/YYYY',
+                    labelText: 'Project Name',
+                    hintText: 'Enter project name',
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (value) => projectName = value,
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: TextFormField(
+                const SizedBox(height: 16),
+                TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'End Date',
-                    hintText: 'DD/MM/YYYY',
+                    labelText: 'Description',
+                    hintText: 'Describe your project',
                     border: OutlineInputBorder(),
                   ),
+                  maxLines: 3,
+                  onChanged: (value) => description = value,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Text('Team Members'),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              Chip(label: const Text('John Doe'), onDeleted: () {}),
-              Chip(label: const Text('Jane Smith'), onDeleted: () {}),
-              Chip(label: const Text('Mike Johnson'), onDeleted: () {}),
-              const Chip(label: Text('+ Add Member')),
-            ],
-          ),
-        ],
-      ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Project Type',
+                    border: OutlineInputBorder(),
+                  ),
+                  items:
+                      ['Web App', 'Mobile App', 'Desktop App', 'API', 'Library']
+                          .map(
+                            (type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
+                          .toList(),
+                  onChanged: (value) => setState(() => projectType = value),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cancel'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _showSuccessDialog('Project created successfully!');
+                        },
+                        child: const Text('Create Project'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('UltraDialog Samples'),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('UltraDialog Samples')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

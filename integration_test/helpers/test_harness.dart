@@ -1,34 +1,26 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/app/app.dart';
 import 'package:testable/core/config/env.dart';
+import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/di/providers.dart';
-import 'package:testable/core/network/dio/http_client.dart';
-import 'package:testable/core/network/dio/models/api_response.dart';
 import 'package:testable/core/observers/app_error_handler.dart';
 import 'package:testable/core/services/local_storage_adapter.dart';
-import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/utils/logger.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:testable/features/user/data/models/user_profile_model.dart';
-import 'package:testable/features/user/data/repositories/user_repository_impl.dart';
 import 'package:testable/shared/connectivity/connectivity_watcher.dart';
 
 import '../../test/helpers/test_helpers.dart';
 
 class TestAppHarness {
   TestAppHarness({
-    FakeAuthController? authController,
-    FakeUserController? userController,
+     this.startAuthenticated = false,
     LocalStorage? storage,
     Env? env,
-    bool startAuthenticated = false,
-  }) : authController = authController ?? FakeAuthController(),
-       userController = userController ?? FakeUserController(),
-       storage = storage ?? testLocaloStorage,
+    UserModel? preAuthenticatedUser,
+  }) : storage = storage ?? testLocaloStorage,
        env =
            env ??
            const Env(
@@ -36,17 +28,26 @@ class TestAppHarness {
              enableLogging: false,
              isTest: true,
            ),
-       _logger = AppLogger(enabled: false) {
-    if (startAuthenticated && this.authController.sessionUser == null) {
-      this.authController.sessionUser = FakeAuthController.defaultUser;
+       _logger = AppLogger(enabled: false),
+       _preAuthenticatedUser = preAuthenticatedUser ?? defaultUser {
+    if (startAuthenticated) {
+      // Pre-populate storage with authenticated user data
+      _setupPreAuthentication();
     }
   }
 
-  final FakeAuthController authController;
-  final FakeUserController userController;
+  static final defaultUser = UserModel(
+    id: 'test-user-id',
+    name: 'Test User',
+    email: 'test@example.com',
+    token: 'test-auth-token',
+  );
+
+  final bool startAuthenticated;
   final LocalStorage storage;
   final Env env;
   final AppLogger _logger;
+  final UserModel _preAuthenticatedUser;
 
   Widget buildApp() {
     final container = ProviderContainer(
@@ -57,204 +58,116 @@ class TestAppHarness {
         connectivityProvider.overrideWith(
           (ref) => ConnectivityNotifier(enableMonitoring: false),
         ),
-        httpClientProvider.overrideWith((ref) {
-          final selectedEnv = ref.watch(envProvider);
-          final logger = ref.watch(loggerProvider);
-          return AppHttpClient(
-            env: selectedEnv,
-            logger: logger,
-            dio: Dio(BaseOptions(baseUrl: selectedEnv.baseUrl)),
-          );
+        // Use real auth repository - it will read from pre-populated storage
+        authRepositoryProvider.overrideWith((ref) {
+          // Create real auth repository with test storage
+          return AuthRepository(ref);
         }),
-        authRepositoryProvider.overrideWith(
-          (ref) => FakeAuthRepository(ref, controller: authController),
-        ),
-        userRepoProvider.overrideWith(
-          (ref) => FakeUserRepository(ref, controller: userController),
-        ),
+        // We don't need to override userRepoProvider unless we want fake data
       ],
       observers: [RiverpodErrorObserver(_logger)],
     );
+
     return UncontrolledProviderScope(
       container: container,
       child: const MyApp(),
     );
   }
 
-  List<Override> get _overrides => [
-    envProvider.overrideWithValue(env),
-    loggerProvider.overrideWithValue(_logger),
-    storageProvider.overrideWithValue(storage),
-    httpClientProvider.overrideWith((ref) {
-      final selectedEnv = ref.watch(envProvider);
-      final logger = ref.watch(loggerProvider);
-      return AppHttpClient(
-        env: selectedEnv,
-        logger: logger,
-        dio: Dio(BaseOptions(baseUrl: selectedEnv.baseUrl)),
-      );
-    }),
-    connectivityProvider.overrideWith(
-      (ref) => ConnectivityNotifier(enableMonitoring: false),
-    ),
-    authRepositoryProvider.overrideWith(
-      (ref) => FakeAuthRepository(ref, controller: authController),
-    ),
-    userRepoProvider.overrideWith(
-      (ref) => FakeUserRepository(ref, controller: userController),
-    ),
-  ];
-
   Future<void> setup() async {
     await dotenv.load(fileName: '.env.test');
+
+    if (startAuthenticated) {
+      // Ensure storage is properly set up for authenticated state
+      await _setupPreAuthentication();
+    } else {
+      // Ensure storage is clean for unauthenticated state
+      await _clearAuthentication();
+    }
   }
-}
 
-class FakeAuthController {
-  FakeAuthController({
-    this.sessionUser,
-    UserModel? otpUser,
-    this.failSendOtp = false,
-    this.failVerifyOtp = false,
-    this.failLogin = false,
-    this.errorMessage = 'Authentication failed',
-    this.otpContact = '9999999999',
-    this.expectedOtp = '777777',
-  }) : otpUser = otpUser ?? defaultUser;
+  Future<void> _setupPreAuthentication() async {
+    try {
+      // Clear any existing session first
+      await storage.delete(StorageKeys.user);
+      await storage.delete(StorageKeys.token, secure: true);
 
-  static final defaultUser = UserModel(
-    id: 'user-1',
-    name: 'Test User',
-    email: 'test@example.com',
-    token: 'test-token',
-  );
+      // Save user data to storage
+      await storage.save(StorageKeys.user, _preAuthenticatedUser.toJson());
 
-  UserModel? sessionUser;
-  UserModel otpUser;
-  bool failSendOtp;
-  bool failVerifyOtp;
-  bool failLogin;
-  String errorMessage;
-  String otpContact;
-  String expectedOtp;
-}
+      // Save token securely
+      if (_preAuthenticatedUser.token != null &&
+          _preAuthenticatedUser.token!.isNotEmpty) {
+        await storage.save(StorageKeys.token, _preAuthenticatedUser.token, secure: true);
+      }
 
-class FakeAuthRepository extends AuthRepository {
-  FakeAuthRepository(Ref ref, {required this.controller}) : super(ref);
+      // Verify the data was saved
+      final savedUser = await storage.getMap(StorageKeys.user);
+      final savedToken = await storage.getString(StorageKeys.token, secure: true);
 
-  final FakeAuthController controller;
-
-  @override
-  Future<ApiResponse<(bool, Map<String, dynamic>)>> sendOtp(
-    String contact,
-  ) async {
-    if (controller.failSendOtp) {
-      return ApiResponse<(bool, Map<String, dynamic>)>.error(
-        message: controller.errorMessage,
+      _logger.i('Pre-authentication setup complete:');
+      _logger.i('  User saved: ${savedUser != null}');
+      _logger.i(
+        '  Token saved: ${savedToken != null && savedToken.isNotEmpty}',
       );
+    } catch (e) {
+      _logger.e('Failed to setup pre-authentication', e: e);
+      rethrow;
     }
-    return ApiResponse<(bool, Map<String, dynamic>)>.success(
-      data: (true, {'contact': controller.otpContact}),
-    );
   }
 
-  @override
-  Future<ApiResponse<UserModel?>> verifyOTP(String contact, String otp) async {
-    if (controller.failVerifyOtp ||
-        contact != controller.otpContact ||
-        otp != controller.expectedOtp) {
-      return const ApiResponse<UserModel?>.error(
-        message: 'Invalid OTP provided',
-      );
+  Future<void> _clearAuthentication() async {
+    try {
+      await storage.delete(StorageKeys.user);
+      await storage.delete(StorageKeys.token, secure: true);
+      _logger.i('Authentication cleared for unauthenticated test');
+    } catch (e) {
+      _logger.e('Failed to clear authentication', e: e);
     }
-    await saveSession(controller.otpUser, token: controller.otpUser.token);
-    return ApiResponse<UserModel?>.success(data: controller.otpUser);
   }
 
-  @override
-  Future<ApiResponse<UserModel?>> login(String email, String password) async {
-    if (controller.failLogin) {
-      return ApiResponse<UserModel?>.error(message: controller.errorMessage);
+  // Helper method to change authentication state during test
+  Future<void> authenticateUser(UserModel? user) async {
+    if (user != null) {
+      await storage.save(StorageKeys.user, user.toJson());
+      if (user.token != null && user.token!.isNotEmpty) {
+        await storage.save(StorageKeys.token, user.token!, secure: true);
+      }
+    } else {
+      await _clearAuthentication();
     }
-    await saveSession(controller.otpUser, token: controller.otpUser.token);
-    return ApiResponse<UserModel?>.success(data: controller.otpUser);
+
+    // Rebuild the app to reflect new auth state
+    // In tests, you might need to pump the widget again
   }
 
-  @override
-  Future<ApiResponse<bool>> logout() async {
-    await clearSession();
-    return const ApiResponse<bool>.success(data: true);
-  }
-
-  @override
-  Future<UserModel?> loadSession() async {
-    return controller.sessionUser;
-  }
-
-  @override
-  Future<void> saveSession(UserModel user, {String? token}) async {
-    controller.sessionUser = UserModel(
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      token: token ?? user.token ?? controller.sessionUser?.token,
-    );
-  }
-
-  @override
-  Future<void> clearSession() async {
-    controller.sessionUser = null;
-  }
-
-  @override
-  Future<String?> getToken() async {
-    return controller.sessionUser?.token;
+  // Helper to get current auth state
+  Future<bool> isAuthenticated() async {
+    final user = await storage.getMap(StorageKeys.user);
+    final token = await storage.getString(StorageKeys.token, secure: true);
+    return user != null && user.isNotEmpty && token != null && token.isNotEmpty;
   }
 }
 
-class FakeUserController {
-  FakeUserController({UserProfileModel? profile, this.failLoad = false})
-    : profile = profile ?? defaultProfile;
-
-  static final defaultProfile = UserProfileModel(
-    id: 'user-1',
-    name: 'Test User',
-    email: 'test@example.com',
-    phone: '+1 555-0100',
-  );
-
-  UserProfileModel profile;
-  bool failLoad;
-}
-
-class FakeUserRepository extends UserRepository {
-  FakeUserRepository(Ref ref, {required this.controller}) : super(ref);
-
-  final FakeUserController controller;
-
-  @override
-  Future<ApiResponse<UserProfileModel?>> getProfile() async {
-    if (controller.failLoad) {
-      return const ApiResponse<UserProfileModel?>.error(
-        message: 'Failed to load profile',
-      );
-    }
-    return ApiResponse<UserProfileModel?>.success(data: controller.profile);
+// Create a simpler test helper for common scenarios
+class TestAppHelper {
+  static Future<Widget> createAuthenticatedApp({
+    UserModel? user,
+    bool useRealProviders = true,
+  }) async {
+    final harness = TestAppHarness(
+      startAuthenticated: true,
+      preAuthenticatedUser: user,
+    );
+    await harness.setup();
+    return harness.buildApp();
   }
 
-  @override
-  Future<ApiResponse<UserProfileModel?>> updateProfile(
-    Map<String, dynamic> updates,
-  ) async {
-    controller.profile = UserProfileModel(
-      id: controller.profile.id,
-      name: updates['name'] as String? ?? controller.profile.name,
-      email: updates['email'] as String? ?? controller.profile.email,
-      phone: updates['phone'] as String? ?? controller.profile.phone,
-      avatar: updates['avatar'] as String? ?? controller.profile.avatar,
-      createdAt: controller.profile.createdAt,
-      updatedAt: DateTime.now(),
-    );
-    return ApiResponse<UserProfileModel?>.success(data: controller.profile);
+  static Future<Widget> createUnauthenticatedApp({
+    bool useRealProviders = true,
+  }) async {
+    final harness = TestAppHarness(startAuthenticated: false);
+    await harness.setup();
+    return harness.buildApp();
   }
 }

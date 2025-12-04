@@ -10,14 +10,12 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this.ref, {AuthRepository? repo})
     : _repo = repo ?? ref.read(authRepositoryProvider),
-      super(const AuthState()) {
-    _initialize();
-  }
+      super(const AuthState());
 
   final Ref ref;
   final AuthRepository _repo;
 
-  Future<void> _initialize() async {
+  Future<void> initialize() async {
     state = state.copyWith(status: AuthStatus.loading);
     try {
       final user = await _repo.loadSession();

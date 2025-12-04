@@ -9,7 +9,7 @@ class AppTheme {
   ).build();
 
    final dark = AppThemeBuilder(
-    seedColor: const Color.fromARGB(255, 2, 87, 113),
+    seedColor: const Color.fromARGB(255, 12, 112, 142),
     brightness: Brightness.dark,
   ).build();
 

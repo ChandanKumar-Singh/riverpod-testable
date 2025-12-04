@@ -18,6 +18,14 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authProvider.notifier).initialize();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeProvider);
     final locale = ref.watch(langProvider);

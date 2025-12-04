@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,9 +38,19 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              UltraDialog.confirm(context: context, title: 'Loggut',);
-              // ref.read(authProvider.notifier).logout();
+            onPressed: () async {
+              final res = await UltraDialog.confirm(
+                context: context,
+                title: 'Logout',
+                message: 'Are you sure to logout?',
+              );
+              unawaited(
+                UltraDialog.loading(
+                  context: context,
+                  message: 'Logging out...',
+                  completer: ref.read(authProvider.notifier).logout(),
+                ),
+              );
             },
           ),
         ],
