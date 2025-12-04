@@ -23,8 +23,9 @@ class Assets {
   const Assets._();
 
   static const String aEnv = '.env';
+  static const String aEnv = '.env.test';
   static const $AssetsSvgsGen svgs = $AssetsSvgsGen();
 
   /// List of all assets
-  static List<String> get values => [aEnv];
+  static List<String> get values => [aEnv, aEnv];
 }

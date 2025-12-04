@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/app/app.dart';
@@ -7,6 +8,7 @@ import 'package:testable/core/di/providers.dart';
 import 'package:testable/core/network/dio/http_client.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
 import 'package:testable/core/observers/app_error_handler.dart';
+import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/utils/logger.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
@@ -15,16 +17,18 @@ import 'package:testable/features/user/data/models/user_profile_model.dart';
 import 'package:testable/features/user/data/repositories/user_repository_impl.dart';
 import 'package:testable/shared/connectivity/connectivity_watcher.dart';
 
+import '../../test/helpers/test_helpers.dart';
+
 class TestAppHarness {
   TestAppHarness({
     FakeAuthController? authController,
     FakeUserController? userController,
-    InMemoryStorageAdapter? storage,
+    LocalStorage? storage,
     Env? env,
     bool startAuthenticated = false,
   }) : authController = authController ?? FakeAuthController(),
        userController = userController ?? FakeUserController(),
-       storage = storage ?? InMemoryStorageAdapter(),
+       storage = storage ?? testLocaloStorage,
        env =
            env ??
            const Env(
@@ -40,14 +44,39 @@ class TestAppHarness {
 
   final FakeAuthController authController;
   final FakeUserController userController;
-  final InMemoryStorageAdapter storage;
+  final LocalStorage storage;
   final Env env;
   final AppLogger _logger;
 
-  ProviderScope buildApp() {
-    return ProviderScope(
-      overrides: _overrides,
+  Widget buildApp() {
+    final container = ProviderContainer(
+      overrides: [
+        envProvider.overrideWithValue(env),
+        loggerProvider.overrideWithValue(_logger),
+        storageProvider.overrideWithValue(storage),
+        connectivityProvider.overrideWith(
+          (ref) => ConnectivityNotifier(enableMonitoring: false),
+        ),
+        httpClientProvider.overrideWith((ref) {
+          final selectedEnv = ref.watch(envProvider);
+          final logger = ref.watch(loggerProvider);
+          return AppHttpClient(
+            env: selectedEnv,
+            logger: logger,
+            dio: Dio(BaseOptions(baseUrl: selectedEnv.baseUrl)),
+          );
+        }),
+        authRepositoryProvider.overrideWith(
+          (ref) => FakeAuthRepository(ref, controller: authController),
+        ),
+        userRepoProvider.overrideWith(
+          (ref) => FakeUserRepository(ref, controller: userController),
+        ),
+      ],
       observers: [RiverpodErrorObserver(_logger)],
+    );
+    return UncontrolledProviderScope(
+      container: container,
       child: const MyApp(),
     );
   }
@@ -78,85 +107,6 @@ class TestAppHarness {
 
   Future<void> setup() async {
     await dotenv.load(fileName: '.env.test');
-  }
-}
-
-class InMemoryStorageAdapter implements StorageAdapter {
-  final Map<String, dynamic> _plain = {};
-  final Map<String, dynamic> _secure = {};
-
-  Map<String, dynamic> _box(bool secure) => secure ? _secure : _plain;
-
-  @override
-  Future<void> init() async {}
-
-  @override
-  Future<void> save(String key, dynamic value, {bool secure = false}) async {
-    if (value == null) {
-      await delete(key, secure: secure);
-      return;
-    }
-    _box(secure)[key] = value;
-  }
-
-  @override
-  Future<String?> getString(String key, {bool secure = false}) async {
-    final value = _box(secure)[key];
-    return value?.toString();
-  }
-
-  @override
-  Future<int?> getInt(String key, {bool secure = false}) async {
-    final value = _box(secure)[key];
-    if (value is int) return value;
-    return int.tryParse(value?.toString() ?? '');
-  }
-
-  @override
-  Future<bool?> getBool(String key, {bool secure = false}) async {
-    final value = _box(secure)[key];
-    if (value is bool) return value;
-    final stringValue = value?.toString().toLowerCase();
-    if (stringValue == null) return null;
-    return stringValue == 'true';
-  }
-
-  @override
-  Future<double?> getDouble(String key, {bool secure = false}) async {
-    final value = _box(secure)[key];
-    if (value is double) return value;
-    return double.tryParse(value?.toString() ?? '');
-  }
-
-  @override
-  Future<List<String>?> getStringList(String key, {bool secure = false}) async {
-    final value = _box(secure)[key];
-    if (value is List<String>) return value;
-    if (value is List) {
-      return value.map((e) => e.toString()).toList();
-    }
-    return null;
-  }
-
-  @override
-  Future<Map<String, dynamic>?> getMap(
-    String key, {
-    bool secure = false,
-  }) async {
-    final value = _box(secure)[key];
-    if (value is Map<String, dynamic>) return value;
-    return null;
-  }
-
-  @override
-  Future<void> delete(String key, {bool secure = false}) async {
-    _box(secure).remove(key);
-  }
-
-  @override
-  Future<void> clear() async {
-    _plain.clear();
-    _secure.clear();
   }
 }
 

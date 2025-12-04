@@ -109,18 +109,14 @@ class AuthRepository extends ApiService {
     try {
       final json = await storage.getMap(StorageKeys.user);
       final token = await storage.getString(StorageKeys.token, secure: true);
-      if (json != null && json.isNotEmpty) {
+      await Future.delayed(const Duration(seconds: 2));
+      if (token != null &&
+          token.isNotEmpty &&
+          json != null &&
+          json.isNotEmpty) {
         try {
           final user = UserModel.fromJson(json);
-          // If token is stored separately, use it
-          if (token != null && token.isNotEmpty) {
-            return UserModel(
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              token: token,
-            );
-          }
+          user.token = token;
           return user;
         } catch (e) {
           logger.e(
