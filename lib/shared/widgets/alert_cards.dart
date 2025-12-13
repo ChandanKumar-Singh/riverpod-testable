@@ -695,4 +695,3 @@ class UpdateAvailableCard extends StatelessWidget {
     );
   }
 }
-

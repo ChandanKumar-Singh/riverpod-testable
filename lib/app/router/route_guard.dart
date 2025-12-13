@@ -5,7 +5,6 @@ import 'package:testable/app/router/app_router.dart';
 
 /// Route guard that checks if user is authenticated
 class AuthGuard extends AutoRouteGuard {
-
   AuthGuard(this.ref);
   final Ref ref;
 
@@ -25,7 +24,6 @@ class AuthGuard extends AutoRouteGuard {
 
 /// Route guard for public routes (redirects to home if already authenticated)
 class PublicRouteGuard extends AutoRouteGuard {
-
   PublicRouteGuard(this.ref);
   final Ref ref;
 

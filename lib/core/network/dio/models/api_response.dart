@@ -70,7 +70,6 @@ class ApiResponse<T> {
 }
 
 final class ApiResponseSuccess<T> extends ApiResponse<T> {
-
   const ApiResponseSuccess({
     required this.data,
     this.message,
@@ -87,7 +86,6 @@ final class ApiResponseSuccess<T> extends ApiResponse<T> {
 }
 
 final class ApiResponseError<T> extends ApiResponse<T> {
-
   const ApiResponseError({
     this.message,
     this.error,

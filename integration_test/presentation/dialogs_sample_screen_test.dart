@@ -63,7 +63,12 @@ void main() {
 
       // Verify dialog is shown
       expect(find.text('Basic Dialog'), findsWidgets); // In dialog
-      expect(find.textContaining('This is a simple dialog using the new UltraDialog API'), findsOneWidget);
+      expect(
+        find.textContaining(
+          'This is a simple dialog using the new UltraDialog API',
+        ),
+        findsOneWidget,
+      );
 
       // Close the dialog
       await tester.tapAt(Offset.zero); // Tap outside to close
@@ -99,7 +104,10 @@ void main() {
 
       // Verify confirmation dialog
       expect(find.text('Delete Item?'), findsOneWidget);
-      expect(find.textContaining('This action cannot be undone'), findsOneWidget);
+      expect(
+        find.textContaining('This action cannot be undone'),
+        findsOneWidget,
+      );
 
       // Test cancel option
       final cancelButton = find.widgetWithText(OutlinedButton, 'Cancel');

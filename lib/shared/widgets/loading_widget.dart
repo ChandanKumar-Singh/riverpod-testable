@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Reusable loading widget with optional message
 class LoadingWidget extends StatelessWidget {
-
   const LoadingWidget({super.key, this.message, this.color});
   final String? message;
   final Color? color;
@@ -30,9 +29,10 @@ class LoadingWidget extends StatelessWidget {
 
 /// Full screen loading overlay
 class LoadingOverlay extends StatelessWidget {
-
   const LoadingOverlay({
-    required this.child, required this.isLoading, super.key,
+    required this.child,
+    required this.isLoading,
+    super.key,
     this.message,
   });
   final Widget child;

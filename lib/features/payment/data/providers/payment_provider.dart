@@ -6,7 +6,6 @@ final paymentProvider = StateNotifierProvider<PaymentNotifier, PaymentState>(
 );
 
 class PaymentNotifier extends StateNotifier<PaymentState> {
-
   PaymentNotifier(this.ref) : super(const PaymentState());
   final Ref ref;
 
@@ -39,7 +38,6 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
 enum PaymentStatus { initial, loading, loaded, error }
 
 class PaymentState {
-
   const PaymentState({
     this.status = PaymentStatus.initial,
     this.payments = const [],

@@ -66,15 +66,15 @@ class ConnectivityNotifier extends StateNotifier<ConnectivityState> {
   ConnectivityNotifier({
     Connectivity? connectivity,
     bool enableMonitoring = true,
-  })  : _connectivity = connectivity ?? Connectivity(),
-        _enableMonitoring = enableMonitoring,
-        super(
-          ConnectivityState(
-            status: ConnectivityStatus.online,
-            lastChanged: DateTime.now(),
-            isSimulated: false,
-          ),
-        ) {
+  }) : _connectivity = connectivity ?? Connectivity(),
+       _enableMonitoring = enableMonitoring,
+       super(
+         ConnectivityState(
+           status: ConnectivityStatus.online,
+           lastChanged: DateTime.now(),
+           isSimulated: false,
+         ),
+       ) {
     if (_enableMonitoring) {
       _init();
     }

@@ -59,6 +59,7 @@ final httpClientProvider = Provider<AppHttpClient>((ref) {
       return null;
     }
   }
+
   /// Token getter
   return AppHttpClient(
     dio: dio,

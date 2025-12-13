@@ -241,9 +241,7 @@ void main() {
       });
 
       test('returns true for ApiResponseError with 401', () {
-        const error = ApiResponseError<String>(
-          statusCode: 401,
-        );
+        const error = ApiResponseError<String>(statusCode: 401);
 
         expect(ErrorHandler.requiresAuth(error), isTrue);
       });

@@ -6,7 +6,6 @@ import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/supported_locales.dart';
 
 class LangNotifier extends StateNotifier<Locale> {
-
   LangNotifier(this._storage) : super(SupportedLocales.en) {
     _load();
   }

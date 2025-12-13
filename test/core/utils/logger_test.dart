@@ -83,7 +83,7 @@ void main() {
    */
   });
 
-/*   group('LogLevel', () {
+  /*   group('LogLevel', () {
     test('LogLevel has correct values', () {
       expect(LogLevel.verbose.i, 0);
       expect(LogLevel.debug.i, 1);

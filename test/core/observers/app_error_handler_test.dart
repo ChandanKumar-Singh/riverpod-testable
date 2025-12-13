@@ -6,7 +6,7 @@ import 'package:testable/core/utils/logger.dart';
 
 void main() {
   group('AppErrorHandler', () {
-     AppLogger logger = AppLogger();
+    AppLogger logger = AppLogger();
 
     setUpAll(() {
       logger = AppLogger(enabled: true);

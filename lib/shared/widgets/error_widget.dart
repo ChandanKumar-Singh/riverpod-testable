@@ -19,9 +19,9 @@ import 'package:flutter/material.dart';
 /// }
 
 class ErrorDisplay extends StatelessWidget {
-
   const ErrorDisplay({
-    required this.error, super.key,
+    required this.error,
+    super.key,
     this.stack,
     this.title,
     this.onRetry,
@@ -127,7 +127,6 @@ class ErrorDisplay extends StatelessWidget {
 }
 
 class ErrorScreen extends StatelessWidget {
-
   const ErrorScreen({
     super.key,
     this.flutterError,
@@ -199,7 +198,6 @@ class ErrorScreen extends StatelessWidget {
 }
 
 class _DebugFlutterError extends StatelessWidget {
-
   const _DebugFlutterError({required this.flutterError});
   final FlutterErrorDetails flutterError;
 

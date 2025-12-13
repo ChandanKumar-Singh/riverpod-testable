@@ -14,8 +14,8 @@ void main() {
       mockSharedPrefs = MockSharedPreferencesStorageAdapter();
       mockSecureStorage = MockSecureStorageAdapter();
       storage = LocalStorage(
-        sharedPreferencesAdapter: mockSharedPrefs ,
-        secureStorageAdapter: mockSecureStorage ,
+        sharedPreferencesAdapter: mockSharedPrefs,
+        secureStorageAdapter: mockSecureStorage,
       );
     });
 
@@ -38,7 +38,10 @@ void main() {
       mockSecureStorage.setValue('secure_key', 'secure_value');
 
       expect(await storage.getString('regular_key'), 'regular_value');
-      expect(await storage.getString('secure_key', secure: true), 'secure_value');
+      expect(
+        await storage.getString('secure_key', secure: true),
+        'secure_value',
+      );
     });
 
     test('delete removes from correct adapter', () async {
@@ -169,4 +172,3 @@ void main() {
     });
   });
 }
-

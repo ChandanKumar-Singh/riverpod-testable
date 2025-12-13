@@ -34,7 +34,7 @@ class _OnTapScalerState extends State<OnTapScaler>
       lowerBound: 0.0,
       upperBound: 1.0,
     );
-    
+
     // Create a curved animation for smoother scaling
     scaleAnimation = CurvedAnimation(
       parent: controller,
@@ -52,16 +52,16 @@ class _OnTapScalerState extends State<OnTapScaler>
 
   void _onPointerDown(PointerDownEvent event) {
     if (!widget.enabled) return;
-    
+
     controller.forward();
     HapticFeedback.mediumImpact();
   }
 
   void _onPointerUp(PointerUpEvent event) async {
     if (!widget.enabled || !mounted) return;
-    
+
     await controller.reverse();
-    
+
     // Check if the tap is still within the widget bounds
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox != null) {
@@ -89,11 +89,8 @@ class _OnTapScalerState extends State<OnTapScaler>
           final scale = widget.enabled
               ? (1 - scaleAnimation.value * (1 - widget.scale))
               : 1.0;
-          
-          return Transform.scale(
-            scale: scale,
-            child: widget.child,
-          );
+
+          return Transform.scale(scale: scale, child: widget.child);
         },
       ),
     );

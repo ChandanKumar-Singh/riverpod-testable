@@ -17,27 +17,27 @@ void main() {
     });
 
     test('isConnected returns true when connected', () async {
-      when(mockConnectivity.checkConnectivity()).thenAnswer(
-        (_) async => [ConnectivityResult.wifi],
-      );
+      when(
+        mockConnectivity.checkConnectivity(),
+      ).thenAnswer((_) async => [ConnectivityResult.wifi]);
 
       final result = await networkInfo.isConnected;
       expect(result, isTrue);
     });
 
     test('isConnected returns true for mobile connection', () async {
-      when(mockConnectivity.checkConnectivity()).thenAnswer(
-        (_) async => [ConnectivityResult.mobile],
-      );
+      when(
+        mockConnectivity.checkConnectivity(),
+      ).thenAnswer((_) async => [ConnectivityResult.mobile]);
 
       final result = await networkInfo.isConnected;
       expect(result, isTrue);
     });
 
     test('isConnected returns false when not connected', () async {
-      when(mockConnectivity.checkConnectivity()).thenAnswer(
-        (_) async => [ConnectivityResult.none],
-      );
+      when(
+        mockConnectivity.checkConnectivity(),
+      ).thenAnswer((_) async => [ConnectivityResult.none]);
 
       final result = await networkInfo.isConnected;
       expect(result, isFalse);
@@ -62,4 +62,3 @@ void main() {
     });
   });
 }
-

@@ -4,7 +4,6 @@ part 'user_profile_model.g.dart';
 
 @JsonSerializable()
 class UserProfileModel {
-
   UserProfileModel({
     required this.id,
     required this.name,

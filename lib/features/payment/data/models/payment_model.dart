@@ -4,11 +4,12 @@ part 'payment_model.g.dart';
 
 @JsonSerializable()
 class PaymentModel {
-
   PaymentModel({
     required this.id,
     required this.amount,
-    required this.status, required this.createdAt, this.currency = 'USD',
+    required this.status,
+    required this.createdAt,
+    this.currency = 'USD',
     this.description,
     this.updatedAt,
   });

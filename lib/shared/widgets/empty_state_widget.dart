@@ -44,9 +44,7 @@ class EmptyStateWidget extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withAlpha(180),
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
                 ),
                 textAlign: TextAlign.center,
               ),

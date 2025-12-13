@@ -9,7 +9,6 @@ final appSettingsProvider =
     });
 
 class AppSettingsNotifier extends StateNotifier<AppSettingsModel> {
-
   AppSettingsNotifier(this.repo) : super(const AppSettingsModel());
   final AppSettingsRepository repo;
 

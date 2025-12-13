@@ -22,10 +22,7 @@ void main() {
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: const MyApp(),
-      ),
+      UncontrolledProviderScope(container: container, child: const MyApp()),
     );
     await tester.pumpAndSettle();
 

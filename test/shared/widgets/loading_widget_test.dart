@@ -53,10 +53,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: LoadingOverlay(
-              isLoading: false,
-              child: Text('Content'),
-            ),
+            body: LoadingOverlay(isLoading: false, child: Text('Content')),
           ),
         ),
       );

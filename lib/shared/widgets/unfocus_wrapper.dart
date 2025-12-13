@@ -1,5 +1,6 @@
 // lib/core/utils/unfocus_extension.dart
 import 'package:flutter/material.dart';
+
 /// Widget that unfocuses when tapping outside text fields
 class UnfocusWrapper extends StatelessWidget {
   const UnfocusWrapper({required this.child, super.key});

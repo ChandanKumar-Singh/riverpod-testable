@@ -13,7 +13,7 @@ class AppErrorHandler {
   AppErrorHandler._internal();
   static final AppErrorHandler _instance = AppErrorHandler._internal();
 
-   AppLogger? _logger;
+  AppLogger? _logger;
 
   void initialize(AppLogger logger) {
     _logger = logger;

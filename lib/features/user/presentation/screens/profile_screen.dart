@@ -66,7 +66,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
             )
           : profileState.profile != null
           ? ListView(
-            key: const Key('profile_user_card_key'),
+              key: const Key('profile_user_card_key'),
               padding: const EdgeInsets.all(16),
               children: [
                 CircleAvatar(

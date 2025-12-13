@@ -25,5 +25,5 @@ abstract class MStorageAdapter {
   Future<List<String>?> getStringList(String key);
   Future<Map<String, dynamic>?> getMap(String key);
   Future<void> delete(String key);
-  Future<void> clear({ List<String> exceptKeys = const []});
+  Future<void> clear({List<String> exceptKeys = const []});
 }
