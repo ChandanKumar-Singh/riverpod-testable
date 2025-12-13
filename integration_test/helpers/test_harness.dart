@@ -47,15 +47,6 @@ class TestAppHarness {
         envProvider.overrideWithValue(env ?? Env.current),
         loggerProvider.overrideWithValue(_logger),
         storageProvider.overrideWithValue(storage),
-        httpClientProvider.overrideWith((ref) {
-          final selectedEnv = ref.watch(envProvider);
-          final logger = ref.watch(loggerProvider);
-          return AppHttpClient(
-            env: selectedEnv,
-            logger: logger,
-            dio: Dio(BaseOptions(baseUrl: selectedEnv.baseUrl)),
-          );
-        }),
         connectivityProvider.overrideWith((ref) => connectivityNotifier),
         authRepositoryProvider.overrideWith((ref) => AuthRepository(ref)),
       ],
@@ -81,7 +72,7 @@ class TestAppHarness {
 
   Future<void> _setupPreAuthentication() async {
     try {
-      // 🔥 NEW: Attempt to restore previous session
+      // Attempt to restore previous session
       final restoredUser = await TestAppHelper.loadUserState();
       if (restoredUser != null) {
         print('🔄 Restoring test-authenticated user from temp session file');

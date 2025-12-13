@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
@@ -29,6 +32,18 @@ void main() {
 
     tearDown(() {
       container.dispose();
+    });
+
+    test('Read user.json', () async {
+      final file = File('integration_test/data/auth/user.json');
+      print(file);
+      print('File exists ${file.existsSync()}');
+      if (!file.existsSync()) return null;
+      final content = await file.readAsString();
+      final user = UserModel.fromJson(
+        jsonDecode(content) as Map<String, dynamic>,
+      );
+      expect(user.token, isNotEmpty);
     });
 
     test('complete login flow', () async {

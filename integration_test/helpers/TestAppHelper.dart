@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 
+import '../data/auth/user.dart';
 import 'auth_test_storage.dart';
 import 'test_harness.dart';
 
@@ -38,7 +39,14 @@ class TestAppHelper {
 
   /// Read user state file if exists
   static Future<UserModel?> loadUserState() async {
-    return AuthTestStorage.loadUserState();
+    // final file = File('integration_test/data/auth/user.json');
+    // print(file);
+    // print('File exists ${file.existsSync()}');
+    // if (!file.existsSync()) return null;
+    // final content = await file.readAsString();
+    const content = userJsonData;
+    if (content.isEmpty) return null;
+    return UserModel.fromJson(content);
   }
 
   static ProviderContainer container(WidgetTester tester) =>

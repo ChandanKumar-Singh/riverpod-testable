@@ -109,14 +109,19 @@ void main() {
         // Step 4: Verify successful login
         print('✅ Checking home screen...');
         expect(find.text('Home'), findsOneWidget);
-        final authUser = TestAppHelper.container(
+        /* final authUser = TestAppHelper.container(
           tester,
         ).read(authProvider).user;
         if (authUser != null) {
           await TestAppHelper.saveUserState(authUser.toJson());
         } else {
           print('❌ User not found in auth state...');
-        }
+        } */
+
+        /* final restoredUser = await TestAppHelper.loadUserState();
+        print(
+          '🔄 Restoring test-authenticated user from temp session file ${restoredUser}',
+        ); */
         print('✅ Checking user card ...');
         expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
         await tester.pump(
@@ -129,6 +134,7 @@ void main() {
       },
     );
 
+    // Profile Api Test
     testWidgets(
       'Profile Api Test',
       (tester) async {
@@ -141,13 +147,12 @@ void main() {
         final profileButton = find.text('Profile').first;
         expect(profileButton, findsOneWidget);
         await tester.tap(profileButton);
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
+        await tester.pumpAndSettle();
         print('✅ Checking profile screen...');
         expect(find.text('Profile'), findsWidgets);
         await tester.pumpAndSettle();
         print('✅ Checking user card ...');
-        expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
+        expect(find.byKey(const Key('profile_user_card_key')), findsWidgets);
         await tester.pump(
           const Duration(milliseconds: 1500),
         ); // Pause to see profile
