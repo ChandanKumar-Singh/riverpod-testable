@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:testable/core/utils/toasts/toasts.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeMode> {

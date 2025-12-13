@@ -7,7 +7,7 @@ void main() {
     testWidgets('displays error message', (WidgetTester tester) async {
       const error = 'Test error';
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: ErrorDisplay(error: error)),
         ),
       );
@@ -22,7 +22,7 @@ void main() {
       const error = 'Test error';
       const title = 'Custom Error Title';
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: ErrorDisplay(error: error, title: title),
           ),
@@ -60,7 +60,7 @@ void main() {
     ) async {
       const error = 'Test error';
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: ErrorDisplay(error: error)),
         ),
       );
@@ -75,7 +75,7 @@ void main() {
       const customIcon = Icon(Icons.warning);
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: ErrorDisplay(error: error, icon: customIcon),
           ),
@@ -91,7 +91,7 @@ void main() {
       WidgetTester tester,
     ) async {
       const error = 'Test error';
-      await tester.pumpWidget(MaterialApp(home: ErrorScreen(error: error)));
+      await tester.pumpWidget(const MaterialApp(home: ErrorScreen(error: error)));
 
       expect(find.text('Oops! Something went wrong'), findsOneWidget);
     });

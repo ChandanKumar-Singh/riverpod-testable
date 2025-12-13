@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +5,6 @@ import 'package:testable/app/app.dart';
 import 'package:testable/core/config/env.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/di/providers.dart';
-import 'package:testable/core/network/dio/http_client.dart';
 import 'package:testable/core/observers/app_error_handler.dart';
 import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/utils/logger.dart';

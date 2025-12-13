@@ -97,7 +97,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
           error: res.message ?? 'Failed to send OTP',
         );
       }
-    } catch (e, stack) {
+    } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
         error: e.toString(),
@@ -111,7 +111,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(status: AuthStatus.loading, error: null);
       await _repo.clearSession();
       state = const AuthState(status: AuthStatus.unauthenticated);
-    } catch (e, st) {
+    } catch (e) {
       state = AuthState(
         status: AuthStatus.unauthenticated,
         error: e.toString(),

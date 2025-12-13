@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:riverpod/src/framework.dart';
@@ -8,7 +7,7 @@ import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/di/providers.dart';
-import '../../../../helpers/test_helpers.dart' hide MockStorageAdapter;
+import '../../../../helpers/test_helpers.dart';
 import 'auth_repository_test.mocks.dart' show MockStorageAdapter;
 
 // Test Ref implementation for repository tests

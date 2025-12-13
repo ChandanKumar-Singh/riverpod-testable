@@ -194,8 +194,8 @@ class AppLogger {
     if (data is Map || data is List) {
       try {
         // Pretty print JSON-like data
-        final indent = '  ';
-        final pattern = RegExp(r'^', multiLine: true);
+        const indent = '  ';
+        final pattern = RegExp('^', multiLine: true);
         return data.toString().replaceAll(pattern, indent);
       } catch (_) {
         return data.toString();

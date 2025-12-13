@@ -97,7 +97,7 @@ class AboutScreen extends StatelessWidget {
 
 // Enhanced SampleScreen to use theme colors
 class SampleScreen extends StatelessWidget {
-  const SampleScreen({super.key, required this.title, required this.icon});
+  const SampleScreen({required this.title, required this.icon, super.key});
 
   final String title;
   final IconData icon;

@@ -126,7 +126,7 @@ void main() {
       when(mockRepo.clearSession()).thenAnswer((_) async {});
 
       // Initialize auth provider
-      container.read(authProvider);
+     await container.read(authProvider.notifier).initialize();
       await Future.delayed(const Duration(milliseconds: 10));
 
       // Verify authenticated state
@@ -173,7 +173,7 @@ void main() {
       ).thenAnswer((_) async {});
 
       // Initialize auth provider
-      container.read(authProvider);
+      await container.read(authProvider.notifier).initialize();
       await Future.delayed(const Duration(milliseconds: 10));
 
       // Send OTP
@@ -208,7 +208,8 @@ void main() {
       when(mockRepo.loadSession()).thenAnswer((_) async => user);
 
       // Initialize auth provider
-      container.read(authProvider);
+      await container.read(authProvider.notifier).initialize();
+
       await Future.delayed(const Duration(milliseconds: 1000));
 
       // Verify state is restored

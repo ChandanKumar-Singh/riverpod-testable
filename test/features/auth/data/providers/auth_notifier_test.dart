@@ -100,10 +100,11 @@ void main() {
       when(mockRepo.loadSession()).thenAnswer((_) async => user);
 
       final initial = container.read(authProvider);
-      expect(initial.status, AuthStatus.loading);
+      expect(initial.status, AuthStatus.initial);
 
       await pump();
 
+      await container.read(authProvider.notifier).initialize();
       final state = container.read(authProvider);
       expect(state.status, AuthStatus.authenticated);
       expect(state.user?.id, user.id);
@@ -112,7 +113,7 @@ void main() {
     test('initializes unauthenticated when no session', () async {
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
 
-      container.read(authProvider);
+     await container.read(authProvider.notifier).initialize();
       await pump();
 
       final state = container.read(authProvider);
@@ -351,7 +352,7 @@ void main() {
     test('initialization handles repository exceptions', () async {
       when(mockRepo.loadSession()).thenThrow(Exception('Storage unavailable'));
 
-      container.read(authProvider);
+      await container.read(authProvider.notifier).initialize();
       await pump();
 
       final state = container.read(authProvider);

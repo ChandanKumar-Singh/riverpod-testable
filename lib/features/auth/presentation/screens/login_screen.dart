@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/core/constants/index.dart';
-import 'package:testable/shared/components/button/index.dart';
 import 'package:testable/shared/components/index.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';

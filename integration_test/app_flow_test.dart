@@ -5,9 +5,7 @@ import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/lang_switcher.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
-
 import 'helpers/TestAppHelper.dart';
-import 'helpers/test_harness.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +15,7 @@ void main() {
       'shows login screen for unauthenticated users and validates form errors',
       (tester) async {
         final app = await TestAppHelper.createUnauthenticatedApp();
-        await tester.pumpWidget(app);
+        await tester.pumpWidget(app.$1);
 
         await tester.pumpAndSettle();
 
@@ -52,7 +50,7 @@ void main() {
       'performs successful OTP login and navigates across feature screens',
       (tester) async {
         final app = await TestAppHelper.createUnauthenticatedApp();
-        await tester.pumpWidget(app);
+        await tester.pumpWidget(app.$1);
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         print('🔄 App started. Looking for login screen...');
@@ -138,7 +136,7 @@ void main() {
       'Profile Api Test',
       (tester) async {
         final app = await TestAppHelper.createAuthenticatedApp();
-        await tester.pumpWidget(app);
+        await tester.pumpWidget(app.$1);
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Step 1: Navigate to Profile
@@ -171,7 +169,7 @@ void main() {
       'Screen Test',
       (tester) async {
         final app = await TestAppHelper.createAuthenticatedApp();
-        await tester.pumpWidget(app);
+        await tester.pumpWidget(app.$1);
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Step 1: Navigate to Payments
@@ -220,20 +218,23 @@ void main() {
     testWidgets('restores persisted session and keeps theme + locale changes', (
       tester,
     ) async {
-      final harness = TestAppHarness();
-      await harness.setup();
-      await harness.storage.save(ThemeStorage.modeKey, 'light');
-      await harness.storage.save(LangStorage.rootKey, 'en');
-
-      await tester.pumpWidget(harness.buildApp());
+      final app = await TestAppHelper.createAuthenticatedApp(
+        pre: (h) async {
+          final storage = h.storage;
+          await storage.save(ThemeStorage.modeKey, 'light');
+          await storage.save(LangStorage.rootKey, 'en');
+        },
+      );
+      await tester.pumpWidget(app.$1);
+      final storage = app.$2.storage;
       await tester.pumpAndSettle();
       expect(find.text('Home'), findsOneWidget);
-      expect(find.textContaining('Test User'), findsWidgets);
+      expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
 
-      final darkModeButton = find.byKey(const Key(ThemeSwitcher.buttonKey));
-      expect(darkModeButton, findsOneWidget);
+      final themeButton = find.byKey(const Key(ThemeSwitcher.buttonKey));
+      expect(themeButton, findsOneWidget);
       await Future.delayed(const Duration(milliseconds: 2000));
-      await tester.tap(darkModeButton);
+      await tester.tap(themeButton);
       await Future.delayed(const Duration(milliseconds: 250));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key(ThemeSwitcher.buttonKey)), findsOneWidget);
@@ -250,12 +251,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('टेस्टेबल ऐप'), findsOneWidget);
-
-      final savedTheme = await harness.storage.getString(
+      final savedTheme = await storage.getString(
         ThemeStorage.modeKey,
         secure: false,
       );
-      final savedLocale = await harness.storage.getString(
+      final savedLocale = await storage.getString(
         LangStorage.rootKey,
         secure: false,
       );

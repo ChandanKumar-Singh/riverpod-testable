@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import '../helpers/test_harness.dart';
+import '../helpers/TestAppHelper.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Dialogs Screen Tests', () {
     Future<void> navigateToDialogsScreen(WidgetTester tester) async {
-      final harness = TestAppHarness(startAuthenticated: true);
-      await harness.setup();
-      await tester.pumpWidget(harness.buildApp());
+      final app = await TestAppHelper.createAuthenticatedApp();
+      await tester.pumpWidget(app.$1);
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // Navigate to Dialogs screen

@@ -19,7 +19,6 @@ class Env {
 
   static Env get current {
     const env = String.fromEnvironment('ENV', defaultValue: 'dev');
-    ;
     return env == 'prod'
         ? Env.prod
         : env == 'test'

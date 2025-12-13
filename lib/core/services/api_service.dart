@@ -367,7 +367,7 @@ class ApiService {
         if (fromJsonList != null) {
           final parsedList = fromJsonList(data);
           return ApiResponse<R>.success(
-            data: parsedList as R,
+            data: parsedList,
             message: message,
             statusCode: status,
           );

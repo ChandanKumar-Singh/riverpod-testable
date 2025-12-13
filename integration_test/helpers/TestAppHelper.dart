@@ -1,6 +1,4 @@
 // Create a simpler test helper for common scenarios
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +10,9 @@ import 'auth_test_storage.dart';
 import 'test_harness.dart';
 
 class TestAppHelper {
-  static Future<Widget> createAuthenticatedApp({
+  /// `pre` To funtion on harness before setup
+  static Future<(Widget, TestAppHarness)> createAuthenticatedApp({
+    Future<void> Function(dynamic h)? pre,
     UserModel? user,
     bool useRealProviders = true,
   }) async {
@@ -20,16 +20,17 @@ class TestAppHelper {
       startAuthenticated: true,
       preAuthenticatedUser: user,
     );
+    if (pre != null) await pre(harness);
     await harness.setup();
-    return harness.buildApp();
+    return (harness.buildApp(), harness);
   }
 
-  static Future<Widget> createUnauthenticatedApp({
+  static Future<(Widget, TestAppHarness)> createUnauthenticatedApp({
     bool useRealProviders = true,
   }) async {
     final harness = TestAppHarness(startAuthenticated: false);
     await harness.setup();
-    return harness.buildApp();
+    return (harness.buildApp(), harness);
   }
 
   /// Save authenticated user state to file
@@ -50,5 +51,7 @@ class TestAppHelper {
   }
 
   static ProviderContainer container(WidgetTester tester) =>
-      ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+      ProviderScope.containerOf(
+        tester.element(find.byType(UncontrolledProviderScope)),
+      );
 }
