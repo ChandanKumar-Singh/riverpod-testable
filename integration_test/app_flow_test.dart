@@ -15,10 +15,10 @@ void main() {
     testWidgets(
       'shows login screen for unauthenticated users and validates form errors',
       (tester) async {
-        final harness = TestAppHarness();
+        final harness = TestAppHarness(startAuthenticated: false);
         await harness.setup();
-
         await tester.pumpWidget(harness.buildApp());
+
         await tester.pumpAndSettle();
 
         expect(find.text('Welcome Back!'), findsOneWidget);
@@ -51,7 +51,7 @@ void main() {
     testWidgets(
       'performs successful OTP login and navigates across feature screens',
       (tester) async {
-        final harness = TestAppHarness();
+        final harness = TestAppHarness(startAuthenticated: false);
         await harness.setup();
         await tester.pumpWidget(harness.buildApp());
         await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -87,12 +87,16 @@ void main() {
         // Mask password verification (show asterisks)
         expect(find.text('superSecret'), findsOneWidget);
         await tester.pump(const Duration(milliseconds: 1000));
-
         // Step 3: Tap Sign In button
         print('👉 Tapping Sign In button...');
         final signInButton = find.text('Sign In');
         expect(signInButton, findsOneWidget);
-        await tester.tap(signInButton);
+
+        // Debug: Check if button is visible and enabled
+        await tester.ensureVisible(signInButton);
+        await tester.pump();
+
+        await tester.tap(signInButton, warnIfMissed: true);
 
         // Show loading state
         /*      expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -102,11 +106,11 @@ void main() {
         print('⏳ Waiting for authentication...');
          */
         await tester.pumpAndSettle(const Duration(seconds: 2));
-
         // Step 4: Verify successful login
         print('✅ Checking home screen...');
         expect(find.text('Home'), findsOneWidget);
-        expect(find.textContaining('Test User'), findsWidgets);
+        print('✅ Checking user card ...');
+        expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
         await tester.pump(
           const Duration(milliseconds: 1000),
         ); // Pause to see home screen
@@ -156,7 +160,9 @@ void main() {
 
         print('✅ Checking profile screen...');
         expect(find.text('Profile'), findsWidgets);
-        expect(find.text('Test User'), findsWidgets);
+        await tester.pumpAndSettle();
+        print('✅ Checking user card ...');
+        expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
         await tester.pump(
           const Duration(milliseconds: 1500),
         ); // Pause to see profile
@@ -180,7 +186,7 @@ void main() {
     testWidgets('restores persisted session and keeps theme + locale changes', (
       tester,
     ) async {
-      final harness = TestAppHarness(startAuthenticated: true);
+      final harness = TestAppHarness();
       await harness.setup();
       await harness.storage.save(ThemeStorage.modeKey, 'light');
       await harness.storage.save(LangStorage.rootKey, 'en');

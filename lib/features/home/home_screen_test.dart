@@ -228,6 +228,7 @@ class HomeScreen extends ConsumerWidget {
     ThemeData theme,
   ) {
     return Container(
+      key: const Key('dashboard_user_card_key'),
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(

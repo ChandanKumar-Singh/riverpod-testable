@@ -735,7 +735,7 @@ class AppThemeBuilder {
     ColorScheme scheme,
     TextTheme textTheme,
   ) {
-    bool isDark = scheme.brightness == Brightness.dark;
+    final bool isDark = scheme.brightness == Brightness.dark;
     return FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: scheme.primary,

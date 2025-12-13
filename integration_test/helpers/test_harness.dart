@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:testable/app/app.dart';
 import 'package:testable/core/config/env.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/di/providers.dart';
+import 'package:testable/core/network/dio/http_client.dart';
 import 'package:testable/core/observers/app_error_handler.dart';
 import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/utils/logger.dart';
@@ -16,18 +18,11 @@ import '../../test/helpers/test_helpers.dart';
 
 class TestAppHarness {
   TestAppHarness({
-     this.startAuthenticated = false,
+    this.startAuthenticated = true,
     LocalStorage? storage,
-    Env? env,
+    this.env,
     UserModel? preAuthenticatedUser,
   }) : storage = storage ?? testLocaloStorage,
-       env =
-           env ??
-           const Env(
-             baseUrl: 'https://integration.test',
-             enableLogging: false,
-             isTest: true,
-           ),
        _logger = AppLogger(enabled: false),
        _preAuthenticatedUser = preAuthenticatedUser ?? defaultUser {
     if (startAuthenticated) {
@@ -45,25 +40,28 @@ class TestAppHarness {
 
   final bool startAuthenticated;
   final LocalStorage storage;
-  final Env env;
+  Env? env;
   final AppLogger _logger;
   final UserModel _preAuthenticatedUser;
 
   Widget buildApp() {
+    final connectivityNotifier = ConnectivityNotifier(enableMonitoring: false);
     final container = ProviderContainer(
       overrides: [
-        envProvider.overrideWithValue(env),
+        envProvider.overrideWithValue(env ?? Env.current),
         loggerProvider.overrideWithValue(_logger),
         storageProvider.overrideWithValue(storage),
-        connectivityProvider.overrideWith(
-          (ref) => ConnectivityNotifier(enableMonitoring: false),
-        ),
-        // Use real auth repository - it will read from pre-populated storage
-        authRepositoryProvider.overrideWith((ref) {
-          // Create real auth repository with test storage
-          return AuthRepository(ref);
+        httpClientProvider.overrideWith((ref) {
+          final selectedEnv = ref.watch(envProvider);
+          final logger = ref.watch(loggerProvider);
+          return AppHttpClient(
+            env: selectedEnv,
+            logger: logger,
+            dio: Dio(BaseOptions(baseUrl: selectedEnv.baseUrl)),
+          );
         }),
-        // We don't need to override userRepoProvider unless we want fake data
+        connectivityProvider.overrideWith((ref) => connectivityNotifier),
+        authRepositoryProvider.overrideWith((ref) => AuthRepository(ref)),
       ],
       observers: [RiverpodErrorObserver(_logger)],
     );
@@ -76,7 +74,7 @@ class TestAppHarness {
 
   Future<void> setup() async {
     await dotenv.load(fileName: '.env.test');
-
+    env ??= Env.current;
     if (startAuthenticated) {
       // Ensure storage is properly set up for authenticated state
       await _setupPreAuthentication();
@@ -98,12 +96,19 @@ class TestAppHarness {
       // Save token securely
       if (_preAuthenticatedUser.token != null &&
           _preAuthenticatedUser.token!.isNotEmpty) {
-        await storage.save(StorageKeys.token, _preAuthenticatedUser.token, secure: true);
+        await storage.save(
+          StorageKeys.token,
+          _preAuthenticatedUser.token,
+          secure: true,
+        );
       }
 
       // Verify the data was saved
       final savedUser = await storage.getMap(StorageKeys.user);
-      final savedToken = await storage.getString(StorageKeys.token, secure: true);
+      final savedToken = await storage.getString(
+        StorageKeys.token,
+        secure: true,
+      );
 
       _logger.i('Pre-authentication setup complete:');
       _logger.i('  User saved: ${savedUser != null}');
@@ -126,7 +131,7 @@ class TestAppHarness {
     }
   }
 
-  // Helper method to change authentication state during test
+  /*   // Helper method to change authentication state during test
   Future<void> authenticateUser(UserModel? user) async {
     if (user != null) {
       await storage.save(StorageKeys.user, user.toJson());
@@ -147,6 +152,7 @@ class TestAppHarness {
     final token = await storage.getString(StorageKeys.token, secure: true);
     return user != null && user.isNotEmpty && token != null && token.isNotEmpty;
   }
+ */
 }
 
 // Create a simpler test helper for common scenarios

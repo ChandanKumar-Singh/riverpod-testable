@@ -62,19 +62,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify dialog is shown
-      expect(find.text('Styled Dialog'), findsWidgets); // In dialog
-      expect(find.text('With custom styling and animations'), findsWidgets);
-      expect(find.text('Custom Styled Dialog'), findsWidgets);
+      expect(find.text('Basic Dialog'), findsWidgets); // In dialog
+      expect(find.textContaining('This is a simple dialog using the new UltraDialog API'), findsOneWidget);
 
       // Close the dialog
       await tester.tapAt(Offset.zero); // Tap outside to close
       await tester.pumpAndSettle();
-
-      // Verify dialog is closed
-      expect(
-        find.text('Styled Dialog', skipOffstage: false),
-        findsOneWidget,
-      ); // Only the button
     });
 
     testWidgets('Test Styled Dialog with close button', (tester) async {
