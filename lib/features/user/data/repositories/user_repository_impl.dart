@@ -21,8 +21,6 @@ class UserRepository extends ApiService {
       ApiConstants.userProfile,
       requiresAuth: true,
       fromJson: (data) {
-        //
-        //
         if (data.containsKey('user')) {
           return UserProfileModel.fromJson(
             data['user'] as Map<String, dynamic>,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/lang_switcher.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 
+import 'helpers/TestAppHelper.dart';
 import 'helpers/test_harness.dart';
 
 void main() {
@@ -15,9 +17,8 @@ void main() {
     testWidgets(
       'shows login screen for unauthenticated users and validates form errors',
       (tester) async {
-        final harness = TestAppHarness(startAuthenticated: false);
-        await harness.setup();
-        await tester.pumpWidget(harness.buildApp());
+        final app = await TestAppHelper.createUnauthenticatedApp();
+        await tester.pumpWidget(app);
 
         await tester.pumpAndSettle();
 
@@ -51,9 +52,8 @@ void main() {
     testWidgets(
       'performs successful OTP login and navigates across feature screens',
       (tester) async {
-        final harness = TestAppHarness(startAuthenticated: false);
-        await harness.setup();
-        await tester.pumpWidget(harness.buildApp());
+        final app = await TestAppHelper.createUnauthenticatedApp();
+        await tester.pumpWidget(app);
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         print('🔄 App started. Looking for login screen...');
@@ -109,11 +109,32 @@ void main() {
         // Step 4: Verify successful login
         print('✅ Checking home screen...');
         expect(find.text('Home'), findsOneWidget);
+        final authUser = TestAppHelper.container(
+          tester
+        ).read(authProvider).user;
+        if (authUser != null) {
+          await TestAppHelper.saveUserState(authUser.toJson());
+        } else {
+          print('❌ User not found in auth state...');
+        }
         print('✅ Checking user card ...');
         expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
         await tester.pump(
           const Duration(milliseconds: 1000),
         ); // Pause to see home screen
+        // Step 5: Summary
+        print('🎉 Test completed successfully!');
+        print('├── ✅ Login successful');
+        print('└── ✅ Home screen loaded');
+      },
+    );
+
+    testWidgets(
+      'Screen Test',
+      (tester) async {
+        final app = await TestAppHelper.createAuthenticatedApp();
+        await tester.pumpWidget(app);
+        await tester.pumpAndSettle(const Duration(seconds: 1));
 
         // Step 5: Navigate to Payments
         print('💳 Navigating to Payments...');

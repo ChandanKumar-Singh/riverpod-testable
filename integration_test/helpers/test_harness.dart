@@ -155,25 +155,4 @@ class TestAppHarness {
  */
 }
 
-// Create a simpler test helper for common scenarios
-class TestAppHelper {
-  static Future<Widget> createAuthenticatedApp({
-    UserModel? user,
-    bool useRealProviders = true,
-  }) async {
-    final harness = TestAppHarness(
-      startAuthenticated: true,
-      preAuthenticatedUser: user,
-    );
-    await harness.setup();
-    return harness.buildApp();
-  }
 
-  static Future<Widget> createUnauthenticatedApp({
-    bool useRealProviders = true,
-  }) async {
-    final harness = TestAppHarness(startAuthenticated: false);
-    await harness.setup();
-    return harness.buildApp();
-  }
-}

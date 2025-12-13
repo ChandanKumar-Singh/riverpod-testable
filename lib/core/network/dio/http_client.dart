@@ -51,6 +51,7 @@ class AppHttpClient {
           if (options.extra['requiresAuth'] == true && tokenGetter != null) {
             try {
               final token = await tokenGetter!();
+              print('token is $token');
               if (token != null && token.isNotEmpty) {
                 options.headers['Authorization'] = token;
               }
