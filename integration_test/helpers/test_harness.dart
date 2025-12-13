@@ -15,6 +15,7 @@ import 'package:testable/features/auth/data/repositories/auth_repository_impl.da
 import 'package:testable/shared/connectivity/connectivity_watcher.dart';
 
 import '../../test/helpers/test_helpers.dart';
+import 'TestAppHelper.dart';
 
 class TestAppHarness {
   TestAppHarness({
@@ -24,12 +25,7 @@ class TestAppHarness {
     UserModel? preAuthenticatedUser,
   }) : storage = storage ?? testLocaloStorage,
        _logger = AppLogger(enabled: false),
-       _preAuthenticatedUser = preAuthenticatedUser ?? defaultUser {
-    if (startAuthenticated) {
-      // Pre-populate storage with authenticated user data
-      _setupPreAuthentication();
-    }
-  }
+       _preAuthenticatedUser = preAuthenticatedUser;
 
   static final defaultUser = UserModel(
     id: 'test-user-id',
@@ -42,7 +38,7 @@ class TestAppHarness {
   final LocalStorage storage;
   Env? env;
   final AppLogger _logger;
-  final UserModel _preAuthenticatedUser;
+  UserModel? _preAuthenticatedUser;
 
   Widget buildApp() {
     final connectivityNotifier = ConnectivityNotifier(enableMonitoring: false);
@@ -75,30 +71,38 @@ class TestAppHarness {
   Future<void> setup() async {
     await dotenv.load(fileName: '.env.test');
     env ??= Env.current;
+    // 🔥 No previous session → normal behavior
     if (startAuthenticated) {
-      // Ensure storage is properly set up for authenticated state
       await _setupPreAuthentication();
     } else {
-      // Ensure storage is clean for unauthenticated state
       await _clearAuthentication();
     }
   }
 
   Future<void> _setupPreAuthentication() async {
     try {
+      // 🔥 NEW: Attempt to restore previous session
+      final restoredUser = await TestAppHelper.loadUserState();
+      if (restoredUser != null) {
+        print('🔄 Restoring test-authenticated user from temp session file');
+        startAuthenticated ? _preAuthenticatedUser = restoredUser : null;
+      }
+      _preAuthenticatedUser ??= defaultUser;
+
       // Clear any existing session first
       await storage.delete(StorageKeys.user);
       await storage.delete(StorageKeys.token, secure: true);
+      print('testing user is now ${_preAuthenticatedUser!.token}');
 
       // Save user data to storage
-      await storage.save(StorageKeys.user, _preAuthenticatedUser.toJson());
+      await storage.save(StorageKeys.user, _preAuthenticatedUser!.toJson());
 
       // Save token securely
-      if (_preAuthenticatedUser.token != null &&
-          _preAuthenticatedUser.token!.isNotEmpty) {
+      if (_preAuthenticatedUser!.token != null &&
+          _preAuthenticatedUser!.token!.isNotEmpty) {
         await storage.save(
           StorageKeys.token,
-          _preAuthenticatedUser.token,
+          _preAuthenticatedUser!.token,
           secure: true,
         );
       }
@@ -154,5 +158,3 @@ class TestAppHarness {
   }
  */
 }
-
-

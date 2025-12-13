@@ -27,8 +27,9 @@ class AuthTestStorage {
   static Future<UserModel?> loadUserState() async {
     final file = await _getUserFile();
     if (!file.existsSync()) return null;
-
     final content = await file.readAsString();
+    print(content);
+    if (content.isEmpty) return null;
     return UserModel.fromJson(jsonDecode(content) as Map<String, dynamic>);
   }
 }

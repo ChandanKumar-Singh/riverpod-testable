@@ -110,7 +110,7 @@ void main() {
         print('✅ Checking home screen...');
         expect(find.text('Home'), findsOneWidget);
         final authUser = TestAppHelper.container(
-          tester
+          tester,
         ).read(authProvider).user;
         if (authUser != null) {
           await TestAppHelper.saveUserState(authUser.toJson());
@@ -130,13 +130,47 @@ void main() {
     );
 
     testWidgets(
+      'Profile Api Test',
+      (tester) async {
+        final app = await TestAppHelper.createAuthenticatedApp();
+        await tester.pumpWidget(app);
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        // Step 1: Navigate to Profile
+        print('👤 Navigating to Profile...');
+        final profileButton = find.text('Profile').first;
+        expect(profileButton, findsOneWidget);
+        await tester.tap(profileButton);
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+
+        print('✅ Checking profile screen...');
+        expect(find.text('Profile'), findsWidgets);
+        await tester.pumpAndSettle();
+        print('✅ Checking user card ...');
+        expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
+        await tester.pump(
+          const Duration(milliseconds: 1500),
+        ); // Pause to see profile
+
+        // Step 2: Summary
+        print('🎉 Test completed successfully!');
+        print('├── ✅ Home screen loaded');
+        print('└── ✅ Profile navigation worked');
+        await tester.pump(const Duration(seconds: 1));
+      },
+      timeout: const Timeout(
+        Duration(seconds: 60),
+      ), // Extended timeout for visual tests
+    );
+
+    testWidgets(
       'Screen Test',
       (tester) async {
         final app = await TestAppHelper.createAuthenticatedApp();
         await tester.pumpWidget(app);
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
-        // Step 5: Navigate to Payments
+        // Step 1: Navigate to Payments
         print('💳 Navigating to Payments...');
         final paymentsButton = find.text('Payments').first;
         expect(paymentsButton, findsOneWidget);
@@ -159,44 +193,19 @@ void main() {
           const Duration(milliseconds: 1500),
         ); // Pause to see payments
 
-        // Step 6: Go back to Home
+        // Step 2: Go back to Home
         print('↩️ Going back to Home...');
         await tester.pageBack();
         await tester.pumpAndSettle(const Duration(milliseconds: 800));
         expect(find.text('Home'), findsOneWidget);
-        await tester.pump(const Duration(milliseconds: 1000)); // Pause on home
+        await tester.pump(const Duration(milliseconds: 1000));
 
-        // Step 7: Navigate to Profile
-        print('👤 Navigating to Profile...');
-        final profileButton = find.text('Profile').first;
-        expect(profileButton, findsOneWidget);
-        await tester.tap(profileButton);
-
-        // Show profile loading
-        // await tester.pump(const Duration(milliseconds: 500));
-        // expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-        // Wait for profile to load
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        print('✅ Checking profile screen...');
-        expect(find.text('Profile'), findsWidgets);
-        await tester.pumpAndSettle();
-        print('✅ Checking user card ...');
-        expect(find.byKey(const Key('dashboard_user_card_key')), findsWidgets);
-        await tester.pump(
-          const Duration(milliseconds: 1500),
-        ); // Pause to see profile
-
-        // Step 8: Summary
+        // Step 3: Summary
         print('🎉 Test completed successfully!');
-        print('├── ✅ Login successful');
         print('├── ✅ Home screen loaded');
         print('├── ✅ Payments navigation worked');
-        print('├── ✅ Back navigation worked');
-        print('└── ✅ Profile navigation worked');
+        print('└── ✅ Back navigation worked');
 
-        // Final pause
         await tester.pump(const Duration(seconds: 1));
       },
       timeout: const Timeout(
