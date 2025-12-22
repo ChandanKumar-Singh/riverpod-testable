@@ -1,6 +1,7 @@
 // Test helpers for common test utilities
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/src/framework.dart' show Override;
 import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/config/env.dart';
@@ -191,6 +192,26 @@ Future<void> pump() async {
 Future<void> waitFor(Duration duration) async {
   await Future<void>.delayed(duration);
 }
+
+Future<void> pumpUntilFound(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(seconds: 5),
+}) async {
+  final end = DateTime.now().add(timeout);
+
+  while (DateTime.now().isBefore(end)) {
+    await tester.pump(const Duration(milliseconds: 100));
+
+    if (finder.evaluate().isNotEmpty) {
+      return;
+    }
+  }
+
+  throw TestFailure('Timeout: $finder not found');
+}
+
+
 
 /// Test environment configuration
 class TestEnv extends Env {

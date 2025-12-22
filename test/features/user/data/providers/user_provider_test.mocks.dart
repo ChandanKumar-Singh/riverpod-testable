@@ -3,19 +3,20 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i8;
 
-import 'package:dio/dio.dart' as _i10;
-import 'package:flutter_riverpod/flutter_riverpod.dart' as _i2;
+import 'package:dio/dio.dart' as _i11;
+import 'package:flutter_riverpod/flutter_riverpod.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:testable/core/config/env.dart' as _i4;
-import 'package:testable/core/network/dio/models/api_response.dart' as _i5;
-import 'package:testable/core/services/api_service.dart' as _i9;
-import 'package:testable/core/utils/logger.dart' as _i3;
+import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:testable/core/config/env.dart' as _i3;
+import 'package:testable/core/network/dio/models/api_response.dart' as _i4;
+import 'package:testable/core/services/api_service.dart' as _i10;
+import 'package:testable/core/utils/logger.dart' as _i2;
 import 'package:testable/features/user/data/models/user_profile_model.dart'
-    as _i8;
+    as _i9;
 import 'package:testable/features/user/data/repositories/user_repository_impl.dart'
-    as _i6;
+    as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,99 +33,93 @@ import 'package:testable/features/user/data/repositories/user_repository_impl.da
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeRef_0<State extends Object?> extends _i1.SmartFake
-    implements _i2.Ref<State> {
-  _FakeRef_0(Object parent, Invocation parentInvocation)
+class _FakeAppLogger_0 extends _i1.SmartFake implements _i2.AppLogger {
+  _FakeAppLogger_0(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeAppLogger_1 extends _i1.SmartFake implements _i3.AppLogger {
-  _FakeAppLogger_1(Object parent, Invocation parentInvocation)
+class _FakeEnv_1 extends _i1.SmartFake implements _i3.Env {
+  _FakeEnv_1(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeEnv_2 extends _i1.SmartFake implements _i4.Env {
-  _FakeEnv_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeApiResponse_3<T> extends _i1.SmartFake
-    implements _i5.ApiResponse<T> {
-  _FakeApiResponse_3(Object parent, Invocation parentInvocation)
+class _FakeApiResponse_2<T> extends _i1.SmartFake
+    implements _i4.ApiResponse<T> {
+  _FakeApiResponse_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 /// A class which mocks [UserRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
+class MockUserRepository extends _i1.Mock implements _i5.UserRepository {
   MockUserRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Ref<Object?> get ref =>
+  _i6.Ref get ref =>
       (super.noSuchMethod(
             Invocation.getter(#ref),
-            returnValue: _FakeRef_0<Object?>(this, Invocation.getter(#ref)),
+            returnValue: _i7.dummyValue<_i6.Ref>(this, Invocation.getter(#ref)),
           )
-          as _i2.Ref<Object?>);
+          as _i6.Ref);
 
   @override
-  _i3.AppLogger get logger =>
+  _i2.AppLogger get logger =>
       (super.noSuchMethod(
             Invocation.getter(#logger),
-            returnValue: _FakeAppLogger_1(this, Invocation.getter(#logger)),
+            returnValue: _FakeAppLogger_0(this, Invocation.getter(#logger)),
           )
-          as _i3.AppLogger);
+          as _i2.AppLogger);
 
   @override
-  _i4.Env get env =>
+  _i3.Env get env =>
       (super.noSuchMethod(
             Invocation.getter(#env),
-            returnValue: _FakeEnv_2(this, Invocation.getter(#env)),
+            returnValue: _FakeEnv_1(this, Invocation.getter(#env)),
           )
-          as _i4.Env);
+          as _i3.Env);
 
   @override
-  _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>> getProfile() =>
+  _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>> getProfile() =>
       (super.noSuchMethod(
             Invocation.method(#getProfile, []),
             returnValue:
-                _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>>.value(
-                  _FakeApiResponse_3<_i8.UserProfileModel?>(
+                _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>>.value(
+                  _FakeApiResponse_2<_i9.UserProfileModel?>(
                     this,
                     Invocation.method(#getProfile, []),
                   ),
                 ),
           )
-          as _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>>);
+          as _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>>);
 
   @override
-  _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>> updateProfile(
+  _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>> updateProfile(
     Map<String, dynamic>? updates,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#updateProfile, [updates]),
             returnValue:
-                _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>>.value(
-                  _FakeApiResponse_3<_i8.UserProfileModel?>(
+                _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>>.value(
+                  _FakeApiResponse_2<_i9.UserProfileModel?>(
                     this,
                     Invocation.method(#updateProfile, [updates]),
                   ),
                 ),
           )
-          as _i7.Future<_i5.ApiResponse<_i8.UserProfileModel?>>);
+          as _i8.Future<_i4.ApiResponse<_i9.UserProfileModel?>>);
 
   @override
-  _i7.Future<_i5.ApiResponse<R>> request<R>(
+  _i8.Future<_i4.ApiResponse<R>> request<R>(
     String? path, {
-    _i9.ApiMethod? method = _i9.ApiMethod.post,
+    _i10.ApiMethod? method = _i10.ApiMethod.post,
     Map<String, dynamic>? queryParameters,
     Object? body,
     Map<String, dynamic>? headers,
     bool? requiresAuth = true,
-    _i10.CancelToken? cancelToken,
+    _i11.CancelToken? cancelToken,
     Duration? timeout,
     R Function(Map<String, dynamic>)? fromJson,
     R Function(List<dynamic>)? fromJsonList,
@@ -151,8 +146,8 @@ class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
                 #extra: extra,
               },
             ),
-            returnValue: _i7.Future<_i5.ApiResponse<R>>.value(
-              _FakeApiResponse_3<R>(
+            returnValue: _i8.Future<_i4.ApiResponse<R>>.value(
+              _FakeApiResponse_2<R>(
                 this,
                 Invocation.method(
                   #request,
@@ -175,5 +170,5 @@ class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
               ),
             ),
           )
-          as _i7.Future<_i5.ApiResponse<R>>);
+          as _i8.Future<_i4.ApiResponse<R>>);
 }

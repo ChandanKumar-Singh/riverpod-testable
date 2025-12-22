@@ -128,16 +128,16 @@ final appErrorHandlerProvider = Provider<AppErrorHandler>((ref) {
 });
 
 /// Hook into Riverpod's error reporting
-class RiverpodErrorObserver extends ProviderObserver {
+base class RiverpodErrorObserver extends ProviderObserver {
   RiverpodErrorObserver(this.logger);
   final AppLogger logger;
 
   @override
   void providerDidFail(
-    ProviderBase provider,
+     context,
     Object error,
     StackTrace stackTrace,
-    ProviderContainer container,
+    // ProviderContainer container,
   ) {
     // Check if this is an asset loading error
     if (_isAssetException(error) || _isAssetStackTrace(stackTrace)) {
@@ -145,7 +145,7 @@ class RiverpodErrorObserver extends ProviderObserver {
     }
 
     logger.e(
-      'Riverpod provider error in ${provider.name ?? provider.runtimeType}',
+      'Riverpod provider error in ${context.provider.name ?? context.runtimeType}',
       e: error,
       st: stackTrace,
     );
