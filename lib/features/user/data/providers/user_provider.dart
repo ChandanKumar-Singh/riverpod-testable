@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/features/user/data/models/user_profile_model.dart';
 import 'package:testable/features/user/data/repositories/user_repository_impl.dart';
 

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/app/data/repositories/app_settings_repository.dart';
 import 'package:testable/app/data/domain/models/app_settings_model.dart';
 

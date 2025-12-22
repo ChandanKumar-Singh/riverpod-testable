@@ -1,6 +1,7 @@
 // Test helpers for common test utilities
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/src/framework.dart' show Override;
 import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/config/env.dart';

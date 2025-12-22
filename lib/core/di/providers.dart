@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/app/router/app_router.dart';
 import 'package:testable/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:testable/shared/localization/lang_provider.dart';
