@@ -20,6 +20,7 @@ dependencies:
   flutter_lints: ^6.0.0
   flutter_localizations:
     sdk: flutter
+  flutter_native_splash: ^2.4.7
   flutter_riverpod: ^3.0.3
   flutter_secure_storage: ^10.0.0
   flutter_svg: ^2.2.2
@@ -56,6 +57,7 @@ flutter:
     - .env
     - .env.test
     - assets/svgs/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
 # Watch mode (what you're trying to run)

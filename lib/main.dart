@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/app/app.dart';
 import 'package:testable/core/di/providers.dart';
@@ -8,7 +9,8 @@ import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/core/utils/logger.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
 
   /// Providers [the necessary dependencies for the app]

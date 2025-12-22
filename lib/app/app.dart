@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/app/router/app_router.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
@@ -21,7 +22,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(authProvider.notifier).initialize();
+      ref
+          .read(authProvider.notifier)
+          .initialize()
+          .then((_) => FlutterNativeSplash.remove());
     });
   }
 
