@@ -193,6 +193,26 @@ Future<void> waitFor(Duration duration) async {
   await Future<void>.delayed(duration);
 }
 
+Future<void> pumpUntilFound(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(seconds: 5),
+}) async {
+  final end = DateTime.now().add(timeout);
+
+  while (DateTime.now().isBefore(end)) {
+    await tester.pump(const Duration(milliseconds: 100));
+
+    if (finder.evaluate().isNotEmpty) {
+      return;
+    }
+  }
+
+  throw TestFailure('Timeout: $finder not found');
+}
+
+
+
 /// Test environment configuration
 class TestEnv extends Env {
   TestEnv()

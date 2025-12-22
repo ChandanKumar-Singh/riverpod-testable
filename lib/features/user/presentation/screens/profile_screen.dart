@@ -56,7 +56,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         ],
       ),
       body: profileState.status == UserProfileStatus.loading
-          ? const LoadingWidget(message: 'Loading profile...')
+          ? const LoadingWidget(key: Key('profile_loading'), message: 'Loading profile...')
           : profileState.status == UserProfileStatus.error
           ? RetryWidget(
               message: profileState.error ?? 'Error loading profile',

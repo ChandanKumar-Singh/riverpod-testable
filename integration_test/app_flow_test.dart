@@ -5,6 +5,7 @@ import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/lang_switcher.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
+import '../test/helpers/test_helpers.dart';
 import 'helpers/TestAppHelper.dart';
 
 void main() {
@@ -144,12 +145,27 @@ void main() {
         final profileButton = find.text('Profile').first;
         expect(profileButton, findsOneWidget);
         await tester.tap(profileButton);
-        await tester.pumpAndSettle();
-        print('✅ Checking profile screen...');
+        await tester.pump();
+        print('⌛️ Checking profile screen...');
         expect(find.text('Profile'), findsWidgets);
-        await tester.pumpAndSettle();
-        print('✅ Checking user card ...');
+        // await tester.pump();
+        // Wait for loading to disappear (optional but ideal)
+        print('⌛️ Checking loading widget...');
+        // 1️⃣ Wait for loader to appear (optional but good)
+        await pumpUntilFound(tester, find.byKey(const Key('profile_loading')));
+        print('✅ Loading widget found');
+
+        expect(find.byKey(const Key('profile_loading')), findsOneWidget);
+
+        // Wait until profile card appears
+        await pumpUntilFound(
+          tester,
+          find.byKey(const Key('profile_user_card_key')),
+        );
+
+        print('⌛️ Checking user card ...');
         expect(find.byKey(const Key('profile_user_card_key')), findsWidgets);
+        print('✅ user card found');
         await tester.pump(
           const Duration(milliseconds: 1500),
         ); // Pause to see profile
