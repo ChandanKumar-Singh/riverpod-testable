@@ -768,7 +768,7 @@ class _PermissionDetailSheet extends StatelessWidget {
                 ),
               ),
             ),
-            const ThemeSwitcher(),
+            // const ThemeSwitcher(),
           ],
         ),
       ),

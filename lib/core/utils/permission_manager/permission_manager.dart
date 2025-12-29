@@ -10,7 +10,7 @@ import 'package:testable/core/utils/logger.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
 
 part 'platform_wrapper.dart';
-part 'services/dialog_service.dart';
+part 'services/permission_dialog_service.dart';
 part 'services/permission_handler_service.dart';
 part 'entities/permission_request_config.dart';
 part 'entities/permission_result.dart';
