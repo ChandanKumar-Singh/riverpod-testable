@@ -79,10 +79,6 @@ class SampleScreen extends ConsumerWidget {
             children: [
               _navButton('Home', () => router.push(const HomeScreenRoute())),
               _navButton(
-                'Profile',
-                () => router.push(const ProfileScreenRoute()),
-              ),
-              _navButton(
                 'Settings',
                 () => router.push(const SettingsScreenRoute()),
               ),

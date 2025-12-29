@@ -123,22 +123,6 @@ class PaymentScreenRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ProfileScreen]
-class ProfileScreenRoute extends PageRouteInfo<void> {
-  const ProfileScreenRoute({List<PageRouteInfo>? children})
-    : super(ProfileScreenRoute.name, initialChildren: children);
-
-  static const String name = 'ProfileScreenRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const ProfileScreen();
-    },
-  );
-}
-
-/// generated route for
 /// [SampleDialogScreen]
 class SampleDialogScreenRoute extends PageRouteInfo<void> {
   const SampleDialogScreenRoute({List<PageRouteInfo>? children})
@@ -150,6 +134,22 @@ class SampleDialogScreenRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SampleDialogScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SamplePermissionsPage]
+class SamplePermissionsPageRoute extends PageRouteInfo<void> {
+  const SamplePermissionsPageRoute({List<PageRouteInfo>? children})
+    : super(SamplePermissionsPageRoute.name, initialChildren: children);
+
+  static const String name = 'SamplePermissionsPageRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SamplePermissionsPage();
     },
   );
 }

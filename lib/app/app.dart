@@ -8,6 +8,7 @@ import 'package:testable/core/di/providers.dart';
 import 'package:testable/l10n/app_localizations.dart';
 import 'package:testable/shared/connectivity/connectivity_watcher.dart';
 import 'package:testable/shared/theme/app_theme.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});

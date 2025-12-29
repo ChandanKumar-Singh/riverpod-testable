@@ -6,11 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/features/auth/presentation/screens/splash_screen.dart';
-import 'package:testable/features/home/home_screen_test.dart';
+import 'package:testable/features/home/home_screen.dart';
 import 'package:testable/features/user/presentation/screens/profile_screen.dart';
 import 'package:testable/features/payment/presentation/screens/payment_screen.dart';
 import 'package:testable/shared/widgets/samples/alert_cards_screen.dart';
 import 'package:testable/shared/widgets/samples/sample_dialog_screen.dart';
+import 'package:testable/shared/widgets/samples/sample_permission_page.dart';
 part 'app_router.gr.dart';
 part '../../shared/widgets/app_breadcrumb.dart';
 
@@ -20,7 +21,7 @@ part '../../shared/widgets/app_breadcrumb.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Screen,Route')
 class AppRouter extends RootStackRouter {
-  AppRouter({required this.ref});
+  AppRouter({required this.ref, super.navigatorKey});
 
   final Ref ref;
 
@@ -33,7 +34,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: HomeScreenRoute.page),
     AutoRoute(page: UserProfileScreenRoute.page),
     AutoRoute(page: PaymentScreenRoute.page),
-    AutoRoute(page: ProfileScreenRoute.page),
     AutoRoute(page: EditProfileScreenRoute.page),
     AutoRoute(page: SecurityScreenRoute.page),
     AutoRoute(page: NotificationsScreenRoute.page),
@@ -45,26 +45,11 @@ class AppRouter extends RootStackRouter {
     ///
     AutoRoute(page: AlertCardsDemoScreenRoute.page),
     AutoRoute(page: SampleDialogScreenRoute.page),
+    AutoRoute(page: SamplePermissionsPageRoute.page),
   ];
 
   /// Attach a custom observer for logging or breadcrumb
   List<NavigatorObserver> get observers => [AppRouteObserver(ref)];
-}
-
-// Enhanced sample screens with proper theming
-@RoutePage()
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const SampleScreen(title: 'Profile', icon: Icons.person_2_outlined),
-    );
-  }
 }
 
 @RoutePage()

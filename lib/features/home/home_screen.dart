@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:testable/app/localization/locale.dart';
 import 'package:testable/app/router/app_router.dart';
+import 'package:testable/core/utils/permission_manager/permission_manager.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/shared/components/index.dart';
@@ -212,6 +213,13 @@ class HomeScreen extends ConsumerWidget {
                   icon: Icons.notifications_outlined,
                   onTap: () =>
                       context.pushRoute(const SampleDialogScreenRoute()),
+                ),
+                _buildQuickActionTile(
+                  context,
+                  title: 'Permissions',
+                  icon: Icons.bento_rounded,
+                  onTap: () =>
+                      context.pushRoute(const SamplePermissionsPageRoute()),
                 ),
               ]),
             ),

@@ -5,8 +5,8 @@ import 'package:testable/shared/localization/lang_storage.dart';
 import 'package:testable/shared/localization/lang_switcher.dart';
 import 'package:testable/shared/theme/theme_storage.dart';
 import 'package:testable/shared/theme/theme_switcher.dart';
-import '../test/helpers/test_helpers.dart';
-import 'helpers/TestAppHelper.dart';
+import '../../test/helpers/test_helpers.dart';
+import '../helpers/TestAppHelper.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
