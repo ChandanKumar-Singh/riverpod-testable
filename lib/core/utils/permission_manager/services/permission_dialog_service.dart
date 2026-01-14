@@ -418,7 +418,7 @@ class PermissionRequestDialogState extends State<PermissionRequestDialog> {
 
   Widget _buildFooter(ThemeData theme, bool isDarkMode) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: isDarkMode ? Colors.black.withOpacity(0.2) : Colors.transparent,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -438,7 +438,7 @@ class PermissionRequestDialogState extends State<PermissionRequestDialog> {
                 widget.onResult?.call(false);
               },
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -464,7 +464,7 @@ class PermissionRequestDialogState extends State<PermissionRequestDialog> {
                 widget.onResult?.call(true);
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: widget.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -751,16 +751,12 @@ class _PermissionDetailSheet extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     backgroundColor: color,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                   ),
                   child: const Text(
                     'Got it',
                     style: TextStyle(
-                      fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

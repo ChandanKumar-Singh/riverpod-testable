@@ -80,7 +80,7 @@ class PermissionManager {
         ? await config.permission.shouldShowRequestRationale
         : status.isDenied;
 
-    bool didShowRationale = false;
+    final bool didShowRationale = false;
 
     if (_dialogService2 != null) {
       // didShowRationale = true;
@@ -139,35 +139,124 @@ class PermissionManager {
   }
 
   /// ---------------- MULTIPLE ----------------
+  /// ---------------- MULTIPLE ----------------
   Future<MultiplePermissionResult?> requestMultiple({
     required List<PermissionRequestConfig> configs,
+    bool showBulkDialog = true,
+    bool stopOnEssentialFailure = true,
+    void Function(int current, int total)? onProgress,
   }) async {
     final results = <Permission, PermissionResult>{};
-    if (_dialogService2 != null) {
-      final userAllowed = await _dialogService2.show(
-        navigatorKey: _navigatorKey,
-        configs: configs,
-        allowButtonText: 'Allow All',
-        cancelButtonText: 'Cancel',
-      );
-      if (!userAllowed) return null;
-    }
+    final List<PermissionRequestConfig> pendingConfigs = [];
 
-    for (final config in configs) {
-      final result = await requestSingle(config: config, fromMultiple: true);
-      results[config.permission] = result;
+    // Check all permissions first
+    for (int i = 0; i < configs.length; i++) {
+      final config = configs[i];
+      onProgress?.call(i + 1, configs.length);
 
-      if (config.isEssential && result.isPermanentlyDenied) {
-        break;
+      // Check current status
+      final currentStatus = await config.permission.status;
+      final isAlreadyGranted =
+          currentStatus.isGranted || currentStatus.isLimited;
+
+      if (isAlreadyGranted) {
+        // Add granted permission to results
+        results[config.permission] = PermissionResult.fromStatus(
+          status: currentStatus,
+          permission: config.permission,
+          canRequestAgain: false,
+          shouldShowRationale: false,
+        );
+
+        _log('Permission already granted: ${config.permission}');
+      } else {
+        // Add to pending list for request
+        pendingConfigs.add(config);
       }
     }
 
+    // If all permissions are already granted, return immediately
+    if (pendingConfigs.isEmpty) {
+      _log('All permissions are already granted');
+      return MultiplePermissionResult(
+        results: results,
+        completedPermissions: results.keys.toList(),
+      );
+    }
+
+    // Show bulk permission dialog if needed
+    if (showBulkDialog && _dialogService2 != null) {
+      final userAllowed = await _dialogService2.show(
+        navigatorKey: _navigatorKey,
+        configs: pendingConfigs,
+        allowButtonText: 'Allow All',
+        cancelButtonText: 'Cancel',
+      );
+
+      if (!userAllowed) {
+        // User denied the bulk request, but we still have already granted permissions
+        // Return partial results with granted permissions
+        _log('User denied bulk permission request');
+        return MultiplePermissionResult(
+          results: results,
+          completedPermissions: results.keys.toList(),
+        );
+      }
+    }
+
+    // Request pending permissions
+    for (int i = 0; i < pendingConfigs.length; i++) {
+      final config = pendingConfigs[i];
+      onProgress?.call(results.length + i + 1, configs.length);
+
+      _log('Requesting pending permission: ${config.permission}');
+
+      try {
+        final result = await requestSingle(config: config, fromMultiple: true);
+
+        results[config.permission] = result;
+
+        // Stop if essential permission is permanently denied
+        if (config.isEssential &&
+            result.isPermanentlyDenied &&
+            stopOnEssentialFailure) {
+          _log(
+            'Essential permission permanently denied, stopping further requests',
+          );
+          break;
+        }
+
+        // Small delay between requests for better UX
+        if (i < pendingConfigs.length - 1) {
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
+      } catch (e, stackTrace) {
+        _logError(
+          'Error requesting permission ${config.permission}',
+          e,
+          stackTrace,
+        );
+
+        results[config.permission] = PermissionResult.fromStatus(
+          status: PermissionStatus.denied,
+          permission: config.permission,
+        );
+      }
+    }
+
+    // Calculate completed permissions (granted or limited)
+    final completedPermissions = results.entries
+        .where((e) => e.value.isGranted)
+        .map((e) => e.key)
+        .toList();
+
     return MultiplePermissionResult(
       results: results,
-      completedPermissions: results.entries
-          .where((e) => e.value.status == PermissionStatus.granted)
-          .map((e) => e.value.permission)
-          .toList(),
+      completedPermissions: completedPermissions,
     );
   }
+
+  void _log(String s) {}
+
+  void _logError(String s, Object e, StackTrace stackTrace) {}
 }

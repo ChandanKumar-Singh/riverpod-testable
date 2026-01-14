@@ -25,7 +25,7 @@ class MultiplePermissionResult {
   bool get anyGranted => results.values.any((result) => result.isGranted);
   bool get anyPermanentlyDenied =>
       results.values.any((result) => result.isPermanentlyDenied);
-  bool get hasEssentialDenied => results.values.any(
+  bool get hasEssentialGranted => results.values.any(
     (result) => !result.isGranted && result.isPermanentlyDenied,
   );
 
