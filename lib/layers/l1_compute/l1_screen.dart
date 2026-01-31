@@ -3,6 +3,7 @@ import 'package:testable/ui/shared/base_layer_screen.dart';
 import 'package:testable/ui/shared/modules/truth_card.dart';
 import 'package:testable/ui/shared/modules/spec_grid.dart';
 import 'package:testable/ui/shared/modules/vram_calculator.dart';
+import 'package:testable/layers/l1_compute/deep_dive/tensor_core_simulator.dart';
 
 class L1ComputeScreen extends StatelessWidget {
   const L1ComputeScreen({super.key});
@@ -10,6 +11,7 @@ class L1ComputeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
+      deepDiveWidget: TensorCoreSimulator(),
       layerNumber: 'L1',
       title: 'Compute\nHardware',
       subtitle: 'The Physical Brain',

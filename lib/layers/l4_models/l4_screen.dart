@@ -3,6 +3,7 @@ import 'package:testable/ui/shared/base_layer_screen.dart';
 import 'package:testable/ui/shared/modules/truth_card.dart';
 import 'package:testable/ui/shared/modules/spec_grid.dart';
 import 'package:testable/ui/shared/modules/token_streamer.dart';
+import 'package:testable/layers/l4_models/deep_dive/attention_visualizer.dart';
 
 class L4ModelsScreen extends StatelessWidget {
   const L4ModelsScreen({super.key});
@@ -10,6 +11,7 @@ class L4ModelsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
+      deepDiveWidget: AttentionHeadVisualizer(),
       layerNumber: 'L4',
       title: 'Models &\nAPIs',
       subtitle: 'The Intelligence Engine',

@@ -8,7 +8,8 @@ class BaseLayerScreen extends StatelessWidget {
   final String layerNumber;
   final IconData icon;
   final Color accentColor;
-  final List<Widget> modules; // Changed from 'description' to 'modules'
+  final List<Widget> modules;
+  final Widget? deepDiveWidget;
 
   const BaseLayerScreen({
     super.key,
@@ -18,6 +19,7 @@ class BaseLayerScreen extends StatelessWidget {
     required this.icon,
     this.accentColor = AppTheme.accentCyan,
     this.modules = const [],
+    this.deepDiveWidget,
   });
 
   @override
@@ -84,6 +86,48 @@ class BaseLayerScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
+
+                  if (deepDiveWidget != null) ...[
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => deepDiveWidget!,
+                        ),
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: accentColor),
+                          borderRadius: BorderRadius.circular(8),
+                          color: accentColor.withOpacity(0.1),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.science, color: accentColor),
+                            const SizedBox(width: 12),
+                            Text(
+                              "ENTER DEEP DIVE SIMULATION",
+                              style: TextStyle(
+                                color: accentColor,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: accentColor,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
 
                   // Modules List
                   Expanded(

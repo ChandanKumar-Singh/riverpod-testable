@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testable/ui/shared/base_layer_screen.dart';
 import 'package:testable/ui/shared/modules/truth_card.dart';
 import 'package:testable/ui/shared/modules/spec_grid.dart';
+import 'package:testable/layers/l0_physical/deep_dive/thermal_simulator.dart';
 
 class L0PhysicalScreen extends StatelessWidget {
   const L0PhysicalScreen({super.key});
@@ -9,6 +10,7 @@ class L0PhysicalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
+      deepDiveWidget: ThermalSimulator(),
       layerNumber: 'L0',
       title: 'Physical\nReality',
       subtitle: 'The Room & Infrastructure',

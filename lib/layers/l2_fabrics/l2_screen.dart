@@ -3,6 +3,7 @@ import 'package:testable/ui/shared/base_layer_screen.dart';
 import 'package:testable/ui/shared/modules/truth_card.dart';
 import 'package:testable/ui/shared/modules/spec_grid.dart';
 import 'package:testable/ui/shared/modules/bandwidth_visualizer.dart';
+import 'package:testable/layers/l2_fabrics/deep_dive/spine_leaf_network.dart';
 
 class L2FabricsScreen extends StatelessWidget {
   const L2FabricsScreen({super.key});
@@ -10,6 +11,7 @@ class L2FabricsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
+      deepDiveWidget: SpineLeafNetwork(),
       layerNumber: 'L2',
       title: 'Compute\nFabrics',
       subtitle: 'The Nervous System',

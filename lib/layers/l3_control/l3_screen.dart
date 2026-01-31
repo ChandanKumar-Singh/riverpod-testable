@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testable/ui/shared/base_layer_screen.dart';
 import 'package:testable/ui/shared/modules/truth_card.dart';
 import 'package:testable/ui/shared/modules/spec_grid.dart';
+import 'package:testable/layers/l3_control/deep_dive/k8s_scheduler.dart';
 
 class L3ControlScreen extends StatelessWidget {
   const L3ControlScreen({super.key});
@@ -9,6 +10,7 @@ class L3ControlScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
+      deepDiveWidget: K8sSchedulerSimulator(),
       layerNumber: 'L3',
       title: 'Control\nPlane',
       subtitle: 'Routing & Orchestration',
