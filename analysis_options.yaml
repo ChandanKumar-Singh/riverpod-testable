@@ -26,6 +26,7 @@ analyzer:
     unintended_html_in_doc_comment: ignore
     inference_failure_on_instance_creation: ignore
     inference_failure_on_function_invocation: ignore
+    sort_constructors_first: ignore
   language:
     strict-casts: true
     strict-inference: true

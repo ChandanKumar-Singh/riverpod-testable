@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import 'package:testable/core/di/providers.dart';
 import 'package:testable/core/utils/logger.dart';
@@ -134,10 +135,9 @@ base class RiverpodErrorObserver extends ProviderObserver {
 
   @override
   void providerDidFail(
-     context,
+    ProviderObserverContext context,
     Object error,
     StackTrace stackTrace,
-    // ProviderContainer container,
   ) {
     // Check if this is an asset loading error
     if (_isAssetException(error) || _isAssetStackTrace(stackTrace)) {
@@ -145,7 +145,7 @@ base class RiverpodErrorObserver extends ProviderObserver {
     }
 
     logger.e(
-      'Riverpod provider error in ${context.provider.name ?? context.runtimeType}',
+      'Riverpod provider error in ${context.provider.name ?? context.provider.runtimeType}',
       e: error,
       st: stackTrace,
     );

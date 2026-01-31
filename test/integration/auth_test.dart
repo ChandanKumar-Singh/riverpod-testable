@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/features/auth/data/models/user_model.dart';
 import 'package:testable/core/network/dio/models/api_response.dart';
@@ -126,7 +127,7 @@ void main() {
       when(mockRepo.clearSession()).thenAnswer((_) async {});
 
       // Initialize auth provider
-     await container.read(authProvider.notifier).initialize();
+      await container.read(authProvider.notifier).initialize();
       await Future.delayed(const Duration(milliseconds: 10));
 
       // Verify authenticated state

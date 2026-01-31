@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/app/router/app_router.dart';
 import 'package:testable/features/auth/data/providers/auth_provider.dart';
 import 'package:testable/shared/widgets/unfocus_wrapper.dart';
@@ -8,6 +9,7 @@ import 'package:testable/core/di/providers.dart';
 import 'package:testable/l10n/app_localizations.dart';
 import 'package:testable/shared/connectivity/connectivity_watcher.dart';
 import 'package:testable/shared/theme/app_theme.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends ConsumerStatefulWidget {
@@ -41,8 +43,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     final appTheme = AppTheme();
     return ToastificationWrapper(
       config: ToastificationConfig(
-        maxTitleLines: 2,
-        maxDescriptionLines: 6,
         marginBuilder: (context, alignment) =>
             const EdgeInsets.fromLTRB(0, 16, 0, 110),
       ),

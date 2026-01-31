@@ -3,7 +3,10 @@
 // core/di/providers.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/app/app.dart';
 import 'package:testable/app/router/app_router.dart';
@@ -23,7 +26,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 ////////// APP PROVIDERS ////////////
 final appRouterProvider = Provider<AppRouter>((ref) {
-  return AppRouter(ref: ref,navigatorKey: navigatorKey);
+  return AppRouter(ref: ref, navigatorKey: navigatorKey);
 });
 
 //////////// SHARED PROVIDERS ////////////

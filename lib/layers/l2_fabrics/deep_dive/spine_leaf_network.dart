@@ -178,7 +178,7 @@ class _NetworkPainter extends CustomPainter {
     }
 
     // Draw Nodes
-    paint.color = isFailure ? Colors.red.withOpacity(0.5) : Colors.cyan;
+    paint.color = isFailure ? Colors.red.withValues(alpha: 0.5) : Colors.cyan;
     if (!isFailure) canvas.drawCircle(s1, 15, paint); // Spine 1
 
     paint.color = Colors.cyan;

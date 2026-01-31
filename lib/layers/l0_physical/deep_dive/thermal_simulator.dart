@@ -223,7 +223,7 @@ class _ThermalPainter extends CustomPainter {
 
       // Draw Heat components (CPU/GPU) inside
       final compPaint = Paint()
-        ..color = Colors.white.withOpacity(0.05)
+        ..color = Colors.white.withValues(alpha: 0.05)
         ..style = PaintingStyle.fill;
       canvas.drawRect(
         Rect.fromLTWH(
@@ -241,7 +241,7 @@ class _ThermalPainter extends CustomPainter {
       // Color based on temp
       // Blue (Cold) -> Purple -> Red (Hot)
       Color color = Color.lerp(Colors.cyan, Colors.red, p.temp) ?? Colors.cyan;
-      color = color.withOpacity(0.6);
+      color = color.withValues(alpha: 0.6);
 
       paint.color = color;
       paint.strokeWidth = 3.0;
@@ -257,7 +257,7 @@ class _ThermalPainter extends CustomPainter {
     // Warning overlay
     if (blocked) {
       final warnPaint = Paint()
-        ..color = Colors.red.withOpacity(0.1)
+        ..color = Colors.red.withValues(alpha: 0.1)
         ..style = PaintingStyle.fill;
       canvas.drawRect(Offset.zero & size, warnPaint);
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/core/services/local_storage_adapter.dart';
 import 'package:testable/features/auth/presentation/screens/login_screen.dart';
 import 'package:testable/core/di/providers.dart';

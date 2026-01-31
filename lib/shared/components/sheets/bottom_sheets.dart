@@ -129,7 +129,7 @@ class UltraSheet {
           barrierDismissible: barrierDismissible,
           radius: radius,
           backgroundColor: backgroundColor ?? theme.colorScheme.surface,
-          barrierColor: barrierColor ?? Colors.black.withOpacity(0.0),
+          barrierColor: barrierColor ?? Colors.black.withValues(alpha: 0.0),
           titleBar: titleBar,
           showHandle: showHandle,
           customHandle: customHandle,
@@ -401,7 +401,7 @@ class _UltraSheetContentState extends State<_UltraSheetContent>
                                     ]
                                   : [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
+                                        color: Colors.black.withValues(alpha: 0.1),
                                         blurRadius: 16,
                                         spreadRadius: -8,
                                         offset: const Offset(0, -4),
@@ -561,7 +561,7 @@ class SheetHandle extends StatelessWidget {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: color ?? theme.colorScheme.onSurface.withOpacity(0.3),
+            color: color ?? theme.colorScheme.onSurface.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
           ),
         ),
@@ -593,7 +593,7 @@ class SheetCloseButton extends StatelessWidget {
     return OnTapScaler(
       child: IconButton(
         icon: Icon(icon, size: size),
-        color: color ?? theme.colorScheme.onSurface.withOpacity(0.7),
+        color: color ?? theme.colorScheme.onSurface.withValues(alpha: 0.7),
         padding: padding,
         constraints: BoxConstraints(minWidth: size + 16, minHeight: size + 16),
         onPressed: onPressed,

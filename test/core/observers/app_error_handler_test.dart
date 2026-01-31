@@ -1,6 +1,7 @@
 // test/core/observers/app_error_handler_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/core/observers/app_error_handler.dart';
 import 'package:testable/core/utils/logger.dart';
 

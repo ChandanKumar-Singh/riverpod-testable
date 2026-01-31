@@ -65,7 +65,7 @@ class BaseAlertCard extends StatelessWidget {
       color: backgroundColor,
       surfaceTintColor: backgroundColor,
       elevation: elevation,
-      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
+      shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         side: borderColor != null && showBorder
@@ -131,7 +131,7 @@ class BaseAlertCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.onSurface.withOpacity(0.1),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -183,13 +183,13 @@ class BaseAlertCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: glowIcon ? iconColor?.withOpacity(0.5) : null,
+        color: glowIcon ? iconColor?.withValues(alpha: 0.5) : null,
         shape: BoxShape.circle,
         gradient: glowIcon
             ? LinearGradient(
                 colors: [
-                  iconColor?.withOpacity(0.2) ?? Colors.transparent,
-                  iconColor?.withOpacity(0.1) ?? Colors.transparent,
+                  iconColor?.withValues(alpha: 0.2) ?? Colors.transparent,
+                  iconColor?.withValues(alpha: 0.1) ?? Colors.transparent,
                 ],
               )
             : null,
@@ -233,7 +233,7 @@ class ErrorAlertCard extends StatelessWidget {
           icon: Iconsax.warning_24,
           iconColor: colorScheme.onErrorContainer,
           backgroundColor: colorScheme.errorContainer,
-          borderColor: colorScheme.error.withOpacity(showBorder ? 0.4 : 0.2),
+          borderColor: colorScheme.error.withValues(alpha: showBorder ? 0.4 : 0.2),
           actions: actions,
           onDismiss: onDismiss,
           dismissible: dismissible,
@@ -280,7 +280,7 @@ class SuccessAlertCard extends StatelessWidget {
       icon: Iconsax.tick_circle,
       iconColor: colorScheme.primary,
       backgroundColor: colorScheme.primaryContainer,
-      borderColor: colorScheme.primary.withOpacity(showBorder ? 0.4 : 0.2),
+      borderColor: colorScheme.primary.withValues(alpha: showBorder ? 0.4 : 0.2),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
@@ -321,8 +321,8 @@ class InfoAlertCard extends StatelessWidget {
       message: message,
       icon: Iconsax.info_circle,
       iconColor: colorScheme.primary,
-      backgroundColor: colorScheme.primaryContainer.withOpacity(0.15),
-      borderColor: colorScheme.outline.withOpacity(showBorder ? 0.3 : 0.1),
+      backgroundColor: colorScheme.primaryContainer.withValues(alpha: 0.15),
+      borderColor: colorScheme.outline.withValues(alpha: showBorder ? 0.3 : 0.1),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
@@ -366,8 +366,8 @@ class WarningAlertCard extends StatelessWidget {
       message: message,
       icon: Iconsax.warning_2,
       iconColor: warningColor,
-      backgroundColor: warningColor.withOpacity(0.1),
-      borderColor: warningColor.withOpacity(showBorder ? 0.4 : 0.2),
+      backgroundColor: warningColor.withValues(alpha: 0.1),
+      borderColor: warningColor.withValues(alpha: showBorder ? 0.4 : 0.2),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
@@ -410,8 +410,8 @@ class LoadingAlertCard extends StatelessWidget {
           valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
         ),
       ),
-      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.3),
-      borderColor: colorScheme.outline.withOpacity(0.2),
+      backgroundColor: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+      borderColor: colorScheme.outline.withValues(alpha: 0.2),
       actions: actions,
       onDismiss: onDismiss,
       dismissible: dismissible,
@@ -450,7 +450,7 @@ class PremiumFeatureCard extends StatelessWidget {
       icon: Iconsax.crown_1,
       iconColor: const Color(0xFFFFD700),
       backgroundColor: const Color(0xFFFFF8E1),
-      borderColor: const Color(0xFFFFD700).withOpacity(0.3),
+      borderColor: const Color(0xFFFFD700).withValues(alpha: 0.3),
       actions: [
         if (onUpgrade != null)
           FilledButton(
@@ -498,8 +498,8 @@ class EmptyStateCard extends StatelessWidget {
       message: message,
       icon: icon,
       iconColor: colorScheme.onSurfaceVariant,
-      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.3),
-      borderColor: colorScheme.outline.withOpacity(0.2),
+      backgroundColor: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+      borderColor: colorScheme.outline.withValues(alpha: 0.2),
       actions: [
         if (onAction != null && actionText != null)
           OutlinedButton(onPressed: onAction, child: Text(actionText!)),
@@ -602,8 +602,8 @@ class ComingSoonCard extends StatelessWidget {
       message: message,
       icon: Iconsax.clock,
       iconColor: colorScheme.primary,
-      backgroundColor: colorScheme.surfaceVariant.withOpacity(0.4),
-      borderColor: colorScheme.primary.withOpacity(0.3),
+      backgroundColor: colorScheme.surfaceVariant.withValues(alpha: 0.4),
+      borderColor: colorScheme.primary.withValues(alpha: 0.3),
       dismissible: true,
       onDismiss: onDismiss,
       glowIcon: true,
@@ -674,8 +674,8 @@ class UpdateAvailableCard extends StatelessWidget {
       message: message,
       icon: Iconsax.arrow_circle_up,
       iconColor: Colors.green,
-      backgroundColor: Colors.green.withOpacity(0.1),
-      borderColor: Colors.green.withOpacity(0.3),
+      backgroundColor: Colors.green.withValues(alpha: 0.1),
+      borderColor: Colors.green.withValues(alpha: 0.3),
       dismissible: onUpdate == null,
       onDismiss: onDismiss,
       maxLines: 4,

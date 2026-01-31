@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/app/router/app_router.dart';
 
 import 'package:testable/features/user/data/providers/user_provider.dart';
@@ -10,10 +11,10 @@ void main() {
   /// Helper to build widget with overrides
   Widget buildTestWidget({required UserProfileState profileState}) {
     return UncontrolledProviderScope(
-      container: ProviderContainer.test(
-        observers: []
+      container: ProviderContainer.test(observers: []),
+      child: const MaterialApp(
+        home: SampleScreen(title: 'Test Sample', icon: Icons.import_contacts),
       ),
-      child: const MaterialApp(home: SampleScreen(title: 'Test Sample',icon: Icons.import_contacts)),
     );
   }
 

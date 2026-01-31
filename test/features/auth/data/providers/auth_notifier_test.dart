@@ -1,6 +1,7 @@
 // test/features/auth/presentation/auth_notifier_test.dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -113,7 +114,7 @@ void main() {
     test('initializes unauthenticated when no session', () async {
       when(mockRepo.loadSession()).thenAnswer((_) async => null);
 
-     await container.read(authProvider.notifier).initialize();
+      await container.read(authProvider.notifier).initialize();
       await pump();
 
       final state = container.read(authProvider);

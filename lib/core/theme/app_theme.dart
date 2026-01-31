@@ -1,48 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:testable/core/theme/app_colors.dart';
 
 class AppTheme {
-  static const Color backgroundBlack = Color(0xFF050505);
-  static const Color surfaceGlass = Color(0x1AFFFFFF); // 10% white
-  static const Color accentCyan = Color(0xFF00F0FF);
-  static const Color accentMagenta = Color(0xFFFF003C);
-  static const Color textWhite = Color(0xFFEEEEEE);
-  static const Color textGrey = Color(0xFF888888);
-
   static ThemeData get darkTheme {
-    return ThemeData(
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: backgroundBlack,
-      primaryColor: accentCyan,
+    final colors = AppColors.dark();
 
-      textTheme: const TextTheme(
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: colors.bgPrimary,
+      primaryColor: colors.accentPrimary,
+
+      // Font Family
+      fontFamily: GoogleFonts.inter().fontFamily,
+
+      // Text Theme
+      textTheme: TextTheme(
         displayLarge: TextStyle(
-          color: textWhite,
           fontSize: 32,
           fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
-          fontFamily: 'Roboto', // Fallback, assume Inter/Orbitron later
+          color: colors.textPrimary,
+        ),
+        displayMedium: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          color: colors.textPrimary,
+        ),
+        displaySmall: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: colors.textPrimary,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: colors.textPrimary,
+        ),
+        headlineSmall: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: colors.textPrimary,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: colors.textPrimary,
         ),
         bodyLarge: TextStyle(
-          color: textWhite,
           fontSize: 16,
-          letterSpacing: 0.5,
+          fontWeight: FontWeight.normal,
+          color: colors.textSecondary,
         ),
-        labelSmall: TextStyle(
-          color: accentCyan,
-          fontSize: 12,
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+          color: colors.textSecondary,
+        ),
+        labelLarge: TextStyle(
+          fontSize: 14,
           fontWeight: FontWeight.w600,
-          letterSpacing: 2.0,
+          color: colors.accentPrimary,
         ),
       ),
 
-      colorScheme: const ColorScheme.dark(
-        primary: accentCyan,
-        secondary: accentMagenta,
-        surface: surfaceGlass,
-        background: backgroundBlack,
+      // Card Theme
+      cardTheme: CardThemeData(
+        color: colors.bgSecondary,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: colors.bgTertiary),
+        ),
       ),
 
-      useMaterial3: true,
+      // AppBar Theme
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.bgPrimary,
+        elevation: 0,
+        centerTitle: false,
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: colors.textPrimary,
+        ),
+        iconTheme: IconThemeData(color: colors.textSecondary),
+      ),
+
+      // Extensions
+      extensions: [colors],
     );
   }
+
+  // Compatibility Proxies
+  // NOTE: Duplicated from AppColors to support legacy 'const' requirements in default parameters
+  static const Color accentCyan = Color(0xFF00D1FF);
+  static const Color accentPrimary = Color(0xFF6C5DD3);
+  static const Color textPrimary = Color(0xFFFFFFFF);
+  static const Color bgPrimary = Color(0xFF0F1115);
 }

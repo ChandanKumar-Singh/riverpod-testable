@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/shared/components/index.dart';
 import 'package:testable/shared/widgets/loading_widget.dart';
 import 'package:testable/shared/widgets/empty_state_widget.dart';
@@ -56,7 +57,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
         ],
       ),
       body: profileState.status == UserProfileStatus.loading
-          ? const LoadingWidget(key: Key('profile_loading'), message: 'Loading profile...')
+          ? const LoadingWidget(
+              key: Key('profile_loading'),
+              message: 'Loading profile...',
+            )
           : profileState.status == UserProfileStatus.error
           ? RetryWidget(
               message: profileState.error ?? 'Error loading profile',

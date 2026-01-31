@@ -80,9 +80,7 @@ class AppToastification {
           ],
       showProgressBar: showProgressBar ?? false,
       applyBlurEffect: applyBlurEffect ?? false,
-      closeButton: ToastCloseButton(
-        showType: closeButtonShowType ?? CloseButtonShowType.always,
-      ),
+      closeButtonShowType: closeButtonShowType ?? CloseButtonShowType.always,
       closeOnClick: closeOnClick ?? true,
       dragToClose: dragToClose ?? true,
       showIcon: showIcon ?? false,
@@ -881,6 +879,7 @@ class _AnimatedToastState extends State<_AnimatedToast>
 /* // core/utils/toasts.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 // =============================================================================
 // 🎨 Toast Types & Configuration

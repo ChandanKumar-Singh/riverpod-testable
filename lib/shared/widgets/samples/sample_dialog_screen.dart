@@ -403,7 +403,7 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
             height: 4,
             margin: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -495,7 +495,7 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
                                 ?.copyWith(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.onSurface.withOpacity(0.7),
+                                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                                 ),
                           ),
                         ],
@@ -603,7 +603,7 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface.withOpacity(0.6),
+                                      ).colorScheme.onSurface.withValues(alpha: 0.6),
                                     ),
                               ),
                               Text(
@@ -624,7 +624,7 @@ class _SampleDialogScreenState extends State<SampleDialogScreen> {
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface.withOpacity(0.6),
+                                      ).colorScheme.onSurface.withValues(alpha: 0.6),
                                     ),
                               ),
                               Text(

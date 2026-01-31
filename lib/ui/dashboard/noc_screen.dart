@@ -163,7 +163,7 @@ class _NOCScreenState extends State<NOCScreen>
                               borderRadius: BorderRadius.circular(30),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppTheme.accentCyan.withOpacity(0.3),
+                                  color: AppTheme.accentCyan.withValues(alpha: 0.3),
                                   blurRadius: 20 * _pulseController.value,
                                   spreadRadius: 2,
                                 ),
@@ -219,8 +219,8 @@ class _NOCScreenState extends State<NOCScreen>
         height: 150,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
-          border: Border.all(color: color.withOpacity(0.3)),
+          color: Colors.white.withValues(alpha: 0.05),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -237,7 +237,7 @@ class _NOCScreenState extends State<NOCScreen>
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -278,7 +278,7 @@ class _NOCScreenState extends State<NOCScreen>
               width: double.infinity,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: color.withOpacity(0.5)),
+                  bottom: BorderSide(color: color.withValues(alpha: 0.5)),
                 ),
               ),
               child: CustomPaint(painter: _SparklinePainter(color)),
@@ -293,7 +293,7 @@ class _NOCScreenState extends State<NOCScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.green.withValues(alpha: 0.1),
         border: Border.all(color: Colors.green),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -319,7 +319,7 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.03)
+      ..color = Colors.white.withValues(alpha: 0.03)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

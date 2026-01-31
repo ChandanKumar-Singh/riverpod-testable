@@ -1,5 +1,6 @@
 // features/auth/data/repositories/auth_repository_impl.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:testable/core/constants/index.dart';
 import 'package:testable/core/services/storage_adapter.dart';
 import 'package:testable/core/services/api_service.dart';
