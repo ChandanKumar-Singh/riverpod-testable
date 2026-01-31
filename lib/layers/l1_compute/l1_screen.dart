@@ -12,6 +12,11 @@ class L1ComputeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
       deepDiveWidget: TensorCoreSimulator(),
+      insightTech: "NVIDIA H100 Tensor Core Architecture",
+      insightPhysics:
+          "Matrix Multiplication (GEMM) in FP8/FP16 precision. Exploits sparsity to speed up AI training by 4x.",
+      insightValue:
+          "Higher TFLOPS/Watt means faster model training and lower inference capability costs.",
       layerNumber: 'L1',
       title: 'Compute\nHardware',
       subtitle: 'The Physical Brain',

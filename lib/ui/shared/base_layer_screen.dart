@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testable/core/theme/app_theme.dart';
 import 'package:testable/ui/shared/neon_text.dart';
+import 'package:testable/ui/shared/insight_overlay.dart';
 
 class BaseLayerScreen extends StatelessWidget {
   final String title;
@@ -10,6 +11,11 @@ class BaseLayerScreen extends StatelessWidget {
   final Color accentColor;
   final List<Widget> modules;
   final Widget? deepDiveWidget;
+  
+  // Insight Data (Optional, but recommended)
+  final String insightTech;
+  final String insightPhysics;
+  final String insightValue;
 
   const BaseLayerScreen({
     super.key,
@@ -20,13 +26,21 @@ class BaseLayerScreen extends StatelessWidget {
     this.accentColor = AppTheme.accentCyan,
     this.modules = const [],
     this.deepDiveWidget,
+    this.insightTech = "Technical details unavailable.",
+    this.insightPhysics = "Physics data unavailable.",
+    this.insightValue = "ROI data unavailable.",
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
+    return InsightOverlay(
+      title: "LAYER $layerNumber: $title",
+      techDescription: insightTech,
+      physicsDescription: insightPhysics,
+      valueDescription: insightValue,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
         children: [
           // Ambient Glow
           Positioned(
@@ -160,6 +174,6 @@ class BaseLayerScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

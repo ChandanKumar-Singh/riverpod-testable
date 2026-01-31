@@ -12,6 +12,11 @@ class L2FabricsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
       deepDiveWidget: SpineLeafNetwork(),
+      insightTech: "400Gbps Spine-Leaf Data Center Fabric",
+      insightPhysics:
+          "Non-blocking Clos topology ensures equidistant bandwidth between any two servers. Minimizes tail latency.",
+      insightValue:
+          "Reduces 'Flow Completion Time' for distributed training, improving GPU utilization and ROI.",
       layerNumber: 'L2',
       title: 'Compute\nFabrics',
       subtitle: 'The Nervous System',

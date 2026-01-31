@@ -11,6 +11,11 @@ class L3ControlScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
       deepDiveWidget: K8sSchedulerSimulator(),
+      insightTech: "Kubernetes Control Plane & Scheduler",
+      insightPhysics:
+          "Bin-packing algorithms resolve NP-hard resource allocation problems to maximize hardware density.",
+      insightValue:
+          "Automated orchestration eliminates manual sysadmin overhead and ensures 99.99% service availability.",
       layerNumber: 'L3',
       title: 'Control\nPlane',
       subtitle: 'Routing & Orchestration',

@@ -12,6 +12,11 @@ class L4ModelsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
       deepDiveWidget: AttentionHeadVisualizer(),
+      insightTech: "Transformer Model Architecture (LLM)",
+      insightPhysics:
+          "Self-Attention Mechanism: Q * K^T / sqrt(d). Computes contextual relationships between token vectors.",
+      insightValue:
+          "Enables 'Emergent Intelligence' capabilities (reasoning, coding) allowing for automation of knowledge work.",
       layerNumber: 'L4',
       title: 'Models &\nAPIs',
       subtitle: 'The Intelligence Engine',

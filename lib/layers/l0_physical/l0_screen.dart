@@ -11,6 +11,11 @@ class L0PhysicalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BaseLayerScreen(
       deepDiveWidget: ThermalSimulator(),
+      insightTech: "Server Rack Cooling System (Liquid/Air Hybrid)",
+      insightPhysics:
+          "Thermodynamics: Q = m * C * ΔT. Managing heat dissipation for high-density H100 GPU clusters.",
+      insightValue:
+          "Effective cooling reduces PUE (Power Usage Effectiveness) from 1.5 to 1.1, saving millions in OpEx.",
       layerNumber: 'L0',
       title: 'Physical\nReality',
       subtitle: 'The Room & Infrastructure',
